@@ -396,7 +396,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               Cargando catálogo en tiempo real...
             </h3>
             <p className="text-slate-600 text-sm max-w-md mx-auto">
-              Conectando con la base de datos de Google Sheets para obtener los inmuebles actualizados.
+              Obteniendo cartera de inmuebles.
             </p>
           </div>
         )}
