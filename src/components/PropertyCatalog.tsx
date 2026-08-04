@@ -17,7 +17,6 @@ import {
   ChevronRight,
   AlertCircle,
   Loader2,
-  Sparkles,
   Filter,
 } from 'lucide-react';
 
@@ -37,7 +36,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [apiError, setApiError] = useState<string | null>(null);
-  const [useDemoFallback, setUseDemoFallback] = useState<boolean>(false);
 
   // Filters
   const [selectedType, setSelectedType] = useState<string>(initialTypeFilter);
@@ -167,10 +165,9 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
       });
 
       setProperties(mapped);
-      setUseDemoFallback(false);
     } catch (err: any) {
       console.error('Error fetching Google Sheets API:', err);
-      setApiError('No se pudo establecer conexión en vivo con la planilla de Google Sheets.');
+      setApiError('No se pudo establecer conexión en vivo con la base de datos de propiedades.');
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
@@ -181,13 +178,8 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     fetchCatalogData();
   }, []);
 
-  const currentPropertiesList = useMemo(() => {
-    if (useDemoFallback) return MOCK_PROPERTIES;
-    return properties;
-  }, [properties, useDemoFallback]);
-
   const filteredProperties = useMemo(() => {
-    return currentPropertiesList.filter((prop) => {
+    return properties.filter((prop) => {
       // Type match
       if (selectedType !== 'todas' && prop.type !== selectedType) {
         return false;
@@ -210,7 +202,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
       }
       return true;
     });
-  }, [currentPropertiesList, selectedType, selectedOperation, selectedCity, searchQuery]);
+  }, [properties, selectedType, selectedOperation, selectedCity, searchQuery]);
 
   const generateWhatsAppLink = (property: Property) => {
     const text = `Hola Tamar Propiedades, quiero cotizar la propiedad ID #${property.id}: ${property.title}`;
@@ -246,10 +238,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-[#C87A32]/10 text-[#C87A32] border border-[#C87A32]/30">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Catálogo Dinámico (Google Sheets Real-time)</span>
-            </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1E36] font-sans">
               Propiedades & Paños Destacados
             </h2>
@@ -267,40 +255,21 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               <RefreshCw className={`w-4 h-4 text-[#C87A32] ${isRefreshing ? 'animate-spin' : ''}`} />
               <span>{isRefreshing ? 'Sincronizando...' : 'Recargar catálogo'}</span>
             </button>
-
-            {!useDemoFallback && properties.length === 0 && !isLoading && (
-              <button
-                onClick={() => setUseDemoFallback(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-800 text-white font-bold text-xs hover:bg-slate-700 transition-all"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-[#C87A32]" />
-                <span>Ver Modo Demostración</span>
-              </button>
-            )}
-
-            {useDemoFallback && (
-              <button
-                onClick={() => setUseDemoFallback(false)}
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-50 text-amber-800 border border-amber-300 font-bold text-xs hover:bg-amber-100 transition-all"
-              >
-                <span>Volver a Planilla API</span>
-              </button>
-            )}
           </div>
         </div>
 
         {/* API Error Notification Banner */}
-        {apiError && !useDemoFallback && (
+        {apiError && (
           <div className="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-semibold shadow-sm">
             <div className="flex items-center gap-2">
               <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
               <span>{apiError}</span>
             </div>
             <button
-              onClick={() => setUseDemoFallback(true)}
+              onClick={() => fetchCatalogData(true)}
               className="shrink-0 px-3 py-1.5 bg-[#C87A32] text-white rounded-lg font-bold hover:bg-[#A85D23] transition-colors"
             >
-              Cargar catálogo de muestra
+              Reintentar
             </button>
           </div>
         )}
@@ -379,7 +348,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 setSelectedType('todas');
                 setSelectedOperation('todas');
                 setSelectedCity('todas');
-                setSearchQuery('');
+                searchQuery('');
               }}
               className="px-3 py-1 rounded bg-white hover:bg-slate-200 text-slate-700 border border-slate-300 transition-colors font-medium"
             >
@@ -402,7 +371,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
         )}
 
         {/* EMPTY STATE OR NO ACTIVE PROPERTIES */}
-        {!isLoading && currentPropertiesList.length === 0 && (
+        {!isLoading && properties.length === 0 && (
           <div className="py-16 px-6 text-center bg-slate-50 border border-slate-200 rounded-2xl space-y-6 max-w-3xl mx-auto shadow-sm">
             <div className="w-16 h-16 bg-[#C87A32]/10 rounded-full flex items-center justify-center mx-auto text-[#C87A32]">
               <AlertCircle className="w-8 h-8" />
@@ -436,20 +405,12 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 <Phone className="w-4 h-4" />
                 <span>Consultar por WhatsApp</span>
               </a>
-
-              <button
-                onClick={() => setUseDemoFallback(true)}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-sm transition-all"
-              >
-                <Sparkles className="w-4 h-4 text-[#C87A32]" />
-                <span>Ver Ejemplo de Catálogo</span>
-              </button>
             </div>
           </div>
         )}
 
         {/* PROPERTIES GRID */}
-        {!isLoading && currentPropertiesList.length > 0 && filteredProperties.length === 0 && (
+        {!isLoading && properties.length > 0 && filteredProperties.length === 0 && (
           <div className="text-center py-16 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
             <p className="text-slate-700 text-lg font-semibold">
               No se encontraron propiedades con los filtros aplicados.
@@ -462,7 +423,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 setSelectedType('todas');
                 setSelectedOperation('todas');
                 setSelectedCity('todas');
-                setSearchQuery('');
+                searchQuery('');
               }}
               className="mt-4 px-4 py-2 bg-[#C87A32] text-white text-xs font-bold rounded-lg uppercase shadow"
             >
