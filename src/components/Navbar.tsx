@@ -118,8 +118,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
           >
             <div className="w-12 h-12 rounded-xl bg-white border border-[#C87A32]/30 p-1 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-200 overflow-hidden">
               <img 
-                src="/logo-icon.png" 
-                alt="Tamar Propiedades SpA Icon" 
+                src="/logo-header.png" 
+                alt="Tamar Propiedades SpA" 
                 className="w-full h-full object-contain"
                 referrerPolicy="no-referrer"
               />
