@@ -362,7 +362,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
           <div className="py-24 text-center bg-slate-50 border border-slate-200 rounded-2xl space-y-4 shadow-sm">
             <Loader2 className="w-10 h-10 text-[#C87A32] animate-spin mx-auto" />
             <h3 className="text-xl font-extrabold text-[#0B1E36]">
-              Cargando catálogo en tiempo real...
+              Cargando catálogo...
             </h3>
             <p className="text-slate-600 text-sm max-w-md mx-auto">
               Obteniendo cartera de inmuebles.
