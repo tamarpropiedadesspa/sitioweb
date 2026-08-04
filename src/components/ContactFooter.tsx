@@ -33,28 +33,21 @@ export const ContactFooter: React.FC = () => {
           {/* Corporate Info Column */}
           <div className="lg:col-span-5 space-y-6">
             <div className="space-y-4">
-              <div className="bg-white p-3 rounded-2xl border border-slate-700/50 shadow-md inline-block max-w-xs">
-                <img
-                  src="/logo-footer.png"
-                  alt="Tamar Propiedades SpA - Logo Completo"
-                  className="h-20 w-auto object-contain rounded-lg"
-                  referrerPolicy="no-referrer"
+              {/* Logo Único (Imagen completa) */}
+              <div className="bg-white p-3 rounded-2xl border border-slate-700/50 shadow-md inline-block">
+                <img 
+                  src="/logo-footer.png" 
+                  alt="Tamar Propiedades SpA" 
+                  className="h-24 w-auto object-contain rounded-lg"
                 />
               </div>
-              <div>
-                <h3 className="text-xl font-extrabold text-white font-sans">
-                  TAMAR PROPIEDADES SpA
-                </h3>
-                <p className="text-xs text-[#C87A32] font-bold uppercase tracking-wider">
-                  Bienes Raíces & Ingeniería Sostenible
-                </p>
-              </div>
             </div>
-
+      
             <p className="text-slate-300 text-sm leading-relaxed">
               Empresa chilena especializada en la comercialización inmobiliaria residencial y la provisión de soporte logístico, habitacional y técnico para grandes proyectos industriales y mineros.
             </p>
-
+          </div>
+            
             {/* Direct Contact List */}
             <div className="space-y-4 text-sm text-slate-200 pt-2">
               <div className="flex items-start gap-3">
