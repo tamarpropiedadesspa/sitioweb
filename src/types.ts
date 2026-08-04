@@ -4,8 +4,9 @@ export type OperationType = 'venta' | 'arriendo';
 export interface Property {
   id: string;
   title: string;
-  type: PropertyType;
-  operation: OperationType;
+  type: PropertyType | string;
+  category?: string;
+  operation: OperationType | string;
   priceUF: number;
   priceCLP: number;
   location: string;
@@ -15,9 +16,12 @@ export interface Property {
   areaM2: number;
   landAreaM2?: number;
   image: string;
+  gallery?: string[];
+  videoUrl?: string;
   featured: boolean;
   description: string;
   features: string[];
+  status?: string;
 }
 
 export interface ClientBrand {

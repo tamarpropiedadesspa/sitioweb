@@ -27,19 +27,6 @@ export default function App() {
     handleNavigate('propiedades');
   };
 
-  const getSectionTitle = (id: string) => {
-    switch (id) {
-      case 'buscar': return '¿Qué estás buscando hoy?';
-      case 'propiedades': return 'Catálogo de Propiedades & Terrenos';
-      case 'servicios': return 'Empresas & Servicios Corporativos B2B';
-      case 'cobertura': return 'Red de Cobertura Nacional e Internacional';
-      case 'clientes': return 'Nuestros Clientes & Casos de Éxito';
-      case 'calculadora': return 'Calculadora Inmobiliaria & Conversor UF';
-      case 'contacto': return 'Contacto Directo & Cotizaciones';
-      default: return 'Inicio';
-    }
-  };
-
   const renderActiveView = () => {
     switch (activeSection) {
       case 'buscar':
@@ -100,16 +87,8 @@ export default function App() {
       {/* Main Content Area */}
       <main className="flex-1">
         {activeSection !== 'inicio' && (
-          <div className="bg-slate-900 border-b border-slate-800 text-white py-3 px-4 sm:px-8 shadow-inner">
-            <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
-              <div className="flex items-center gap-2">
-                <span className="text-[#C87A32] font-bold uppercase tracking-wider bg-[#C87A32]/15 px-2.5 py-1 rounded border border-[#C87A32]/30">
-                  Vista Dedicada
-                </span>
-                <span className="font-extrabold text-white">
-                  {getSectionTitle(activeSection)}
-                </span>
-              </div>
+          <div className="bg-slate-900 border-b border-slate-800 text-white py-2.5 px-4 sm:px-8 shadow-inner">
+            <div className="max-w-7xl mx-auto flex items-center justify-end">
               <button
                 onClick={() => handleNavigate('inicio')}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[#C87A32] font-bold border border-slate-700 transition-all text-xs"
