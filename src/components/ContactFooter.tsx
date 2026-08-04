@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PHONE_WHATSAPP, PHONE_DISPLAY, EMAIL_CONTACT } from '../data/mockData';
-import { Phone, Mail, MapPin, Send, CheckCircle2, Building2, ShieldCheck, Heart } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, CheckCircle2, ShieldCheck } from 'lucide-react';
 
 export const ContactFooter: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -30,7 +30,7 @@ export const ContactFooter: React.FC = () => {
         {/* Contact Form & Corporate Info Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
           
-          {/* Corporate Info Column */}
+          {/* Corporate Info Column (Columna Izquierda - 5 cols) */}
           <div className="lg:col-span-5 space-y-6">
             <div className="space-y-4">
               {/* Logo Único (Imagen completa) */}
@@ -42,11 +42,10 @@ export const ContactFooter: React.FC = () => {
                 />
               </div>
             </div>
-      
+        
             <p className="text-slate-300 text-sm leading-relaxed">
               Empresa chilena especializada en la comercialización inmobiliaria residencial y la provisión de soporte logístico, habitacional y técnico para grandes proyectos industriales y mineros.
             </p>
-          </div>
             
             {/* Direct Contact List */}
             <div className="space-y-4 text-sm text-slate-200 pt-2">
@@ -98,7 +97,7 @@ export const ContactFooter: React.FC = () => {
 
           </div>
 
-          {/* Quotation Form Column */}
+          {/* Quotation Form Column (Columna Derecha - 7 cols) */}
           <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
             <div className="space-y-2 mb-6">
               <h3 className="text-2xl font-bold text-white">Formulario de Cotización Rápida</h3>
@@ -217,7 +216,8 @@ export const ContactFooter: React.FC = () => {
             <span className="font-semibold text-slate-300">Tamar Propiedades SpA</span>
             <span className="text-[#C87A32] font-bold">• Bienes Raíces & Ingeniería Sostenible</span>
           </div>
-        
+        </div>
+
       </div>
     </footer>
   );
