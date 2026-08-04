@@ -551,8 +551,8 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
       {/* TECHNICAL SHEET MODAL */}
       {activeProperty && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-white border border-slate-200 rounded-2xl max-w-3xl w-full p-6 space-y-6 relative shadow-2xl my-8 animate-in fade-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-6 overflow-y-auto">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-3xl w-full p-5 sm:p-6 space-y-6 relative shadow-2xl mt-4 sm:mt-10 mb-10 animate-in fade-in zoom-in-95 duration-200">
             
             <button
               onClick={() => setActiveProperty(null)}
