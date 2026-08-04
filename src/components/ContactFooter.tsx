@@ -27,67 +27,69 @@ export const ContactFooter: React.FC = () => {
     <footer id="contacto" className="bg-[#0B1E36] text-white pt-20 pb-12 border-t border-slate-800 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Contact Form & Corporate Info Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
+        {/* Grid Principal de 12 Columnas */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-16">
           
-          {/* Corporate Info Column (Columna Izquierda - 5 cols) */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="space-y-4">
-              {/* Logo Único (Imagen completa) */}
+          {/* Columna Izquierda: Información Corporativa (5 Columnas) */}
+          <div className="lg:col-span-5 flex flex-col space-y-6 w-full">
+            
+            {/* Logo */}
+            <div>
               <div className="bg-white p-3 rounded-2xl border border-slate-700/50 shadow-md inline-block">
                 <img 
                   src="/logo-footer.png" 
                   alt="Tamar Propiedades SpA" 
-                  className="h-24 w-auto object-contain rounded-lg"
+                  className="h-20 w-auto object-contain rounded-lg"
                 />
               </div>
             </div>
-        
+
+            {/* Texto Descriptivo */}
             <p className="text-slate-300 text-sm leading-relaxed">
               Empresa chilena especializada en la comercialización inmobiliaria residencial y la provisión de soporte logístico, habitacional y técnico para grandes proyectos industriales y mineros.
             </p>
-            
-            {/* Direct Contact List */}
-            <div className="space-y-4 text-sm text-slate-200 pt-2">
-              <div className="flex items-start gap-3">
+
+            {/* Datos de Contacto Directo */}
+            <div className="space-y-4 text-sm text-slate-200 pt-2 w-full">
+              <div className="flex items-start gap-3 w-full">
                 <div className="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center text-[#C87A32] shrink-0 border border-slate-700">
                   <Phone className="w-4 h-4" />
                 </div>
-                <div>
+                <div className="min-w-0 flex-1">
                   <span className="text-xs text-slate-400 block">Teléfono & WhatsApp Directo</span>
-                  <a href={`tel:${PHONE_WHATSAPP}`} className="font-bold text-white hover:text-[#C87A32] transition-colors">
+                  <a href={`tel:${PHONE_WHATSAPP}`} className="font-bold text-white hover:text-[#C87A32] transition-colors break-words">
                     {PHONE_DISPLAY}
                   </a>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 w-full">
                 <div className="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center text-[#C87A32] shrink-0 border border-slate-700">
                   <Mail className="w-4 h-4" />
                 </div>
-                <div>
+                <div className="min-w-0 flex-1">
                   <span className="text-xs text-slate-400 block">Correo Electrónico Corporativo</span>
-                  <a href={`mailto:${EMAIL_CONTACT}`} className="font-bold text-white hover:text-[#C87A32] transition-colors">
+                  <a href={`mailto:${EMAIL_CONTACT}`} className="font-bold text-white hover:text-[#C87A32] transition-colors break-all">
                     {EMAIL_CONTACT}
                   </a>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 w-full">
                 <div className="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center text-[#C87A32] shrink-0 border border-slate-700">
                   <MapPin className="w-4 h-4" />
                 </div>
-                <div>
+                <div className="min-w-0 flex-1">
                   <span className="text-xs text-slate-400 block">Cobertura de Operaciones</span>
-                  <span className="font-semibold text-slate-200">
+                  <span className="font-semibold text-slate-200 leading-snug block">
                     Chile (Iquique, Pozo Almonte, Calama, Antofagasta, La Serena, Ovalle, Viña del Mar, Concepción) | Bolivia & Perú
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Quality Seal */}
-            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center gap-3">
+            {/* Sello de Garantía */}
+            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center gap-3 w-full">
               <ShieldCheck className="w-8 h-8 text-[#C87A32] shrink-0" />
               <div className="text-xs">
                 <p className="font-bold text-white">Atención Profesional & Confidencial</p>
@@ -97,8 +99,8 @@ export const ContactFooter: React.FC = () => {
 
           </div>
 
-          {/* Quotation Form Column (Columna Derecha - 7 cols) */}
-          <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+          {/* Columna Derecha: Formulario (7 Columnas) */}
+          <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl w-full">
             <div className="space-y-2 mb-6">
               <h3 className="text-2xl font-bold text-white">Formulario de Cotización Rápida</h3>
               <p className="text-xs text-slate-400">Envía tus datos para recibir asesoría inmobiliaria o corporativa instantánea.</p>
