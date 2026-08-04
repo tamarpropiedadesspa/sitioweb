@@ -1,0 +1,6 @@
+{
+  "name": "Tamar Propiedades SpA",
+  "description": "Bienes Raíces e Ingeniería Sostenible para familias y empresas en todo Chile.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

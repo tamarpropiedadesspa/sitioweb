@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+:root {
+  --tamar-navy: #0B1E36;
+  --tamar-navy-light: #142C4D;
+  --tamar-navy-dark: #061120;
+  --tamar-copper: #C87A32;
+  --tamar-copper-hover: #A85D23;
+  --tamar-copper-light: #E0964D;
+}
+
+.bg-tamar-navy {
+  background-color: var(--tamar-navy);
+}
+
+.bg-tamar-navy-light {
+  background-color: var(--tamar-navy-light);
+}
+
+.bg-tamar-navy-dark {
+  background-color: var(--tamar-navy-dark);
+}
+
+.bg-tamar-copper {
+  background-color: var(--tamar-copper);
+}
+
+.hover\:bg-tamar-copper-hover:hover {
+  background-color: var(--tamar-copper-hover);
+}
+
+.text-tamar-copper {
+  color: var(--tamar-copper);
+}
+
+.border-tamar-copper {
+  border-color: var(--tamar-copper);
+}
+
+.glow-copper {
+  box-shadow: 0 0 25px rgba(200, 122, 50, 0.25);
+}
+
+/* Smooth Scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
