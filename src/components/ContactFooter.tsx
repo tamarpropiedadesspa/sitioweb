@@ -217,8 +217,7 @@ export const ContactFooter: React.FC = () => {
             <span className="font-semibold text-slate-300">Tamar Propiedades SpA</span>
             <span className="text-[#C87A32] font-bold">• Bienes Raíces & Ingeniería Sostenible</span>
           </div>
-        </div>
-
+        
       </div>
     </footer>
   );
