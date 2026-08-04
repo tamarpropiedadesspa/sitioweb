@@ -35,7 +35,7 @@ export const ContactFooter: React.FC = () => {
             <div className="space-y-4">
               <div className="bg-white p-3 rounded-2xl border border-slate-700/50 shadow-md inline-block max-w-xs">
                 <img
-                  src="/logo-completo.jpeg"
+                  src="/logo-footer.png"
                   alt="Tamar Propiedades SpA - Logo Completo"
                   className="h-20 w-auto object-contain rounded-lg"
                   referrerPolicy="no-referrer"
