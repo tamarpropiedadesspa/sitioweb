@@ -151,20 +151,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
             ))}
           </nav>
 
-          {/* WhatsApp Direct CTA Button */}
-          <div className="hidden lg:flex items-center gap-3">
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider bg-[#C87A32] hover:bg-[#A85D23] text-white shadow-md shadow-[#C87A32]/20 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
-            >
-              <Phone className="w-4 h-4 fill-white/20" />
-              <span>WhatsApp: {PHONE_DISPLAY}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </a>
-          </div>
-
           {/* Mobile Menu Button */}
           <div className="xl:hidden flex items-center gap-2">
             <a
