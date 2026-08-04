@@ -35,21 +35,15 @@ export const Hero: React.FC<HeroProps> = ({
           
           {/* Main Hero Copy Column */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            
-            {/* Tag Badges */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-[#C87A32]/40 text-[#C87A32] text-xs font-bold uppercase tracking-wider shadow-sm">
-              <Sparkles className="w-3.5 h-3.5 text-[#C87A32]" />
-              <span>Bienes Raíces & Ingeniería Sostenible en Chile</span>
-            </div>
-
+                      
             {/* Main H1 Headline */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[#0B1E36] leading-tight font-sans">
-              Soluciones inmobiliarias y corporativas: <span className="text-[#C87A32]">desde el hogar para tu familia hasta el soporte industrial para empresas</span> en todo Chile.
+              Soluciones inmobiliarias y corporativas: <span className="text-[#C87A32]">Desde el hogar para tu familia hasta el soporte industrial para empresas</span> en todo Chile.
             </h1>
 
             {/* Subtitle */}
             <p className="text-lg sm:text-xl text-slate-600 font-normal max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              Presencia y experiencia comprobada de Iquique a Concepción.
+              Presencia y experiencia de Iquique a Concepción.
             </p>
 
             {/* Dual CTA Buttons */}
