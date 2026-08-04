@@ -203,7 +203,7 @@ export const ContactFooter: React.FC = () => {
                   className="w-full py-3 bg-[#C87A32] hover:bg-[#A85D23] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg transition-colors text-sm uppercase tracking-wider"
                 >
                   <Send className="w-4 h-4" />
-                  <span>Cotizar Vía WhatsApp (+56974747910)</span>
+                  <span>Cotizar</span>
                 </button>
               </form>
             )}
