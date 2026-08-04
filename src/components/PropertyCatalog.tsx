@@ -164,7 +164,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
         };
       });
 
-      setProperties(mapped);
+      setProperties(mapped.slice(0, 15));
     } catch (err: any) {
       console.error('Error fetching Google Sheets API:', err);
       setApiError('No se pudo establecer conexión en vivo con la base de datos de propiedades.');
