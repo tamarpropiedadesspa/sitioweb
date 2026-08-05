@@ -6,10 +6,9 @@ import { PropertyCatalog } from './components/PropertyCatalog';
 import { CorporateServices } from './components/CorporateServices';
 import { RegionalCoverage } from './components/RegionalCoverage';
 import { ClientShowcase } from './components/ClientShowcase';
-import { MortgageCalculator } from './components/MortgageCalculator';
 import { ContactFooter } from './components/ContactFooter';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
-import { Home, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('inicio');
@@ -49,10 +48,8 @@ export default function App() {
         return <RegionalCoverage />;
       case 'clientes':
         return <ClientShowcase />;
-      case 'calculadora':
-        return <MortgageCalculator />;
       case 'contacto':
-        return null; // ContactFooter will be rendered below automatically
+        return null; // ContactFooter se renderiza automáticamente abajo
       case 'inicio':
       default:
         return (
@@ -73,7 +70,6 @@ export default function App() {
             <CorporateServices />
             <RegionalCoverage />
             <ClientShowcase />
-            <MortgageCalculator />
           </>
         );
     }
@@ -84,14 +80,14 @@ export default function App() {
       {/* Sticky Top Navbar */}
       <Navbar onNavigate={handleNavigate} activeSection={activeSection} />
 
-      {/* Main Content Area */}
+      {/* Ámbito Principal */}
       <main className="flex-1">
         {activeSection !== 'inicio' && (
           <div className="bg-slate-900 border-b border-slate-800 text-white py-2.5 px-4 sm:px-8 shadow-inner">
             <div className="max-w-7xl mx-auto flex items-center justify-end">
               <button
                 onClick={() => handleNavigate('inicio')}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[#C87A32] font-bold border border-slate-700 transition-all text-xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[#C87A32] font-bold border border-slate-700 transition-all text-xs cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Volver a Inicio (Ver Todo)</span>
@@ -102,11 +98,11 @@ export default function App() {
 
         {renderActiveView()}
 
-        {/* Contact Footer is included in all views */}
+        {/* Footer de contacto incluido en todas las vistas */}
         <ContactFooter />
       </main>
 
-      {/* Floating Action WhatsApp */}
+      {/* Botón flotante de WhatsApp */}
       <FloatingWhatsApp />
     </div>
   );
