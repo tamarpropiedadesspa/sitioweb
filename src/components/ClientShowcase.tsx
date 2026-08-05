@@ -1,89 +1,148 @@
-import React from 'react';
-import { CLIENT_BRANDS } from '../data/mockData';
-import { Building, ShieldCheck, Award, Sparkles, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Award, ChevronLeft, ChevronRight } from 'lucide-react';
+
+interface ClientLogo {
+  id: string;
+  name: string;
+  logo: string;
+  url: string;
+}
+
+const CLIENT_LOGOS: ClientLogo[] = [
+  { id: '1', name: 'Elecnor Chile', logo: '/logos/elecnor.png', url: 'https://www.elecnor.cl/' },
+  { id: '2', name: 'Grupo TELCOH', logo: '/logos/telcoh.png', url: 'https://grupotelcoh.cl/' },
+  { id: '3', name: 'Aramark', logo: '/logos/aramark.png', url: 'https://www.aramark.cl/home' },
+  { id: '4', name: 'Piloansa', logo: '/logos/piloansa.png', url: 'https://piloansa.com/' },
+  { id: '5', name: 'DataLux', logo: '/logos/datalux.png', url: 'https://datalux.cl/' },
+  { id: '6', name: 'Cainsa SyM', logo: '/logos/cainsa.png', url: 'https://www.cainsasym.cl/' },
+  { id: '7', name: 'Grupo GESCO', logo: '/logos/gesco.png', url: 'https://grupogesco.cl/' },
+  { id: '8', name: 'Amarillas Emol', logo: '/logos/amarillas.png', url: 'https://amarillas.emol.com/home' },
+  { id: '9', name: 'DHV Chile', logo: '/logos/dhv.png', url: 'https://dhvchile.cl/' },
+  { id: '10', name: 'Wircom', logo: '/logos/wircom.png', url: 'https://www.wircom.cl/' },
+];
 
 export const ClientShowcase: React.FC = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+
+  // Adaptar cantidad de logos según el tamaño de pantalla
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setItemsPerPage(2);
+      } else if (window.innerWidth < 1024) {
+        setItemsPerPage(3);
+      } else {
+        setItemsPerPage(5);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const totalPages = Math.ceil(CLIENT_LOGOS.length / itemsPerPage);
+
+  // Autoplay cada 3.5 segundos
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % totalPages);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, [totalPages]);
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + totalPages) % totalPages);
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % totalPages);
+  };
+
+  const visibleLogos = CLIENT_LOGOS.slice(
+    currentIndex * itemsPerPage,
+    currentIndex * itemsPerPage + itemsPerPage
+  );
+
+  // Rellenar logos si la última página tiene menos items
+  if (visibleLogos.length < itemsPerPage) {
+    visibleLogos.push(...CLIENT_LOGOS.slice(0, itemsPerPage - visibleLogos.length));
+  }
+
   return (
-    <section id="clientes" className="py-20 bg-white text-slate-800 relative border-b border-slate-200">
+    <section id="clientes" className="py-16 bg-[#F0F7FF] text-slate-800 relative border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
+        {/* Encabezado */}
+        <div className="text-center max-w-3xl mx-auto space-y-3 mb-10">
           <span className="px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-[#C87A32]/10 text-[#C87A32] border border-[#C87A32]/30 inline-flex items-center gap-1.5">
             <Award className="w-3.5 h-3.5" />
             <span>Respaldo Institucional</span>
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1E36] font-sans">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1E36]">
             Empresas que confían en nuestra gestión
           </h2>
-          <p className="text-slate-600 text-base sm:text-lg">
-            Hemos entregado soporte habitacional, territorial e industrial a compañías líderes en minería, infraestructura, energía y servicios.
-          </p>
+          <div className="w-16 h-1 bg-[#0B1E36] mx-auto rounded-full mt-3"></div>
         </div>
 
-        {/* Clients Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {CLIENT_BRANDS.map((client) => (
-            <div
-              key={client.id}
-              className="bg-white border border-slate-200 rounded-2xl p-6 flex flex-col justify-between hover:border-[#C87A32]/60 transition-all shadow-md hover:shadow-xl group"
-            >
-              <div className="space-y-4">
-                
-                {/* Logo Badge */}
-                <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 rounded-lg bg-[#0B1E36] border border-[#C87A32]/30 flex items-center justify-center text-white font-black text-xs font-mono tracking-tighter">
-                      {client.logoText.slice(0, 3)}
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-extrabold text-[#0B1E36] group-hover:text-[#C87A32] transition-colors">
-                        {client.name}
-                      </h3>
-                      <span className="text-[11px] font-semibold text-slate-500 block">
-                        {client.category}
-                      </span>
-                    </div>
-                  </div>
+        {/* Carrusel */}
+        <div className="relative px-8 sm:px-12">
+          
+          {/* Flecha Izquierda */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 text-slate-400 hover:text-[#0B1E36] transition-colors"
+            aria-label="Anterior"
+          >
+            <ChevronLeft className="w-8 h-8" />
+          </button>
 
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-                </div>
-
-                {/* Scope */}
-                <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                  {client.projectScope}
-                </p>
-
-              </div>
-
-              {/* Footer Region */}
-              <div className="pt-4 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500 font-medium">
-                <span>Operaciones:</span>
-                <span className="font-bold text-[#C87A32] bg-[#C87A32]/10 px-2 py-0.5 rounded border border-[#C87A32]/20">
-                  {client.region}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Corporate Trust Highlights */}
-        <div className="mt-14 bg-gradient-to-r from-[#0B1E36] to-[#142C4D] border border-[#C87A32]/30 rounded-2xl p-8 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center shadow-xl">
-          <div className="space-y-1">
-            <span className="text-3xl font-extrabold text-[#C87A32] font-sans">+100%</span>
-            <p className="text-xs font-extrabold text-white uppercase tracking-wider">Cumplimiento Operativo</p>
-            <p className="text-xs text-slate-300">En contratos habitacionales y habitabilidad</p>
+          {/* Rejilla de Logos */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 items-center justify-items-center min-h-[110px]">
+            {visibleLogos.map((client, idx) => (
+              <a
+                key={`${client.id}-${idx}`}
+                href={client.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center p-3 transition-all duration-300 transform hover:scale-110 group"
+                title={client.name}
+              >
+                <img
+                  src={client.logo}
+                  alt={client.name}
+                  className="max-h-16 max-w-[140px] w-auto object-contain filter grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                />
+              </a>
+            ))}
           </div>
-          <div className="space-y-1 border-y sm:border-y-0 sm:border-x border-slate-700 py-4 sm:py-0">
-            <span className="text-3xl font-extrabold text-white font-sans">9+</span>
-            <p className="text-xs font-extrabold text-white uppercase tracking-wider">Regiones de Cobertura</p>
-            <p className="text-xs text-slate-300">Atención presencial y coordinada</p>
+
+          {/* Flecha Derecha */}
+          <button
+            onClick={nextSlide}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 text-slate-400 hover:text-[#0B1E36] transition-colors"
+            aria-label="Siguiente"
+          >
+            <ChevronRight className="w-8 h-8" />
+          </button>
+
+          {/* Puntos de Navegación */}
+          <div className="flex justify-center items-center gap-2 mt-8">
+            {Array.from({ length: totalPages }).map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentIndex(idx)}
+                className={`h-2.5 rounded-full transition-all duration-300 ${
+                  currentIndex === idx
+                    ? 'bg-[#0B1E36] w-6'
+                    : 'bg-slate-300 hover:bg-slate-400 w-2.5'
+                }`}
+                aria-label={`Ir a diapositiva ${idx + 1}`}
+              />
+            ))}
           </div>
-          <div className="space-y-1">
-            <span className="text-3xl font-extrabold text-[#C87A32] font-sans">24/7</span>
-            <p className="text-xs font-extrabold text-white uppercase tracking-wider">Respuesta a Faenas</p>
-            <p className="text-xs text-slate-300">Contacto directo vía WhatsApp corporativo</p>
-          </div>
+
         </div>
 
       </div>
