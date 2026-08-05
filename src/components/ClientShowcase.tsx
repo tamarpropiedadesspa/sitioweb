@@ -86,33 +86,33 @@ export const ClientShowcase: React.FC = () => {
           <div className="w-16 h-1 bg-[#0B1E36] mx-auto rounded-full mt-3"></div>
         </div>
 
-        {/* Carrusel */}
-        <div className="relative px-8 sm:px-12">
+        {/* Carrusel - Ancho máximo reducido a max-w-5xl para acortar distancia entre logos */}
+        <div className="relative max-w-5xl mx-auto px-10 sm:px-14">
           
           {/* Flecha Izquierda */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 text-slate-400 hover:text-[#0B1E36] transition-colors cursor-pointer"
+            className="absolute -left-2 sm:left-0 top-1/2 -translate-y-1/2 z-10 p-2 text-slate-400 hover:text-[#0B1E36] transition-colors cursor-pointer"
             aria-label="Anterior"
           >
             <ChevronLeft className="w-8 h-8" />
           </button>
 
           {/* Rejilla de Logos */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 items-center justify-items-center min-h-[120px]">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 items-center justify-items-center min-h-[130px]">
             {visibleLogos.map((client, idx) => (
               <a
                 key={`${client.id}-${idx}`}
                 href={client.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full flex items-center justify-center p-3 transition-all duration-300 transform hover:scale-110 group cursor-pointer"
+                className="w-full flex items-center justify-center p-2 transition-all duration-300 transform hover:scale-105 group cursor-pointer"
                 title={client.name}
               >
                 <img
                   src={client.logo}
                   alt={client.name}
-                  className="h-20 w-20 sm:h-24 sm:w-24 object-contain filter grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 drop-shadow-sm"
+                  className="h-16 sm:h-20 lg:h-24 w-auto max-w-[170px] object-contain filter grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 drop-shadow-sm"
                 />
               </a>
             ))}
@@ -121,7 +121,7 @@ export const ClientShowcase: React.FC = () => {
           {/* Flecha Derecha */}
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 text-slate-400 hover:text-[#0B1E36] transition-colors cursor-pointer"
+            className="absolute -right-2 sm:right-0 top-1/2 -translate-y-1/2 z-10 p-2 text-slate-400 hover:text-[#0B1E36] transition-colors cursor-pointer"
             aria-label="Siguiente"
           >
             <ChevronRight className="w-8 h-8" />
