@@ -26,7 +26,7 @@ interface PropertyCatalogProps {
 }
 
 const GOOGLE_SHEETS_API_URL =
-  'https://script.google.com/macros/s/AKfycbwmI_sUsJzoDxpIcGkaP5EOwlX0sZ3SNEYs4MMDMJ8soRODfPIh6LyYr0VuMTKB-RvY/exec';
+  'https://script.google.com/macros/s/AKfycbySaFOp9uBU4pUFjS8697tXYnDCC7BittaPN5GR-MzyyYybPhhAQOx9qsbXJ-A_7GGrZA/exec';
 
 export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
   initialTypeFilter = 'todas',
