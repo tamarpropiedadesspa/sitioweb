@@ -1,18 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { REGIONAL_COVERAGE } from '../data/mockData';
 import { MapPin, Globe, CheckCircle } from 'lucide-react';
 
 export const RegionalCoverage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'all' | 'norte' | 'centro' | 'sur' | 'internacional'>('all');
-
-  const filteredRegions = REGIONAL_COVERAGE.filter((reg) => {
-    if (activeTab === 'norte') return reg.name.includes('Tarapacá') || reg.name.includes('Antofagasta');
-    if (activeTab === 'centro') return reg.name.includes('Coquimbo') || reg.name.includes('Valparaíso');
-    if (activeTab === 'sur') return reg.name.includes('Bío Bío');
-    if (activeTab === 'internacional') return reg.country !== 'Chile';
-    return true;
-  });
-
   return (
     <section id="cobertura" className="py-20 bg-white text-slate-800 relative border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -30,63 +20,9 @@ export const RegionalCoverage: React.FC = () => {
           </p>
         </div>
 
-        {/* Filtros por Zona */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
-          <button
-            onClick={() => setActiveTab('all')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border cursor-pointer ${
-              activeTab === 'all'
-                ? 'bg-[#C87A32] text-white border-[#C87A32]'
-                : 'bg-slate-100 text-slate-600 border-slate-200 hover:text-[#0B1E36]'
-            }`}
-          >
-            Todas las Zonas
-          </button>
-          <button
-            onClick={() => setActiveTab('norte')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border cursor-pointer ${
-              activeTab === 'norte'
-                ? 'bg-[#C87A32] text-white border-[#C87A32]'
-                : 'bg-slate-100 text-slate-600 border-slate-200 hover:text-[#0B1E36]'
-            }`}
-          >
-            Zona Norte
-          </button>
-          <button
-            onClick={() => setActiveTab('centro')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border cursor-pointer ${
-              activeTab === 'centro'
-                ? 'bg-[#C87A32] text-white border-[#C87A32]'
-                : 'bg-slate-100 text-slate-600 border-slate-200 hover:text-[#0B1E36]'
-            }`}
-          >
-            Zona Centro
-          </button>
-          <button
-            onClick={() => setActiveTab('sur')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border cursor-pointer ${
-              activeTab === 'sur'
-                ? 'bg-[#C87A32] text-white border-[#C87A32]'
-                : 'bg-slate-100 text-slate-600 border-slate-200 hover:text-[#0B1E36]'
-            }`}
-          >
-            Zona Sur
-          </button>
-          <button
-            onClick={() => setActiveTab('internacional')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border cursor-pointer ${
-              activeTab === 'internacional'
-                ? 'bg-[#C87A32] text-white border-[#C87A32]'
-                : 'bg-slate-100 text-slate-600 border-slate-200 hover:text-[#0B1E36]'
-            }`}
-          >
-            Internacional
-          </button>
-        </div>
-
-        {/* Rejilla de Regiones */}
+        {/* Rejilla de Regiones sin botones de filtro */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredRegions.map((region) => (
+          {REGIONAL_COVERAGE.map((region) => (
             <div
               key={region.name}
               className={`bg-white border rounded-2xl p-6 flex flex-col justify-between transition-all hover:border-[#C87A32]/70 shadow-md ${
