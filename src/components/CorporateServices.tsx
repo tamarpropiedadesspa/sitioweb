@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CORPORATE_SERVICES, PHONE_WHATSAPP } from '../data/mockData';
 import { CorporateService } from '../types';
-import { Building2, Utensils, Truck, Compass, CheckCircle2, ArrowRight, ShieldCheck, Phone, X, Send } from 'lucide-react';
+import { Building2, Utensils, Truck, Compass, ArrowRight, ShieldCheck, CheckCircle2, X, Send } from 'lucide-react';
 
 export const CorporateServices: React.FC = () => {
   const [selectedService, setSelectedService] = useState<CorporateService | null>(null);
@@ -15,6 +15,11 @@ export const CorporateServices: React.FC = () => {
     mensaje: ''
   });
   const [submitted, setSubmitted] = useState(false);
+
+  // Filtrar para mostrar únicamente las 3 tarjetas restantes
+  const displayedServices = CORPORATE_SERVICES.filter(
+    (s) => !s.title.toLowerCase().includes('maquinaria')
+  );
 
   const getServiceIcon = (iconName: string) => {
     switch (iconName) {
@@ -38,7 +43,6 @@ export const CorporateServices: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    // Send to WhatsApp directly as well
     const text = `Cotización Corporativa Tamar Propiedades SpA:\n- Empresa: ${formData.empresa}\n- Contacto: ${formData.contacto}\n- Teléfono: ${formData.telefono}\n- Servicio: ${formData.servicio}\n- Zona: ${formData.region}\n- Mensaje: ${formData.mensaje}`;
     const waUrl = `https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(text)}`;
     setTimeout(() => {
@@ -50,29 +54,29 @@ export const CorporateServices: React.FC = () => {
     <section id="servicios" className="py-20 bg-white text-slate-800 relative border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header */}
+        {/* Encabezado de la sección */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <span className="px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-[#C87A32]/10 text-[#C87A32] border border-[#C87A32]/30">
             Ingeniería & Soporte Operativo
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1E36] font-sans">
-            Servicios Especializados para Empresas
+            Empresas
           </h2>
           <p className="text-slate-600 text-base sm:text-lg">
             Soluciones continuas y adaptadas para compañías de minería, energía, construcción e infraestructura en todo el territorio chileno.
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {CORPORATE_SERVICES.map((service) => (
+        {/* Rejilla de 3 tarjetas */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          {displayedServices.map((service) => (
             <div
               key={service.id}
               className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-[#C87A32] transition-all shadow-md hover:shadow-xl relative group"
             >
               <div className="space-y-5">
                 
-                {/* Header Icon + Title */}
+                {/* Ícono y Badge */}
                 <div className="flex items-start justify-between">
                   <div className="w-14 h-14 rounded-xl bg-[#C87A32] flex items-center justify-center text-white shadow-md shadow-[#C87A32]/20">
                     {getServiceIcon(service.iconName)}
@@ -83,7 +87,7 @@ export const CorporateServices: React.FC = () => {
                 </div>
 
                 <div>
-                  <h3 className="text-2xl font-extrabold text-[#0B1E36] mb-2">
+                  <h3 className="text-xl font-extrabold text-[#0B1E36] mb-2 leading-snug font-sans">
                     {service.title}
                   </h3>
                   <p className="text-slate-600 text-sm leading-relaxed">
@@ -95,20 +99,7 @@ export const CorporateServices: React.FC = () => {
                   {service.fullDesc}
                 </p>
 
-                {/* Features list */}
-                <div className="space-y-2 pt-2">
-                  <span className="text-xs font-bold uppercase text-slate-500 tracking-wider">Beneficios Clave:</span>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
-                    {service.features.map((feat, i) => (
-                      <div key={i} className="flex items-center gap-2 font-medium">
-                        <CheckCircle2 className="w-4 h-4 text-[#C87A32] shrink-0" />
-                        <span>{feat}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Target Audience */}
+                {/* Audiencia objetivo */}
                 <div className="pt-3 border-t border-slate-200 text-xs">
                   <span className="text-slate-500">Diseñado para: </span>
                   <span className="text-[#0B1E36] font-bold">{service.idealFor}</span>
@@ -116,13 +107,13 @@ export const CorporateServices: React.FC = () => {
 
               </div>
 
-              {/* Action */}
+              {/* Botón de Acción */}
               <div className="pt-6">
                 <button
                   onClick={() => handleOpenModal(service)}
-                  className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-wider bg-[#0B1E36] hover:bg-[#C87A32] text-white border border-[#0B1E36] hover:border-[#C87A32] transition-all shadow"
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wider bg-[#0B1E36] hover:bg-[#C87A32] text-white border border-[#0B1E36] hover:border-[#C87A32] transition-all shadow cursor-pointer"
                 >
-                  <span>Solicitar Propuesta para {service.title}</span>
+                  <span>Solicitar Propuesta</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -133,7 +124,7 @@ export const CorporateServices: React.FC = () => {
 
       </div>
 
-      {/* Corporate Quote Modal */}
+      {/* Modal de Cotización Corporativa */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
           <div className="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 space-y-6 relative shadow-2xl my-8">
@@ -214,7 +205,6 @@ export const CorporateServices: React.FC = () => {
                   >
                     <option value="Hospedaje por Proyectos & Turnos">Hospedaje por Proyectos & Turnos</option>
                     <option value="Catering Industrial & Alimentación">Catering Industrial & Alimentación</option>
-                    <option value="Arriendo de Maquinaria & Equipos">Arriendo de Maquinaria & Equipos</option>
                     <option value="Terrenos Mineros & Energéticos">Terrenos Mineros & Energéticos</option>
                     <option value="Paquete Logístico Integral">Paquete Logístico Integral</option>
                   </select>
@@ -244,7 +234,7 @@ export const CorporateServices: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-3 bg-[#C87A32] hover:bg-[#A85D23] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg transition-colors text-sm uppercase"
+                  className="w-full py-3 bg-[#C87A32] hover:bg-[#A85D23] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg transition-colors text-sm uppercase cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
                   <span>Enviar Cotización por WhatsApp</span>
