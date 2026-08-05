@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Property, PropertyType } from '../types';
-import { MOCK_PROPERTIES, PHONE_WHATSAPP } from '../data/mockData';
+import { PHONE_WHATSAPP } from '../data/mockData';
 import {
   MapPin,
   Bed,
@@ -157,6 +157,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
           image,
           gallery: gallery.length > 0 ? gallery : [image],
           videoUrl: item.video_url || item.video || undefined,
+          mapUrl: item.ubicacion_maps || item.mapa || item.coordenadas || undefined, // 👈 NUEVO: Lee la columna de Google Maps
           featured: Boolean(item.destacado || item.featured),
           description: item.descripcion || item.description || 'Sin descripción disponible.',
           features: features.length > 0 ? features : ['Inspección previa en terreno', 'Asesoría legal incluida'],
@@ -231,6 +232,13 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     return url;
   };
 
+  // 👈 NUEVO: Helper para formatear links de Google Maps o coordenadas a un link clickeable
+  const getMapLink = (urlOrCoords?: string) => {
+    if (!urlOrCoords) return null;
+    const isLink = urlOrCoords.startsWith('http');
+    return isLink ? urlOrCoords : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(urlOrCoords)}`;
+  };
+
   return (
     <section id="propiedades" className="py-20 bg-white text-slate-800 relative border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -250,7 +258,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
             <button
               onClick={() => fetchCatalogData(true)}
               disabled={isRefreshing || isLoading}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#0B1E36] font-bold text-xs border border-slate-300 shadow-sm transition-all disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#0B1E36] font-bold text-xs border border-slate-300 shadow-sm transition-all disabled:opacity-50 cursor-pointer"
             >
               <RefreshCw className={`w-4 h-4 text-[#C87A32] ${isRefreshing ? 'animate-spin' : ''}`} />
               <span>{isRefreshing ? 'Sincronizando...' : 'Recargar catálogo'}</span>
@@ -267,7 +275,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
             </div>
             <button
               onClick={() => fetchCatalogData(true)}
-              className="shrink-0 px-3 py-1.5 bg-[#C87A32] text-white rounded-lg font-bold hover:bg-[#A85D23] transition-colors"
+              className="shrink-0 px-3 py-1.5 bg-[#C87A32] text-white rounded-lg font-bold hover:bg-[#A85D23] transition-colors cursor-pointer"
             >
               Reintentar
             </button>
@@ -295,7 +303,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="w-full bg-white border border-slate-300 text-slate-800 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#C87A32]"
+                className="w-full bg-white border border-slate-300 text-slate-800 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#C87A32] cursor-pointer"
               >
                 <option value="todas">Tipo: Todos</option>
                 <option value="residencial">Casas Residenciales</option>
@@ -310,7 +318,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               <select
                 value={selectedOperation}
                 onChange={(e) => setSelectedOperation(e.target.value)}
-                className="w-full bg-white border border-slate-300 text-slate-800 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#C87A32]"
+                className="w-full bg-white border border-slate-300 text-slate-800 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#C87A32] cursor-pointer"
               >
                 <option value="todas">Operación: Todas</option>
                 <option value="venta">En Venta</option>
@@ -323,7 +331,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               <select
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full bg-white border border-slate-300 text-slate-800 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#C87A32]"
+                className="w-full bg-white border border-slate-300 text-slate-800 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#C87A32] cursor-pointer"
               >
                 <option value="todas">Zona: Todo Chile</option>
                 <option value="Iquique">Iquique / Pozo Almonte</option>
@@ -350,7 +358,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 setSelectedCity('todas');
                 searchQuery('');
               }}
-              className="px-3 py-1 rounded bg-white hover:bg-slate-200 text-slate-700 border border-slate-300 transition-colors font-medium"
+              className="px-3 py-1 rounded bg-white hover:bg-slate-200 text-slate-700 border border-slate-300 transition-colors font-medium cursor-pointer"
             >
               Restablecer Filtros
             </button>
@@ -390,7 +398,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               <button
                 onClick={() => fetchCatalogData(true)}
                 disabled={isRefreshing}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#0B1E36] hover:bg-slate-800 text-white font-bold text-sm shadow transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#0B1E36] hover:bg-slate-800 text-white font-bold text-sm shadow transition-all cursor-pointer"
               >
                 <RefreshCw className={`w-4 h-4 text-[#C87A32] ${isRefreshing ? 'animate-spin' : ''}`} />
                 <span>Recargar catálogo</span>
@@ -400,7 +408,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 href={`https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent('Hola Tamar Propiedades SpA, quisiera solicitar información sobre inmuebles no publicados en catálogo.')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#C87A32] hover:bg-[#A85D23] text-white font-bold text-sm shadow transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#C87A32] hover:bg-[#A85D23] text-white font-bold text-sm shadow transition-all cursor-pointer"
               >
                 <Phone className="w-4 h-4" />
                 <span>Consultar por WhatsApp</span>
@@ -425,7 +433,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 setSelectedCity('todas');
                 searchQuery('');
               }}
-              className="mt-4 px-4 py-2 bg-[#C87A32] text-white text-xs font-bold rounded-lg uppercase shadow"
+              className="mt-4 px-4 py-2 bg-[#C87A32] text-white text-xs font-bold rounded-lg uppercase shadow cursor-pointer"
             >
               Ver Todas las Propiedades
             </button>
@@ -449,7 +457,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
 
-                    {/* Badges: operacion (Cobre #C87A32) & categoria (Azul #0B1E36) */}
+                    {/* Badges */}
                     <div className="absolute top-3 left-3 flex flex-wrap gap-2">
                       <span className="px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider text-white shadow-md bg-[#C87A32]">
                         En {property.operation}
@@ -474,7 +482,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
                       <button
                         onClick={() => openPropertyModal(property)}
-                        className="p-2.5 rounded-xl bg-white/90 hover:bg-[#C87A32] text-slate-800 hover:text-white border border-slate-200 transition-colors shadow-md"
+                        className="p-2.5 rounded-xl bg-white/90 hover:bg-[#C87A32] text-slate-800 hover:text-white border border-slate-200 transition-colors shadow-md cursor-pointer"
                         title="Ver Ficha Técnica"
                       >
                         <Eye className="w-4 h-4" />
@@ -526,7 +534,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 <div className="p-5 pt-0 space-y-2">
                   <button
                     onClick={() => openPropertyModal(property)}
-                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider bg-[#0B1E36] hover:bg-slate-800 text-white shadow transition-all"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider bg-[#0B1E36] hover:bg-slate-800 text-white shadow transition-all cursor-pointer"
                   >
                     <Eye className="w-4 h-4 text-[#C87A32]" />
                     <span>Ver Ficha Técnica</span>
@@ -536,7 +544,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     href={generateWhatsAppLink(property)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-[#C87A32] hover:bg-[#A85D23] text-white shadow transition-all"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-[#C87A32] hover:bg-[#A85D23] text-white shadow transition-all cursor-pointer"
                   >
                     <Phone className="w-4 h-4" />
                     <span>Cotizar por WhatsApp</span>
@@ -556,7 +564,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
             
             <button
               onClick={() => setActiveProperty(null)}
-              className="absolute top-4 right-4 z-10 p-2 rounded-lg bg-white/90 hover:bg-slate-200 text-slate-700 hover:text-slate-900 transition-colors shadow"
+              className="absolute top-4 right-4 z-10 p-2 rounded-lg bg-white/90 hover:bg-slate-200 text-slate-700 hover:text-slate-900 transition-colors shadow cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -580,7 +588,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                   </span>
                 </div>
 
-                {/* Navigation Arrows if gallery has > 1 image */}
+                {/* Navigation Arrows */}
                 {activeProperty.gallery && activeProperty.gallery.length > 1 && (
                   <>
                     <button
@@ -589,7 +597,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                           prev === 0 ? activeProperty.gallery!.length - 1 : prev - 1
                         )
                       }
-                      className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-sm transition-all"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-sm transition-all cursor-pointer"
                     >
                       <ChevronLeft className="w-5 h-5" />
                     </button>
@@ -599,7 +607,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                           prev === activeProperty.gallery!.length - 1 ? 0 : prev + 1
                         )
                       }
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-sm transition-all"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-sm transition-all cursor-pointer"
                     >
                       <ChevronRight className="w-5 h-5" />
                     </button>
@@ -617,7 +625,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     <button
                       key={idx}
                       onClick={() => setActivePhotoIndex(idx)}
-                      className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${
+                      className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
                         activePhotoIndex === idx
                           ? 'border-[#C87A32] scale-105 shadow-md'
                           : 'border-slate-200 opacity-60 hover:opacity-100'
@@ -653,6 +661,27 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 )}
               </div>
             )}
+
+            {/* 👈 NUEVA SECCIÓN DE MAPA 👉 */}
+            {activeProperty.mapUrl && (
+              <div className="space-y-2 pt-2 border-t border-slate-200">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#0B1E36] flex items-center gap-1.5">
+                  <MapPin className="w-4 h-4 text-[#C87A32]" />
+                  Ubicación Exacta:
+                </h4>
+                
+                <a
+                  href={getMapLink(activeProperty.mapUrl) || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-xs bg-amber-50 text-[#C87A32] border border-[#C87A32]/30 hover:bg-[#C87A32] hover:text-white shadow-sm transition-all cursor-pointer"
+                >
+                  <MapPin className="w-4 h-4" />
+                  <span>Ver ubicación en Google Maps 📍</span>
+                </a>
+              </div>
+            )}
+            {/* 👈 FIN SECCIÓN DE MAPA 👉 */}
 
             {/* Content Specifications */}
             <div className="space-y-4">
@@ -699,20 +728,20 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 </div>
               </div>
 
-              {/* Action buttons */}
+              {/* 👈 Action buttons ACTUALIZADOS (Botón limpio sin ID) 👉 */}
               <div className="pt-4 flex flex-col sm:flex-row gap-3">
                 <a
                   href={generateWhatsAppLink(activeProperty)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-extrabold text-sm bg-[#C87A32] hover:bg-[#A85D23] text-white shadow-lg transition-colors"
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-extrabold text-sm bg-[#C87A32] hover:bg-[#A85D23] text-white shadow-lg transition-colors cursor-pointer"
                 >
                   <Phone className="w-4 h-4" />
-                  <span>Cotizar Propiedad ID #{activeProperty.id} por WhatsApp</span>
+                  <span>Cotizar Propiedad por WhatsApp</span>
                 </a>
                 <button
                   onClick={() => setActiveProperty(null)}
-                  className="px-6 py-3.5 rounded-xl font-semibold text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+                  className="px-6 py-3.5 rounded-xl font-semibold text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
                 >
                   Cerrar Ficha
                 </button>
