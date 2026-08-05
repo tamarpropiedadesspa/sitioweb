@@ -25,7 +25,6 @@ export const ClientShowcase: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
-  // Adaptar cantidad de logos según el tamaño de pantalla
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 640) {
@@ -44,7 +43,6 @@ export const ClientShowcase: React.FC = () => {
 
   const totalPages = Math.ceil(CLIENT_LOGOS.length / itemsPerPage);
 
-  // Autoplay cada 3.5 segundos
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % totalPages);
@@ -65,7 +63,6 @@ export const ClientShowcase: React.FC = () => {
     currentIndex * itemsPerPage + itemsPerPage
   );
 
-  // Rellenar logos si la última página tiene menos items
   if (visibleLogos.length < itemsPerPage) {
     visibleLogos.push(...CLIENT_LOGOS.slice(0, itemsPerPage - visibleLogos.length));
   }
@@ -86,8 +83,8 @@ export const ClientShowcase: React.FC = () => {
           <div className="w-16 h-1 bg-[#0B1E36] mx-auto rounded-full mt-3"></div>
         </div>
 
-        {/* Carrusel - Ancho máximo reducido a max-w-5xl para acortar distancia entre logos */}
-        <div className="relative max-w-5xl mx-auto px-10 sm:px-14">
+        {/* Carrusel - Contenedor ampliado a max-w-6xl */}
+        <div className="relative max-w-6xl mx-auto px-10 sm:px-14">
           
           {/* Flecha Izquierda */}
           <button
@@ -99,20 +96,20 @@ export const ClientShowcase: React.FC = () => {
           </button>
 
           {/* Rejilla de Logos */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 items-center justify-items-center min-h-[130px]">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 items-center justify-items-center min-h-[160px]">
             {visibleLogos.map((client, idx) => (
               <a
                 key={`${client.id}-${idx}`}
                 href={client.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full flex items-center justify-center p-2 transition-all duration-300 transform hover:scale-105 group cursor-pointer"
+                className="w-full flex items-center justify-center p-2 transition-all duration-300 transform hover:scale-110 group cursor-pointer"
                 title={client.name}
               >
                 <img
                   src={client.logo}
                   alt={client.name}
-                  className="h-16 sm:h-20 lg:h-24 w-auto max-w-[170px] object-contain filter grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 drop-shadow-sm"
+                  className="h-24 sm:h-28 lg:h-32 w-full max-w-[240px] object-contain filter grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 drop-shadow-sm"
                 />
               </a>
             ))}
