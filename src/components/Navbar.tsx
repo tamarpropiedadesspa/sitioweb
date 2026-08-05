@@ -52,6 +52,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
     };
   }, []);
 
+  // Menú de navegación (Sin calculadora)
   const navItems = [
     { id: 'inicio', label: 'Inicio' },
     { id: 'buscar', label: '¿Qué buscas?' },
@@ -59,7 +60,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
     { id: 'servicios', label: 'Empresas & Servicios' },
     { id: 'cobertura', label: 'Cobertura' },
     { id: 'clientes', label: 'Clientes' },
-    { id: 'calculadora', label: 'Calculadora' },
     { id: 'contacto', label: 'Contacto' },
   ];
 
@@ -110,16 +110,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
         </div>
       </div>
 
-      {/* Main Navbar */}
+      {/* Main Navbar con altura expandida h-24 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-24">
           
-          {/* Marca: Isotipo de Casita + Nombre en Imagen (Sin texto HTML) */}
+          {/* Marca: Isotipo y Texto integrados y más grandes */}
           <div 
             onClick={() => handleNavClick('inicio')}
-            className="flex items-center gap-3 cursor-pointer group"
+            className="flex items-center gap-3.5 cursor-pointer group"
           >
-            <div className="h-12 w-12 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200 overflow-hidden">
+            <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200 overflow-hidden shrink-0">
               <img 
                 src="/logo-icon.png" 
                 alt="Tamar Icono" 
@@ -129,7 +129,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
             <img 
               src="/logo-text.png" 
               alt="Tamar Propiedades SpA" 
-              className="h-9 sm:h-10 w-auto object-contain group-hover:opacity-90 transition-opacity"
+              className="h-11 sm:h-13 lg:h-14 w-auto object-contain group-hover:opacity-90 transition-opacity"
             />
           </div>
 
@@ -156,7 +156,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-lg bg-[#C87A32] hover:bg-[#A85D23] text-white font-medium text-xs flex items-center gap-1"
+              className="p-2.5 rounded-lg bg-[#C87A32] hover:bg-[#A85D23] text-white font-medium text-xs flex items-center gap-1"
             >
               <Phone className="w-4 h-4" />
               <span className="hidden sm:inline">WhatsApp</span>
