@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { REGIONAL_COVERAGE } from '../data/mockData';
-import { RegionInfo } from '../types';
-import { MapPin, Globe, CheckCircle, Navigation, Building, Compass } from 'lucide-react';
+import { MapPin, Globe, CheckCircle } from 'lucide-react';
 
 export const RegionalCoverage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'norte' | 'centro' | 'sur' | 'internacional'>('all');
@@ -18,7 +17,7 @@ export const RegionalCoverage: React.FC = () => {
     <section id="cobertura" className="py-20 bg-white text-slate-800 relative border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
+        {/* Encabezado de la sección */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-12">
           <span className="px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-[#C87A32]/10 text-[#C87A32] border border-[#C87A32]/30">
             Presencia Geográfica Extensa
@@ -31,11 +30,11 @@ export const RegionalCoverage: React.FC = () => {
           </p>
         </div>
 
-        {/* Region Filter Pills */}
+        {/* Filtros por Zona */}
         <div className="flex flex-wrap justify-center gap-2 mb-12">
           <button
             onClick={() => setActiveTab('all')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border cursor-pointer ${
               activeTab === 'all'
                 ? 'bg-[#C87A32] text-white border-[#C87A32]'
                 : 'bg-slate-100 text-slate-600 border-slate-200 hover:text-[#0B1E36]'
@@ -45,7 +44,7 @@ export const RegionalCoverage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('norte')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border cursor-pointer ${
               activeTab === 'norte'
                 ? 'bg-[#C87A32] text-white border-[#C87A32]'
                 : 'bg-slate-100 text-slate-600 border-slate-200 hover:text-[#0B1E36]'
@@ -55,7 +54,7 @@ export const RegionalCoverage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('centro')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border cursor-pointer ${
               activeTab === 'centro'
                 ? 'bg-[#C87A32] text-white border-[#C87A32]'
                 : 'bg-slate-100 text-slate-600 border-slate-200 hover:text-[#0B1E36]'
@@ -65,7 +64,7 @@ export const RegionalCoverage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('sur')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border cursor-pointer ${
               activeTab === 'sur'
                 ? 'bg-[#C87A32] text-white border-[#C87A32]'
                 : 'bg-slate-100 text-slate-600 border-slate-200 hover:text-[#0B1E36]'
@@ -75,7 +74,7 @@ export const RegionalCoverage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('internacional')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border cursor-pointer ${
               activeTab === 'internacional'
                 ? 'bg-[#C87A32] text-white border-[#C87A32]'
                 : 'bg-slate-100 text-slate-600 border-slate-200 hover:text-[#0B1E36]'
@@ -85,11 +84,11 @@ export const RegionalCoverage: React.FC = () => {
           </button>
         </div>
 
-        {/* Regions Grid */}
+        {/* Rejilla de Regiones */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredRegions.map((region, idx) => (
+          {filteredRegions.map((region) => (
             <div
-              key={idx}
+              key={region.name}
               className={`bg-white border rounded-2xl p-6 flex flex-col justify-between transition-all hover:border-[#C87A32]/70 shadow-md ${
                 region.isMainBase ? 'border-[#C87A32]/50 bg-amber-50/20' : 'border-slate-200'
               }`}
@@ -123,7 +122,7 @@ export const RegionalCoverage: React.FC = () => {
                   {region.description}
                 </p>
 
-                {/* Hubs */}
+                {/* Ciudades / Hubs */}
                 <div>
                   <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
                     Ciudades & Hubs Clave:
@@ -137,7 +136,7 @@ export const RegionalCoverage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Services */}
+                {/* Servicios */}
                 <div>
                   <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
                     Servicios en la Zona:
