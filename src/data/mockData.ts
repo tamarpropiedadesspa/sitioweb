@@ -1,4 +1,4 @@
-import { Property, ClientBrand, RegionInfo, CorporateService } from '../types';
+import { Property, RegionInfo, CorporateService } from '../types';
 
 export const PHONE_WHATSAPP = '+56974747910';
 export const PHONE_DISPLAY = '+56 9 7474 7910';
@@ -104,81 +104,6 @@ export const MOCK_PROPERTIES: Property[] = [
     featured: false,
     description: 'Centro logístico ubicado en parque industrial con excelentes accesos a puertos y rutas principales. Oficinas en segundo piso habilitadas.',
     features: ['Altura Libre 8 Metros', 'Andén de Carga y Descarga', 'Oficinas Administrativas', 'Circuito Cerrado TV']
-  }
-];
-
-export const CLIENT_BRANDS: ClientBrand[] = [
-  {
-    id: 'c-1',
-    name: 'Elecnor Chile',
-    category: 'Infraestructura & Energía',
-    projectScope: 'Arriendo de terrenos logísticos y soporte habitacional en norte de Chile.',
-    region: 'Tarapacá y Antofagasta',
-    logoText: 'ELECNOR'
-  },
-  {
-    id: 'c-2',
-    name: 'Grupo TELCOH Solar',
-    category: 'Energía Renovable',
-    projectScope: 'Gestión de paños territoriales para parques fotovoltaicos.',
-    region: 'Coquimbo y Atacama',
-    logoText: 'TELCOH SOLAR'
-  },
-  {
-    id: 'c-3',
-    name: 'Aramark',
-    category: 'Servicios de Alimentación & Facility',
-    projectScope: 'Soporte de infraestructura y módulos de alojamiento en faenas.',
-    region: 'Nacional',
-    logoText: 'ARAMARK'
-  },
-  {
-    id: 'c-4',
-    name: 'Piloansa',
-    category: 'Ingeniería & Pilotaje',
-    projectScope: 'Catering industrial y arriendo de maquinaria pesada.',
-    region: 'Calama & Pozo Almonte',
-    logoText: 'PILOANSA'
-  },
-  {
-    id: 'c-5',
-    name: 'Climatización Beriestain',
-    category: 'HVAC & Ingeniería Industrial',
-    projectScope: 'Hospedaje técnico continuo y oficinas en terreno.',
-    region: 'Viña del Mar & Concepción',
-    logoText: 'BERIESTAIN HVAC'
-  },
-  {
-    id: 'c-6',
-    name: 'Cainsa SyM',
-    category: 'Montaje & Servicios Mineros',
-    projectScope: 'Arriendo de terrenos mineros y logística de turnos.',
-    region: 'Iquique & Antofagasta',
-    logoText: 'CAINSA SyM'
-  },
-  {
-    id: 'c-7',
-    name: 'GESCO',
-    category: 'Gestión de Proyectos & Servicios',
-    projectScope: 'Consultoría territorial y alojamientos corporativos.',
-    region: 'Norte y Centro',
-    logoText: 'GESCO'
-  },
-  {
-    id: 'c-8',
-    name: 'H&H Señalética',
-    category: 'Vialidad & Seguridad Industrial',
-    projectScope: 'Soporte logístico y bodegaje en puntos clave.',
-    region: 'Coquimbo & Valparaíso',
-    logoText: 'H&H SEÑALÉTICA'
-  },
-  {
-    id: 'c-9',
-    name: 'DHVCHILE',
-    category: 'Consultoría & Soluciones Ambientales',
-    projectScope: 'Ingeniería ambiental y análisis de suelos para loteos.',
-    region: 'Nacional e Internacional',
-    logoText: 'DHVCHILE'
   }
 ];
 
