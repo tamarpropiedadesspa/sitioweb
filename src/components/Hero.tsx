@@ -1,5 +1,5 @@
-import React from 'react';
-import { Home, Building, ArrowRight, MapPin, ShieldCheck, CheckCircle2, ChevronDown, Compass, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { Home, Building, ArrowRight, ShieldCheck, CheckCircle2, Compass } from 'lucide-react';
 import { PHONE_WHATSAPP } from '../data/mockData';
 
 interface HeroProps {
@@ -13,19 +13,21 @@ export const Hero: React.FC<HeroProps> = ({
   onExploreCorporate,
   onQuickSearch,
 }) => {
-  const [selectedType, setSelectedType] = React.useState('todas');
-  const [selectedCity, setSelectedCity] = React.useState('todas');
+  const [selectedType, setSelectedType] = useState('todas');
+  const [selectedCity, setSelectedCity] = useState('todas');
 
   const handleSearchClick = (e: React.FormEvent) => {
     e.preventDefault();
     onQuickSearch(selectedType, selectedCity);
   };
 
-  const whatsappDirect = `https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent('Hola Tamar Propiedades SpA, vi su sitio web y desearía realizar una consulta sobre sus propiedades y servicios.')}`;
+  const whatsappDirect = `https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(
+    'Hola Tamar Propiedades SpA, vi su sitio web y desearía realizar una consulta sobre sus propiedades y servicios.'
+  )}`;
 
   return (
     <section id="inicio" className="relative bg-white text-slate-800 pt-10 pb-20 md:pt-16 md:pb-28 overflow-hidden border-b border-slate-200">
-      {/* Background Decorator Elements */}
+      {/* Elementos decorativos de fondo */}
       <div className="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 rounded-full bg-[#C87A32]/5 blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 rounded-full bg-slate-100 blur-2xl pointer-events-none"></div>
       <div className="absolute inset-0 bg-[radial-gradient(#C87A32_1px,transparent_1px)] [background-size:24px_24px] opacity-5 pointer-events-none"></div>
@@ -33,42 +35,40 @@ export const Hero: React.FC<HeroProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Main Hero Copy Column */}
+          {/* Columna de texto principal */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-                      
-            {/* Main H1 Headline */}
+            
+            {/* Titular Principal H1 */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[#0B1E36] leading-tight font-sans">
               Soluciones inmobiliarias y corporativas: <span className="text-[#C87A32]">Desde el hogar para tu familia hasta el soporte industrial para empresas</span> en todo Chile.
             </h1>
 
-            {/* Subtitle */}
+            {/* Subtítulo */}
             <p className="text-lg sm:text-xl text-slate-600 font-normal max-w-2xl mx-auto lg:mx-0 leading-relaxed">
               Presencia y experiencia de Iquique a Concepción.
             </p>
 
-            {/* Dual CTA Buttons */}
+            {/* Botones de Acción Doble */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
-              {/* Button 1: Residenciales (Cobre Metallic) */}
               <button
                 onClick={onExploreProperties}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl font-bold text-base text-white bg-[#C87A32] hover:bg-[#A85D23] shadow-lg shadow-[#C87A32]/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl font-bold text-base text-white bg-[#C87A32] hover:bg-[#A85D23] shadow-lg shadow-[#C87A32]/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
               >
                 <Home className="w-5 h-5" />
                 <span>Ver Propiedades Residenciales</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              {/* Button 2: Servicios para Empresas */}
               <button
                 onClick={onExploreCorporate}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl font-bold text-base text-[#0B1E36] bg-slate-100 hover:bg-slate-200 border border-slate-300 shadow-sm transition-all transform hover:-translate-y-0.5"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl font-bold text-base text-[#0B1E36] bg-slate-100 hover:bg-slate-200 border border-slate-300 shadow-sm transition-all transform hover:-translate-y-0.5 cursor-pointer"
               >
                 <Building className="w-5 h-5 text-[#C87A32]" />
                 <span>Servicios para Empresas</span>
               </button>
             </div>
 
-            {/* Key Trust Highlights */}
+            {/* Puntos destacados de confianza */}
             <div className="pt-6 grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-slate-200 text-slate-700 text-xs sm:text-sm font-semibold">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#C87A32] shrink-0" />
@@ -86,7 +86,7 @@ export const Hero: React.FC<HeroProps> = ({
 
           </div>
 
-          {/* Hero Image Card Visual */}
+          {/* Tarjeta de Imagen Visual */}
           <div className="lg:col-span-5">
             <div className="relative rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-xl p-2">
               <div className="relative h-[340px] sm:h-[400px] rounded-xl overflow-hidden">
@@ -97,7 +97,7 @@ export const Hero: React.FC<HeroProps> = ({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B1E36]/90 via-[#0B1E36]/30 to-transparent"></div>
 
-                {/* Floating Badge on Image */}
+                {/* Badge flotante sobre la imagen */}
                 <div className="absolute top-4 left-4 bg-[#0B1E36]/90 backdrop-blur-md px-3.5 py-2 rounded-lg border border-slate-700 flex items-center gap-2 shadow-lg">
                   <ShieldCheck className="w-5 h-5 text-[#C87A32]" />
                   <div className="text-left">
@@ -106,7 +106,7 @@ export const Hero: React.FC<HeroProps> = ({
                   </div>
                 </div>
 
-                {/* Bottom Overlay Info */}
+                {/* Overlay inferior de información */}
                 <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-[#0B1E36]/90 backdrop-blur-md border border-slate-700 text-left space-y-2 shadow-xl">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-[#C87A32] uppercase tracking-wider">Atención Multizona</span>
@@ -131,7 +131,7 @@ export const Hero: React.FC<HeroProps> = ({
 
         </div>
 
-        {/* Floating Quick Filter Panel */}
+        {/* Panel de Filtro Rápido */}
         <div className="mt-12 bg-[#F8FAFC] p-4 sm:p-6 rounded-2xl border border-[#E2E8F0] shadow-xl max-w-5xl mx-auto">
           <form onSubmit={handleSearchClick} className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-7 gap-3 items-end">
             
@@ -142,7 +142,7 @@ export const Hero: React.FC<HeroProps> = ({
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-[#0B1E36] font-semibold focus:outline-none focus:border-[#C87A32] focus:ring-1 focus:ring-[#C87A32]"
+                className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-[#0B1E36] font-semibold focus:outline-none focus:border-[#C87A32] focus:ring-1 focus:ring-[#C87A32] cursor-pointer"
               >
                 <option value="todas">Todos los servicios</option>
                 <option value="residencial">Casas Residenciales</option>
@@ -159,7 +159,7 @@ export const Hero: React.FC<HeroProps> = ({
               <select
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-[#0B1E36] font-semibold focus:outline-none focus:border-[#C87A32] focus:ring-1 focus:ring-[#C87A32]"
+                className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-[#0B1E36] font-semibold focus:outline-none focus:border-[#C87A32] focus:ring-1 focus:ring-[#C87A32] cursor-pointer"
               >
                 <option value="todas">Todas las regiones</option>
                 <option value="Iquique">Iquique / Pozo Almonte</option>
@@ -173,7 +173,7 @@ export const Hero: React.FC<HeroProps> = ({
             <div className="lg:col-span-3">
               <button
                 type="submit"
-                className="w-full bg-[#C87A32] hover:bg-[#A85D23] text-white font-bold py-2.5 px-4 rounded-lg text-sm flex items-center justify-center gap-2 shadow-md transition-all"
+                className="w-full bg-[#C87A32] hover:bg-[#A85D23] text-white font-bold py-2.5 px-4 rounded-lg text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
               >
                 <Compass className="w-4 h-4" />
                 <span>Buscar en Catálogo Dinámico</span>
