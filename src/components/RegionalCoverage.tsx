@@ -45,8 +45,6 @@ export const RegionalCoverage: React.FC = () => {
 
                   {region.isMainBase && (
                     <span className="text-[10px] font-bold uppercase tracking-wider text-[#C87A32] bg-[#C87A32]/10 px-2 py-0.5 rounded border border-[#C87A32]/30">
-                      Base Operativa Principal
-                    </span>
                   )}
                 </div>
 
