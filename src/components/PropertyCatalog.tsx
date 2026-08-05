@@ -247,7 +247,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div className="space-y-3">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1E36] font-sans">
-              Propiedades & Paños Destacados
+              Propiedades & Terrenos
             </h2>
             <p className="text-slate-600 text-sm sm:text-base max-w-xl">
               Explora nuestra cartera actualizada en tiempo real con ficha técnica completa y contacto directo por WhatsApp.
