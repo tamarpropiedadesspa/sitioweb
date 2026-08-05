@@ -24,15 +24,6 @@ export interface Property {
   status?: string;
 }
 
-export interface ClientBrand {
-  id: string;
-  name: string;
-  category: string;
-  projectScope: string;
-  region: string;
-  logoText: string;
-}
-
 export interface RegionInfo {
   name: string;
   country: 'Chile' | 'Bolivia' | 'Perú';
