@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Building2, Phone, Menu, X, ArrowRight, ShieldCheck, HardHat, TrendingUp } from 'lucide-react';
+import { Phone, Menu, X, TrendingUp } from 'lucide-react';
 import { PHONE_WHATSAPP, PHONE_DISPLAY } from '../data/mockData';
 
 interface NavbarProps {
@@ -68,13 +68,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
     setIsMobileMenuOpen(false);
   };
 
-  const whatsappUrl = `https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent('Hola Tamar Propiedades SpA, quisiera solicitar información sobre sus servicios inmobiliarios y corporativos.')}`;
+  const whatsappUrl = `https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(
+    'Hola Tamar Propiedades SpA, quisiera solicitar información sobre sus servicios inmobiliarios y corporativos.'
+  )}`;
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0B1E36]/95 backdrop-blur-md border-b border-slate-800 shadow-lg">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
       
-      {/* Top Bar with Real-time UF Indicator */}
-      <div className="bg-[#050E1A] text-slate-300 border-b border-slate-800/80 text-xs py-1.5 px-4 sm:px-8">
+      {/* Top Bar con UF e información de contacto */}
+      <div className="bg-[#0B1E36] text-slate-300 border-b border-slate-800 text-xs py-1.5 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           
           <div className="flex items-center gap-2 sm:gap-3">
@@ -108,42 +110,39 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
         </div>
       </div>
 
+      {/* Main Navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
-          {/* Logo & Brand Name using logo-icon.png */}
+          {/* Marca: Isotipo de Casita + Nombre en Imagen (Sin texto HTML) */}
           <div 
             onClick={() => handleNavClick('inicio')}
             className="flex items-center gap-3 cursor-pointer group"
           >
-            <div className="w-12 h-12 rounded-xl bg-white border border-[#C87A32]/30 p-1 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-200 overflow-hidden">
+            <div className="h-12 w-12 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200 overflow-hidden">
               <img 
-                src="/logo-header.png" 
-                alt="Tamar Propiedades SpA" 
+                src="/logo-icon.png" 
+                alt="Tamar Icono" 
                 className="w-full h-full object-contain"
-                referrerPolicy="no-referrer"
               />
             </div>
-            <div className="flex flex-col">
-              <span className="text-lg sm:text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5 font-sans">
-                TAMAR <span className="text-[#C87A32] font-semibold">PROPIEDADES</span> <span className="text-xs bg-slate-800 text-slate-200 px-1.5 py-0.5 rounded border border-[#C87A32]/30 font-mono">SpA</span>
-              </span>
-              <span className="text-[11px] font-semibold text-slate-300 tracking-wider uppercase flex items-center gap-1">
-                <HardHat className="w-3 h-3 text-[#C87A32]" /> Bienes Raíces & Ingeniería Sostenible
-              </span>
-            </div>
+            <img 
+              src="/logo-text.png" 
+              alt="Tamar Propiedades SpA" 
+              className="h-9 sm:h-10 w-auto object-contain group-hover:opacity-90 transition-opacity"
+            />
           </div>
 
-          {/* Desktop Navigation Links */}
+          {/* Menú Escritorio */}
           <nav className="hidden xl:flex items-center gap-1">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`px-3 py-2 text-sm font-semibold rounded-md transition-colors ${
+                className={`px-3 py-2 text-sm font-semibold rounded-md transition-colors cursor-pointer ${
                   activeSection === item.id
-                    ? 'text-[#C87A32] bg-[#C87A32]/15 border border-[#C87A32]/40 font-bold'
-                    : 'text-slate-200 hover:text-[#C87A32] hover:bg-slate-800/60'
+                    ? 'text-[#C87A32] bg-[#C87A32]/10 border border-[#C87A32]/30 font-bold'
+                    : 'text-slate-700 hover:text-[#C87A32] hover:bg-slate-100'
                 }`}
               >
                 {item.label}
@@ -151,7 +150,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
             ))}
           </nav>
 
-          {/* Mobile Menu Button */}
+          {/* Menú Móvil */}
           <div className="xl:hidden flex items-center gap-2">
             <a
               href={whatsappUrl}
@@ -165,7 +164,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-slate-800 focus:outline-none border border-slate-700"
+              className="p-2.5 rounded-lg text-slate-700 hover:text-[#0B1E36] hover:bg-slate-100 focus:outline-none border border-slate-300 cursor-pointer"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -175,9 +174,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Drawer Móvil */}
       {isMobileMenuOpen && (
-        <div className="xl:hidden bg-[#0B1E36] border-b border-slate-800 px-4 pt-2 pb-6 space-y-2 animate-in slide-in-from-top duration-200">
+        <div className="xl:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-2 animate-in slide-in-from-top duration-200">
           <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-1">
             Navegación
           </div>
@@ -185,10 +184,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+              className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
                 activeSection === item.id
                   ? 'bg-[#C87A32] text-white font-semibold'
-                  : 'text-slate-200 hover:bg-slate-800 hover:text-white'
+                  : 'text-slate-700 hover:bg-slate-100 hover:text-[#0B1E36]'
               }`}
             >
               {item.label}
