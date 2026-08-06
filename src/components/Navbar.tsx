@@ -52,7 +52,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
     };
   }, []);
 
-  // Menú de navegación actualizado
   const navItems = [
     { id: 'inicio', label: 'Inicio' },
     { id: 'buscar', label: '¿Qué buscas?' },
@@ -111,14 +110,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
 
       {/* Main Navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-24">
+        <div className="flex items-center justify-between h-20 sm:h-24">
           
           {/* Marca / Logo */}
           <div 
             onClick={() => handleNavClick('inicio')}
-            className="flex items-center gap-3.5 cursor-pointer group"
+            className="flex items-center gap-2 sm:gap-3.5 cursor-pointer group max-w-[80%] sm:max-w-none"
           >
-            <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200 overflow-hidden shrink-0">
+            <div className="h-12 w-12 sm:h-16 sm:w-16 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200 overflow-hidden shrink-0">
               <img 
                 src="/logo-icon.png" 
                 alt="Tamar Icono" 
@@ -128,7 +127,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
             <img 
               src="/logo-text.png" 
               alt="Tamar Propiedades SpA" 
-              className="h-11 sm:h-13 lg:h-14 w-auto object-contain group-hover:opacity-90 transition-opacity"
+              className="h-8 sm:h-13 lg:h-14 w-auto object-contain group-hover:opacity-90 transition-opacity max-w-[170px] sm:max-w-none"
             />
           </div>
 
@@ -150,17 +149,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
           </nav>
 
           {/* Menú Móvil */}
-          <div className="xl:hidden flex items-center gap-2">
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2.5 rounded-lg bg-[#C87A32] hover:bg-[#A85D23] text-white font-medium text-xs flex items-center gap-1"
-            >
-              <Phone className="w-4 h-4" />
-              <span className="hidden sm:inline">WhatsApp</span>
-            </a>
-
+          <div className="xl:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2.5 rounded-lg text-slate-700 hover:text-[#0B1E36] hover:bg-slate-100 focus:outline-none border border-slate-300 cursor-pointer"
@@ -185,7 +174,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
               onClick={() => handleNavClick(item.id)}
               className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
                 activeSection === item.id
-                  ? 'bg-[#C87A32] text-[#0B1E36] font-extrabold'
+                  ? 'bg-[#C87A32] text-white font-semibold'
                   : 'text-slate-700 hover:bg-slate-100 hover:text-[#0B1E36]'
               }`}
             >
