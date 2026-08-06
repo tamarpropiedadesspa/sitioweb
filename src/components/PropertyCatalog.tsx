@@ -163,11 +163,14 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
         const destStr = String(item.destacado || item.featured || '').trim().toLowerCase();
         const isFeatured = ['si', 'sí', 'true', '1'].includes(destStr);
 
+        // Captura estricta de la categoría elegida (si está vacía, no asigna ningún valor por defecto)
+        const rawCategory = String(item.categoria || item.category || '').trim();
+
         return {
           id: String(item.id || item.ID || item.id_propiedad || index + 1),
           title: item.titulo || item.title || 'Propiedad Tamar',
           type: String(item.tipo || item.type || 'residencial').toLowerCase(),
-          category: item.categoria || item.category || (item.tipo === 'industrial' ? 'Corporativo' : 'Residencial'),
+          category: rawCategory,
           operation: String(item.operacion || item.operation || 'venta').toLowerCase(),
           priceUF: isNaN(priceUF) ? 0 : priceUF,
           priceCLP: isNaN(priceCLP) ? 0 : priceCLP,
@@ -543,14 +546,16 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
 
-                    {/* Badges */}
+                    {/* Badges (La etiqueta de categoría solo se muestra si tiene contenido) */}
                     <div className="absolute top-3 left-3 flex flex-wrap gap-2">
                       <span className="px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider text-white shadow-md bg-[#C87A32]">
                         En {property.operation}
                       </span>
-                      <span className="px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider text-white shadow-md bg-[#0B1E36]">
-                        {property.category || property.type}
-                      </span>
+                      {property.category ? (
+                        <span className="px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider text-white shadow-md bg-[#0B1E36]">
+                          {property.category}
+                        </span>
+                      ) : null}
                     </div>
 
                     {/* Price Tag Overlay */}
@@ -667,14 +672,16 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                   className="w-full h-full object-cover"
                 />
 
-                {/* Operation & Category Badges */}
+                {/* Operation & Category Badges en el Modal */}
                 <div className="absolute top-3 left-3 flex gap-2">
                   <span className="px-3 py-1 rounded bg-[#C87A32] text-white text-xs font-extrabold uppercase shadow">
                     En {activeProperty.operation}
                   </span>
-                  <span className="px-3 py-1 rounded bg-[#0B1E36] text-white text-xs font-extrabold uppercase shadow">
-                    {activeProperty.category || activeProperty.type}
-                  </span>
+                  {activeProperty.category ? (
+                    <span className="px-3 py-1 rounded bg-[#0B1E36] text-white text-xs font-extrabold uppercase shadow">
+                      {activeProperty.category}
+                    </span>
+                  ) : null}
                 </div>
 
                 {/* Navigation Arrows */}
@@ -877,7 +884,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
               return (
                 <div className="space-y-2.5 pt-2">
-                  {/* Google Maps (Recomendado y más visible) */}
+                  {/* Google Maps */}
                   <a
                     href={navs.google}
                     target="_blank"
