@@ -251,7 +251,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     if (!locationOrCoords) return null;
     const trimmed = locationOrCoords.trim();
 
-    // Comprobar si son coordenadas lat,lng (ej: -30.5987, -71.2012)
     const coordRegex = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/;
     const isCoords = coordRegex.test(trimmed);
 
@@ -272,13 +271,28 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
       };
     }
 
-    // Si es un texto con dirección o ciudad
     const encoded = encodeURIComponent(trimmed);
     return {
       google: `https://www.google.com/maps/dir/?api=1&destination=${encoded}`,
       waze: `https://waze.com/ul?q=${encoded}&navigate=yes`,
       apple: `https://maps.apple.com/?daddr=${encoded}`,
     };
+  };
+
+  // 🌟 NUEVO: Lógica que decide si abre modal (Móvil) o salta a Google Maps (PC)
+  const handleNavigationClick = (property: Property) => {
+    // Detectamos si es un celular/tablet basado en el agente de usuario
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      setNavigationModalProperty(property); // Abre el menú de 3 opciones
+    } else {
+      // En PC, vamos directo a Google Maps
+      const navs = getNavLinks(property.mapUrl);
+      if (navs && navs.google) {
+        window.open(navs.google, '_blank', 'noopener,noreferrer');
+      }
+    }
   };
 
   return (
@@ -717,7 +731,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 </h4>
                 
                 <button
-                  onClick={() => setNavigationModalProperty(activeProperty)}
+                  onClick={() => handleNavigationClick(activeProperty)}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-xs bg-amber-50 text-[#C87A32] border border-[#C87A32]/30 hover:bg-[#C87A32] hover:text-white shadow-sm transition-all cursor-pointer"
                 >
                   <Navigation className="w-4 h-4" />
@@ -796,9 +810,9 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
         </div>
       )}
 
-      {/* MODAL ELEGIR APP NAVEGACIÓN ("CÓMO LLEGAR") */}
+      {/* MODAL ELEGIR APP NAVEGACIÓN ("CÓMO LLEGAR") SÓLO PARA MÓVILES */}
       {navigationModalProperty && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
           <div className="bg-white border border-slate-200 rounded-2xl max-w-sm w-full p-6 space-y-5 relative shadow-2xl animate-in zoom-in-95 duration-150 text-center">
             
             <button
@@ -827,19 +841,21 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
               return (
                 <div className="space-y-2.5 pt-2">
+                  {/* Google Maps (Recomendado y más visible) */}
                   <a
                     href={navs.google}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setNavigationModalProperty(null)}
-                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 font-bold text-xs text-slate-800 transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl bg-[#0B1E36] hover:bg-slate-800 text-white font-bold text-xs transition-colors cursor-pointer shadow-md"
                   >
                     <span className="flex items-center gap-2">
                       <span>🗺️</span> Google Maps
                     </span>
-                    <span className="text-[10px] text-slate-400 font-normal">Recomendado</span>
+                    <span className="text-[10px] text-[#C87A32] font-extrabold uppercase">Recomendado</span>
                   </a>
 
+                  {/* Waze */}
                   <a
                     href={navs.waze}
                     target="_blank"
@@ -853,12 +869,13 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     <span className="text-[10px] text-sky-600 font-normal">Tráfico en vivo</span>
                   </a>
 
+                  {/* Apple Maps */}
                   <a
                     href={navs.apple}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setNavigationModalProperty(null)}
-                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
                   >
                     <span className="flex items-center gap-2">
                       <span>🍎</span> Apple Maps
