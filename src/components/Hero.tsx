@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Building, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Home, Building, ArrowRight, ShieldCheck } from 'lucide-react';
 import { PHONE_WHATSAPP } from '../data/mockData';
 
 interface HeroProps {
@@ -27,7 +27,7 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Columna de texto principal */}
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+          <div className="lg:col-span-7 space-y-6 sm:space-y-8 text-center lg:text-left">
             
             {/* Titular Principal H1 */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[#0B1E36] leading-tight font-sans">
@@ -40,7 +40,7 @@ export const Hero: React.FC<HeroProps> = ({
             </p>
 
             {/* Botones de Acción Doble */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
               <button
                 onClick={onExploreProperties}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl font-bold text-base text-white bg-[#C87A32] hover:bg-[#A85D23] shadow-lg shadow-[#C87A32]/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
@@ -57,22 +57,6 @@ export const Hero: React.FC<HeroProps> = ({
                 <Building className="w-5 h-5 text-[#C87A32]" />
                 <span>Servicios para Empresas</span>
               </button>
-            </div>
-
-            {/* Puntos destacados de confianza */}
-            <div className="pt-6 grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-slate-200 text-slate-700 text-xs sm:text-sm font-semibold">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#C87A32] shrink-0" />
-                <span>Cobertura Iquique - Concepción</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#C87A32] shrink-0" />
-                <span>Operaciones Bolivia & Perú</span>
-              </div>
-              <div className="flex items-center gap-2 col-span-2 sm:col-span-1">
-                <CheckCircle2 className="w-4 h-4 text-[#C87A32] shrink-0" />
-                <span>Respuesta Directa WhatsApp</span>
-              </div>
             </div>
 
           </div>
