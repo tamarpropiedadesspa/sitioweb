@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Property, PropertyType } from '../types';
+import { Property } from '../types';
 import { PHONE_WHATSAPP } from '../data/mockData';
 import {
   MapPin,
@@ -18,7 +18,6 @@ import {
   AlertCircle,
   Loader2,
   Filter,
-  Star,
 } from 'lucide-react';
 
 interface PropertyCatalogProps {
@@ -138,7 +137,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
         const priceUF = parseFloat(item.precio_uf || item.precioUF || item.priceUF || 0);
         const priceCLP = parseFloat(item.precio_clp || item.precioCLP || item.priceCLP || 0);
 
-        // 🌟 CORRECCIÓN 1: Leer Destacado explícitamente para evaluar 'SI'
         const destStr = String(item.destacado || item.featured || '').trim().toLowerCase();
         const isFeatured = ['si', 'sí', 'true', '1'].includes(destStr);
 
@@ -159,7 +157,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
           gallery: gallery.length > 0 ? gallery : [image],
           videoUrl: item.video_url || item.video || undefined,
           mapUrl: item.ubicacion_maps || item.mapa || item.coordenadas || undefined,
-          featured: isFeatured, // 👈 Aplicado aquí
+          featured: isFeatured,
           description: item.descripcion || item.description || 'Sin descripción disponible.',
           features: features.length > 0 ? features : ['Inspección previa en terreno', 'Asesoría legal incluida'],
           status: item.estado || 'Activo',
@@ -201,7 +199,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
       return true;
     });
 
-    // 🌟 CORRECCIÓN 2: Ordenar propiedades para que las destacadas salgan primero
+    // Mantiene las destacadas en primer lugar de la lista de forma silenciosa
     return list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
   }, [properties, selectedType, selectedOperation, selectedCity, searchQuery]);
 
@@ -376,7 +374,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
           </div>
         )}
 
-        {/* EMPTY STATE OR NO ACTIVE PROPERTIES */}
+        {/* EMPTY STATE */}
         {!isLoading && properties.length === 0 && (
           <div className="py-16 px-6 text-center bg-slate-50 border border-slate-200 rounded-2xl space-y-6 max-w-3xl mx-auto shadow-sm">
             <div className="w-16 h-16 bg-[#C87A32]/10 rounded-full flex items-center justify-center mx-auto text-[#C87A32]">
@@ -443,9 +441,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
             {filteredProperties.map((property) => (
               <div
                 key={property.id}
-                className={`bg-white border rounded-2xl overflow-hidden hover:border-[#C87A32]/60 transition-all duration-300 shadow-md hover:shadow-xl flex flex-col justify-between group ${
-                  property.featured ? 'border-amber-400 ring-1 ring-amber-400/50' : 'border-slate-200'
-                }`}
+                className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-[#C87A32]/60 transition-all duration-300 shadow-md hover:shadow-xl flex flex-col justify-between group"
               >
                 <div>
                   {/* Property Image & Badges */}
@@ -457,7 +453,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
 
-                    {/* Badges Principales */}
+                    {/* Badges */}
                     <div className="absolute top-3 left-3 flex flex-wrap gap-2">
                       <span className="px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider text-white shadow-md bg-[#C87A32]">
                         En {property.operation}
@@ -466,14 +462,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                         {property.category || property.type}
                       </span>
                     </div>
-
-                    {/* 🌟 Badge de Destacado ⭐ */}
-                    {property.featured && (
-                      <div className="absolute top-3 right-3 flex items-center gap-1 bg-amber-400 text-slate-900 font-extrabold text-[11px] px-2.5 py-1 rounded-md uppercase tracking-wider shadow-md border border-amber-300">
-                        <Star className="w-3.5 h-3.5 fill-slate-900 text-slate-900" />
-                        <span>Destacado</span>
-                      </div>
-                    )}
 
                     {/* Price Tag Overlay */}
                     <div className="absolute bottom-3 left-3 right-3 flex items-baseline justify-between">
@@ -595,14 +583,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     {activeProperty.category || activeProperty.type}
                   </span>
                 </div>
-
-                {/* Badge de Destacado en Modal */}
-                {activeProperty.featured && (
-                  <div className="absolute top-3 right-12 flex items-center gap-1 bg-amber-400 text-slate-900 font-extrabold text-[11px] px-2.5 py-1 rounded uppercase tracking-wider shadow border border-amber-300">
-                    <Star className="w-3.5 h-3.5 fill-slate-900 text-slate-900" />
-                    <span>Destacado</span>
-                  </div>
-                )}
 
                 {/* Navigation Arrows */}
                 {activeProperty.gallery && activeProperty.gallery.length > 1 && (
