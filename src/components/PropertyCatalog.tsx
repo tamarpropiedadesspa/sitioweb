@@ -178,17 +178,38 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     fetchCatalogData();
   }, []);
 
+  // 🌟 NUEVO: Extraer dinámicamente las ciudades únicas disponibles en el Sheets 🌟
+  const availableCities = useMemo(() => {
+    const citiesSet = new Set<string>();
+    properties.forEach((prop) => {
+      // Usamos 'location' (ciudad) para ser más precisos con Ovalle, Iquique, etc.
+      const city = prop.location.trim();
+      if (city && city.toLowerCase() !== 'chile') {
+        citiesSet.add(city);
+      }
+    });
+    // Convertir a Array y ordenar alfabéticamente
+    return Array.from(citiesSet).sort();
+  }, [properties]);
+
   const filteredProperties = useMemo(() => {
     const list = properties.filter((prop) => {
+      // Type match
       if (selectedType !== 'todas' && prop.type !== selectedType) {
         return false;
       }
+      // Operation match
       if (selectedOperation !== 'todas' && prop.operation !== selectedOperation) {
         return false;
       }
-      if (selectedCity !== 'todas' && !prop.region.toLowerCase().includes(selectedCity.toLowerCase()) && !prop.location.toLowerCase().includes(selectedCity.toLowerCase())) {
-        return false;
+      // 🌟 CORRECCIÓN: Filtro de ciudad exacto basado en la selección dinámica 🌟
+      if (selectedCity !== 'todas') {
+        const propLocation = prop.location.toLowerCase().trim();
+        if (propLocation !== selectedCity.toLowerCase()) {
+          return false;
+        }
       }
+      // Search query
       if (searchQuery.trim() !== '') {
         const query = searchQuery.toLowerCase();
         const matchesTitle = prop.title.toLowerCase().includes(query);
@@ -199,7 +220,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
       return true;
     });
 
-    // Mantiene las destacadas en primer lugar de la lista de forma silenciosa
     return list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
   }, [properties, selectedType, selectedOperation, selectedCity, searchQuery]);
 
@@ -322,7 +342,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               </select>
             </div>
 
-            {/* Region Filter */}
+            {/* Region Filter - AHORA ES DINÁMICO 🌟 */}
             <div>
               <select
                 value={selectedCity}
@@ -330,10 +350,11 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 className="w-full bg-white border border-slate-300 text-slate-800 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#C87A32] cursor-pointer"
               >
                 <option value="todas">Zona: Todo Chile</option>
-                <option value="Iquique">Iquique / Pozo Almonte</option>
-                <option value="Calama">Calama / Antofagasta</option>
-                <option value="La Serena">La Serena / Ovalle</option>
-                <option value="Concepción">Concepción</option>
+                {availableCities.map((city, idx) => (
+                  <option key={idx} value={city}>
+                    {city}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -467,7 +488,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     <div className="absolute bottom-3 left-3 right-3 flex items-baseline justify-between">
                       <div>
                         <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
-                          {property.priceUF > 0 ? `${property.priceUF.toLocaleString('es-CL')} UF` : 'Consultar Valor'}
+                          {property.priceUF > 0 ? `${property.priceUF.toLocaleString('es-CL')} UF` : 'Consultar valor'}
                         </span>
                         {property.priceCLP > 0 && (
                           <span className="text-xs text-slate-200 block font-semibold drop-shadow-sm">
@@ -691,7 +712,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
               <div className="flex flex-wrap items-baseline gap-4 py-3 border-y border-slate-200">
                 <span className="text-3xl font-extrabold text-[#C87A32]">
-                  {activeProperty.priceUF > 0 ? `${activeProperty.priceUF.toLocaleString('es-CL')} UF` : 'Consultar Valor'}
+                  {activeProperty.priceUF > 0 ? `${activeProperty.priceUF.toLocaleString('es-CL')} UF` : 'Consultar valor'}
                 </span>
                 {activeProperty.priceCLP > 0 && (
                   <span className="text-sm text-slate-600 font-semibold">
