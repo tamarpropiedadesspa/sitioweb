@@ -16,7 +16,6 @@ import {
   ChevronLeft,
   ChevronRight,
   AlertCircle,
-  Loader2,
   Filter,
   Navigation,
 } from 'lucide-react';
@@ -70,10 +69,10 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
   const [navigationModalProperty, setNavigationModalProperty] = useState<Property | null>(null);
 
   // Fetch real-time data from Google Sheets API
-  const fetchCatalogData = async (isManualRefresh = false) => {
+  const fetchCatalogData = async (isManualRefresh = false, isBackgroundRefetch = false) => {
     if (isManualRefresh) {
       setIsRefreshing(true);
-    } else if (properties.length === 0) {
+    } else if (!isBackgroundRefetch && properties.length === 0) {
       setIsLoading(true);
     }
     setApiError(null);
@@ -85,7 +84,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
       if (!response.ok) {
         if (response.status === 404) {
-          throw new Error('La URL del WebApp de Google Script no fue encontrada (404). Verifica que esté desplegada como Aplicación Web pública.');
+          throw new Error('La URL del WebApp de Google Script no fue encontrada (404).');
         }
         throw new Error(`Error en respuesta del servidor (${response.status})`);
       }
@@ -163,7 +162,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
         const destStr = String(item.destacado || item.featured || '').trim().toLowerCase();
         const isFeatured = ['si', 'sí', 'true', '1'].includes(destStr);
 
-        // Captura estricta de la categoría elegida (si está vacía, no asigna ningún valor por defecto)
         const rawCategory = String(item.categoria || item.category || '').trim();
 
         return {
@@ -200,12 +198,12 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     }
   };
 
-  // Carga inicial y auto-actualización silenciosa cada 60 segundos (1 minuto)
+  // Carga inicial y auto-actualización SILENCIOSA cada 60 segundos
   useEffect(() => {
-    fetchCatalogData();
+    fetchCatalogData(false, false);
 
     const intervalId = setInterval(() => {
-      fetchCatalogData(false);
+      fetchCatalogData(false, true); // es re-fetch silencioso en segundo plano
     }, 60000);
 
     return () => clearInterval(intervalId);
@@ -275,7 +273,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     return url;
   };
 
-  // Función inteligente para construir enlaces universales a Google Maps, Waze y Apple Maps
   const getNavLinks = (locationOrCoords?: string) => {
     if (!locationOrCoords) return null;
     const trimmed = locationOrCoords.trim();
@@ -338,7 +335,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
           <div className="flex items-center gap-3">
             <button
-              onClick={() => fetchCatalogData(true)}
+              onClick={() => fetchCatalogData(true, false)}
               disabled={isRefreshing || isLoading}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#0B1E36] font-bold text-xs border border-slate-300 shadow-sm transition-all disabled:opacity-50 cursor-pointer"
             >
@@ -356,7 +353,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               <span>{apiError}</span>
             </div>
             <button
-              onClick={() => fetchCatalogData(true)}
+              onClick={() => fetchCatalogData(true, false)}
               className="shrink-0 px-3 py-1.5 bg-[#C87A32] text-white rounded-lg font-bold hover:bg-[#A85D23] transition-colors cursor-pointer"
             >
               Reintentar
@@ -380,7 +377,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               />
             </div>
 
-            {/* Property Type Filter */}
+            {/* Property Type Filter (CAMBIADO A "Casas") */}
             <div>
               <select
                 value={selectedType}
@@ -388,7 +385,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 className="w-full bg-white border border-slate-300 text-slate-800 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#C87A32] cursor-pointer"
               >
                 <option value="todas">Tipo: Todos</option>
-                <option value="residencial">Casas Residenciales</option>
+                <option value="residencial">Casas</option>
                 <option value="departamento">Departamentos</option>
                 <option value="terreno">Terrenos / Parcelas</option>
                 <option value="industrial">Industrial / Faenas</option>
@@ -439,7 +436,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 setSelectedType('todas');
                 setSelectedOperation('todas');
                 setSelectedCity('todas');
-                searchQuery('');
+                setSearchQuery('');
               }}
               className="px-3 py-1 rounded bg-white hover:bg-slate-200 text-slate-700 border border-slate-300 transition-colors font-medium cursor-pointer"
             >
@@ -448,16 +445,33 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
           </div>
         </div>
 
-        {/* LOADING STATE */}
+        {/* INITIAL LOADING STATE: TARJETAS ESQUELETO (SKELETON LOADER) */}
         {isLoading && (
-          <div className="py-24 text-center bg-slate-50 border border-slate-200 rounded-2xl space-y-4 shadow-sm">
-            <Loader2 className="w-10 h-10 text-[#C87A32] animate-spin mx-auto" />
-            <h3 className="text-xl font-extrabold text-[#0B1E36]">
-              Cargando catálogo...
-            </h3>
-            <p className="text-slate-600 text-sm max-w-md mx-auto">
-              Obteniendo cartera de inmuebles.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((skeleton) => (
+              <div
+                key={skeleton}
+                className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm animate-pulse flex flex-col justify-between"
+              >
+                <div>
+                  <div className="h-56 bg-slate-200 w-full" />
+                  <div className="p-5 space-y-4">
+                    <div className="h-3 bg-slate-200 rounded w-1/3" />
+                    <div className="h-5 bg-slate-200 rounded w-3/4" />
+                    <div className="h-3 bg-slate-200 rounded w-full" />
+                    <div className="pt-3 border-t border-slate-100 grid grid-cols-3 gap-2">
+                      <div className="h-4 bg-slate-200 rounded" />
+                      <div className="h-4 bg-slate-200 rounded" />
+                      <div className="h-4 bg-slate-200 rounded" />
+                    </div>
+                  </div>
+                </div>
+                <div className="p-5 pt-0 space-y-2">
+                  <div className="h-9 bg-slate-200 rounded-xl w-full" />
+                  <div className="h-9 bg-slate-200 rounded-xl w-full" />
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
@@ -479,7 +493,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
               <button
-                onClick={() => fetchCatalogData(true)}
+                onClick={() => fetchCatalogData(true, false)}
                 disabled={isRefreshing}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#0B1E36] hover:bg-slate-800 text-white font-bold text-sm shadow transition-all cursor-pointer"
               >
@@ -514,7 +528,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 setSelectedType('todas');
                 setSelectedOperation('todas');
                 setSelectedCity('todas');
-                searchQuery('');
+                setSearchQuery('');
               }}
               className="mt-4 px-4 py-2 bg-[#C87A32] text-white text-xs font-bold rounded-lg uppercase shadow cursor-pointer"
             >
@@ -546,7 +560,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
 
-                    {/* Badges (La etiqueta de categoría solo se muestra si tiene contenido) */}
+                    {/* Badges */}
                     <div className="absolute top-3 left-3 flex flex-wrap gap-2">
                       <span className="px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider text-white shadow-md bg-[#C87A32]">
                         En {property.operation}
@@ -672,7 +686,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                   className="w-full h-full object-cover"
                 />
 
-                {/* Operation & Category Badges en el Modal */}
+                {/* Operation & Category Badges */}
                 <div className="absolute top-3 left-3 flex gap-2">
                   <span className="px-3 py-1 rounded bg-[#C87A32] text-white text-xs font-extrabold uppercase shadow">
                     En {activeProperty.operation}
