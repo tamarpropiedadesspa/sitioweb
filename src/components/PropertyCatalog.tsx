@@ -178,38 +178,31 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     fetchCatalogData();
   }, []);
 
-  // 🌟 NUEVO: Extraer dinámicamente las ciudades únicas disponibles en el Sheets 🌟
   const availableCities = useMemo(() => {
     const citiesSet = new Set<string>();
     properties.forEach((prop) => {
-      // Usamos 'location' (ciudad) para ser más precisos con Ovalle, Iquique, etc.
       const city = prop.location.trim();
       if (city && city.toLowerCase() !== 'chile') {
         citiesSet.add(city);
       }
     });
-    // Convertir a Array y ordenar alfabéticamente
     return Array.from(citiesSet).sort();
   }, [properties]);
 
   const filteredProperties = useMemo(() => {
     const list = properties.filter((prop) => {
-      // Type match
       if (selectedType !== 'todas' && prop.type !== selectedType) {
         return false;
       }
-      // Operation match
       if (selectedOperation !== 'todas' && prop.operation !== selectedOperation) {
         return false;
       }
-      // 🌟 CORRECCIÓN: Filtro de ciudad exacto basado en la selección dinámica 🌟
       if (selectedCity !== 'todas') {
         const propLocation = prop.location.toLowerCase().trim();
         if (propLocation !== selectedCity.toLowerCase()) {
           return false;
         }
       }
-      // Search query
       if (searchQuery.trim() !== '') {
         const query = searchQuery.toLowerCase();
         const matchesTitle = prop.title.toLowerCase().includes(query);
@@ -342,7 +335,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               </select>
             </div>
 
-            {/* Region Filter - AHORA ES DINÁMICO 🌟 */}
+            {/* Region Filter Dinámico */}
             <div>
               <select
                 value={selectedCity}
@@ -465,8 +458,11 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-[#C87A32]/60 transition-all duration-300 shadow-md hover:shadow-xl flex flex-col justify-between group"
               >
                 <div>
-                  {/* Property Image & Badges */}
-                  <div className="relative h-56 overflow-hidden bg-slate-100">
+                  {/* Property Image & Badges (AHORA CLIQUEABLE Y SIN EL OJITO FLOTANTE) */}
+                  <div 
+                    className="relative h-56 overflow-hidden bg-slate-100 cursor-pointer"
+                    onClick={() => openPropertyModal(property)}
+                  >
                     <img
                       src={property.image}
                       alt={property.title}
@@ -484,7 +480,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                       </span>
                     </div>
 
-                    {/* Price Tag Overlay */}
+                    {/* Price Tag Overlay (sin el botón derecho del ojo) */}
                     <div className="absolute bottom-3 left-3 right-3 flex items-baseline justify-between">
                       <div>
                         <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
@@ -496,14 +492,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                           </span>
                         )}
                       </div>
-
-                      <button
-                        onClick={() => openPropertyModal(property)}
-                        className="p-2.5 rounded-xl bg-white/90 hover:bg-[#C87A32] text-slate-800 hover:text-white border border-slate-200 transition-colors shadow-md cursor-pointer"
-                        title="Ver Ficha Técnica"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
                     </div>
                   </div>
 
@@ -528,15 +516,23 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                       {property.description}
                     </p>
 
-                    {/* Key Specs */}
+                    {/* Key Specs (OCULTANDO N/A Y DEJANDO VACÍO EL ESPACIO) */}
                     <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-200 text-xs text-slate-700 font-semibold">
                       <div className="flex items-center gap-1">
-                        <Bed className="w-3.5 h-3.5 text-[#C87A32]" />
-                        <span>{property.bedrooms !== undefined ? `${property.bedrooms} Dorms` : 'N/A'}</span>
+                        {property.bedrooms && property.bedrooms > 0 ? (
+                          <>
+                            <Bed className="w-3.5 h-3.5 text-[#C87A32]" />
+                            <span>{property.bedrooms} Dorms</span>
+                          </>
+                        ) : null}
                       </div>
                       <div className="flex items-center gap-1">
-                        <Bath className="w-3.5 h-3.5 text-[#C87A32]" />
-                        <span>{property.bathrooms !== undefined ? `${property.bathrooms} Baños` : 'N/A'}</span>
+                        {property.bathrooms && property.bathrooms > 0 ? (
+                          <>
+                            <Bath className="w-3.5 h-3.5 text-[#C87A32]" />
+                            <span>{property.bathrooms} Baños</span>
+                          </>
+                        ) : null}
                       </div>
                       <div className="flex items-center gap-1">
                         <Maximize className="w-3.5 h-3.5 text-[#C87A32]" />
@@ -554,7 +550,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider bg-[#0B1E36] hover:bg-slate-800 text-white shadow transition-all cursor-pointer"
                   >
                     <Eye className="w-4 h-4 text-[#C87A32]" />
-                    <span>Ver Ficha Técnica</span>
+                    <span>Más información</span>
                   </button>
 
                   <a
