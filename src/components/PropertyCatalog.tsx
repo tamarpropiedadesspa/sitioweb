@@ -29,6 +29,24 @@ interface PropertyCatalogProps {
 const GOOGLE_SHEETS_API_URL =
   'https://script.google.com/macros/s/AKfycbySaFOp9uBU4pUFjS8697tXYnDCC7BittaPN5GR-MzyyYybPhhAQOx9qsbXJ-A_7GGrZA/exec';
 
+const DEFAULT_FALLBACK_IMG =
+  'https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=1000&q=80';
+
+// Convierte enlaces compartidos de Google Drive a URLs de imagen directas
+const formatImageUrl = (url?: string): string => {
+  if (!url || typeof url !== 'string' || !url.trim()) return DEFAULT_FALLBACK_IMG;
+  const cleanUrl = url.trim();
+
+  if (cleanUrl.includes('drive.google.com') || cleanUrl.includes('docs.google.com')) {
+    const match = cleanUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || cleanUrl.match(/id=([a-zA-Z0-9_-]+)/);
+    if (match && match[1]) {
+      return `https://lh3.googleusercontent.com/d/${match[1]}`;
+    }
+  }
+
+  return cleanUrl;
+};
+
 export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
   initialTypeFilter = 'todas',
   initialCityFilter = 'todas',
@@ -55,7 +73,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
   const fetchCatalogData = async (isManualRefresh = false) => {
     if (isManualRefresh) {
       setIsRefreshing(true);
-    } else {
+    } else if (properties.length === 0) {
       setIsLoading(true);
     }
     setApiError(null);
@@ -97,16 +115,17 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
       const mapped: Property[] = activeItems.map((item, index) => {
         const gallery: string[] = [];
 
-        const mainPhoto = item.foto_principal || item.foto1 || item.foto_1 || item.imagen || item.image;
-        if (mainPhoto && typeof mainPhoto === 'string' && mainPhoto.trim()) {
-          gallery.push(mainPhoto.trim());
+        const mainPhoto = formatImageUrl(item.foto_principal || item.foto1 || item.foto_1 || item.imagen || item.image);
+        if (mainPhoto) {
+          gallery.push(mainPhoto);
         }
 
         for (let i = 1; i <= 10; i++) {
           const photoKey = item[`foto_${i}`] || item[`foto${i}`];
           if (photoKey && typeof photoKey === 'string' && photoKey.trim()) {
-            if (!gallery.includes(photoKey.trim())) {
-              gallery.push(photoKey.trim());
+            const formatted = formatImageUrl(photoKey);
+            if (!gallery.includes(formatted)) {
+              gallery.push(formatted);
             }
           }
         }
@@ -114,22 +133,22 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
         if (item.galeria_fotos) {
           if (Array.isArray(item.galeria_fotos)) {
             item.galeria_fotos.forEach((url: any) => {
-              if (typeof url === 'string' && url.trim() && !gallery.includes(url.trim())) {
-                gallery.push(url.trim());
+              const formatted = formatImageUrl(url);
+              if (formatted && !gallery.includes(formatted)) {
+                gallery.push(formatted);
               }
             });
           } else if (typeof item.galeria_fotos === 'string') {
             item.galeria_fotos.split(',').forEach((url: string) => {
-              if (url.trim() && !gallery.includes(url.trim())) {
-                gallery.push(url.trim());
+              const formatted = formatImageUrl(url);
+              if (formatted && !gallery.includes(formatted)) {
+                gallery.push(formatted);
               }
             });
           }
         }
 
-        const defaultImg =
-          'https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=1000&q=80';
-        const image = gallery[0] || defaultImg;
+        const image = gallery[0] || DEFAULT_FALLBACK_IMG;
 
         const features: string[] = [];
         if (Array.isArray(item.caracteristicas)) {
@@ -178,8 +197,15 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     }
   };
 
+  // Carga inicial y auto-actualización silenciosa cada 60 segundos (1 minuto)
   useEffect(() => {
     fetchCatalogData();
+
+    const intervalId = setInterval(() => {
+      fetchCatalogData(false);
+    }, 60000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const availableCities = useMemo(() => {
@@ -279,15 +305,12 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     };
   };
 
-  // 🌟 NUEVO: Lógica que decide si abre modal (Móvil) o salta a Google Maps (PC)
   const handleNavigationClick = (property: Property) => {
-    // Detectamos si es un celular/tablet basado en el agente de usuario
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
     if (isMobile) {
-      setNavigationModalProperty(property); // Abre el menú de 3 opciones
+      setNavigationModalProperty(property);
     } else {
-      // En PC, vamos directo a Google Maps
       const navs = getNavLinks(property.mapUrl);
       if (navs && navs.google) {
         window.open(navs.google, '_blank', 'noopener,noreferrer');
@@ -513,6 +536,9 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     <img
                       src={property.image}
                       alt={property.title}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = DEFAULT_FALLBACK_IMG;
+                      }}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
@@ -635,6 +661,9 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 <img
                   src={activeProperty.gallery?.[activePhotoIndex] || activeProperty.image}
                   alt={activeProperty.title}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = DEFAULT_FALLBACK_IMG;
+                  }}
                   className="w-full h-full object-cover"
                 />
 
@@ -691,7 +720,14 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                           : 'border-slate-200 opacity-60 hover:opacity-100'
                       }`}
                     >
-                      <img src={imgUrl} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
+                      <img 
+                        src={imgUrl} 
+                        alt={`Thumbnail ${idx}`} 
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = DEFAULT_FALLBACK_IMG;
+                        }}
+                        className="w-full h-full object-cover" 
+                      />
                     </button>
                   ))}
                 </div>
@@ -861,7 +897,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setNavigationModalProperty(null)}
-                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-sky-50 hover:bg-sky-100 border border-sky-200 font-bold text-xs text-sky-900 transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-sky-50 hover:bg-sky-100 border border-sky-200 font-bold text-sky-900 transition-colors cursor-pointer"
                   >
                     <span className="flex items-center gap-2">
                       <span>🚗</span> Waze
