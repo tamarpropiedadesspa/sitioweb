@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Building2, Utensils, Truck, Compass, CheckCircle, ArrowRight, BedDouble } from 'lucide-react';
+import { Home, Building2, Utensils, Compass, CheckCircle, ArrowRight, BedDouble } from 'lucide-react';
 import { PHONE_WHATSAPP } from '../data/mockData';
 
 interface DualBlockProps {
@@ -118,7 +118,7 @@ export const DualBlock: React.FC<DualBlockProps> = ({
                 </p>
               </div>
 
-              {/* Service Bullet Points (CORREGIDOS) */}
+              {/* Service Bullet Points (CORREGIDOS A 3 PUNTOS CLAVE) */}
               <ul className="space-y-3 text-sm text-slate-700">
                 <li className="flex items-start gap-2.5">
                   <BedDouble className="w-5 h-5 text-[#C87A32] shrink-0 mt-0.5" />
@@ -129,12 +129,8 @@ export const DualBlock: React.FC<DualBlockProps> = ({
                   <span><strong>Inmuebles para Catering:</strong> Propiedades e instalaciones acondicionadas para casinos y comedores.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <Truck className="w-5 h-5 text-[#C87A32] shrink-0 mt-0.5" />
-                  <span><strong>Patios & Terrenos de Maquinaria:</strong> Terrenos para acopio de equipos, maquinaria y bases logísticas.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
                   <Compass className="w-5 h-5 text-[#C87A32] shrink-0 mt-0.5" />
-                  <span><strong>Terrenos Mineros/Energéticos:</strong> Paños de gran superficie en Pozo Almonte, Calama y todo Chile.</span>
+                  <span><strong>Terrenos Mineros, Energéticos & Patios:</strong> Paños de gran superficie y patios de acopio para maquinaria en Pozo Almonte, Calama y todo Chile.</span>
                 </li>
               </ul>
             </div>
