@@ -7,6 +7,7 @@ interface CorporateItem {
   title: string;
   shortDesc: string;
   fullDesc: string;
+  benefits: string[];
   idealFor: string;
   icon: React.ReactNode;
 }
@@ -17,23 +18,41 @@ const corporateServicesList: CorporateItem[] = [
     title: 'Hospedaje para Proyectos & Turnos',
     shortDesc: 'Arriendo de casas, departamentos y complejos habitacionales amoblados y acondicionados para el alojamiento de dotaciones corporativas.',
     fullDesc: 'Inmuebles residenciales estratégicamente ubicados con capacidad y equipamiento ideal para ingenieros, contratistas y personal de faena.',
-    idealFor: 'Empresas contratistas, consultoras y equipos de operaciones.',
+    benefits: [
+      'Casas y departamentos 100% amoblados',
+      'Contratos corporativos flexibles por turnos',
+      'Servicio de aseo y mantención opcional',
+      'Ubicación cercana a rutas operativas'
+    ],
+    idealFor: 'Empresas contratistas, consultoras y equipos de ingeniería en minería/energía.',
     icon: <Building2 className="w-7 h-7 text-white" />
   },
   {
     id: 'catering-espacios',
     title: 'Inmuebles para Catering & Comedores',
-    shortDesc: 'Arriendo y habilitación de propiedades e instalaciones acondicionadas para la operación de cocinas industriales, comedores y servicios de alimentación.',
+    shortDesc: 'Arriendo y habilitación de propiedades e instalaciones acondicionadas para la operación de cocinas industriales, comedores y servicios de casino.',
     fullDesc: 'Propiedades corporativas con la infraestructura espacial, sanitaria y eléctrica requerida por empresas de catering para atender personal en faena.',
-    idealFor: 'Empresas de alimentación, servicios de casino e instalaciones temporales.',
+    benefits: [
+      'Factibilidad sanitaria y eléctrica industrial',
+      'Espacios amoldables para comedores y cocinas',
+      'Ubicación estratégica en nodos mineros',
+      'Contratos adaptados a la duración del proyecto'
+    ],
+    idealFor: 'Empresas de alimentación, casinos e instalaciones temporales en terreno.',
     icon: <Utensils className="w-7 h-7 text-white" />
   },
   {
     id: 'terrenos-maquinaria',
     title: 'Terrenos Mineros, Energéticos & Patios',
-    shortDesc: 'Búsqueda, corretaje y arriendo de grandes paños de tierra y terrenos para proyectos de energía, minería y acopio de maquinaria pesada.',
-    fullDesc: 'Terrenos con factibilidad legal y técnica en el norte de Chile para proyectos fotovoltaicos, eólicos, acopio de equipos y base logística.',
-    idealFor: 'Desarrolladores de energía renovable, mineras e industrias pesadas.',
+    shortDesc: 'Búsqueda, corretaje y arriendo de grandes paños de tierra y patios de acopio para almacenamiento de maquinaria pesada, energía y minería.',
+    fullDesc: 'Terrenos con factibilidad legal y técnica en el norte de Chile para proyectos fotovoltaicos, eólicos, resguardo de flota pesada y bases logísticas.',
+    benefits: [
+      'Patios cerrados para acopio de maquinaria pesada',
+      'Paños de gran superficie en Pozo Almonte, Calama y más',
+      'Estudio de factibilidad de suelo y servidumbres',
+      'Gestión B2B confidencial e institucional'
+    ],
+    idealFor: 'Desarrolladores de energía renovable, mineras y logística pesada.',
     icon: <Compass className="w-7 h-7 text-white" />
   }
 ];
@@ -75,13 +94,13 @@ export const CorporateServices: React.FC = () => {
         {/* Encabezado de la sección */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <span className="px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-[#C87A32]/10 text-[#C87A32] border border-[#C87A32]/30">
-            Soluciones Inmobiliarias B2B
+            INGENIERÍA & SOPORTE OPERATIVO
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1E36] font-sans">
-            Empresas
+            Servicios Especializados para Empresas
           </h2>
           <p className="text-slate-600 text-base sm:text-lg">
-            Gestión y arriendo de propiedades, terrenos e instalaciones acondicionadas para cubrir los requerimientos habitacionales y logísticos de tu compañía.
+            Gestión y arriendo de propiedades, terrenos e instalaciones acondicionadas para cubrir los requerimientos habitacionales y logísticos de tu compañía en todo el territorio chileno.
           </p>
         </div>
 
@@ -94,9 +113,14 @@ export const CorporateServices: React.FC = () => {
             >
               <div className="space-y-5">
                 
-                {/* Ícono de la tarjeta (sin badge B2B & Industrial) */}
-                <div className="w-14 h-14 rounded-xl bg-[#C87A32] flex items-center justify-center text-white shadow-md shadow-[#C87A32]/20">
-                  {service.icon}
+                {/* Ícono de la tarjeta y Badge */}
+                <div className="flex items-center justify-between">
+                  <div className="w-14 h-14 rounded-xl bg-[#C87A32] flex items-center justify-center text-white shadow-md shadow-[#C87A32]/20">
+                    {service.icon}
+                  </div>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#C87A32] bg-[#C87A32]/10 px-2.5 py-1 rounded-md border border-[#C87A32]/30">
+                    B2B & INDUSTRIAL
+                  </span>
                 </div>
 
                 <div>
@@ -111,6 +135,21 @@ export const CorporateServices: React.FC = () => {
                 <p className="text-xs text-slate-500 border-l-2 border-[#C87A32] pl-3 py-1 font-medium italic">
                   {service.fullDesc}
                 </p>
+
+                {/* Beneficios clave en lista de puntos */}
+                <div className="space-y-2 pt-2 border-t border-slate-100">
+                  <span className="text-[11px] font-extrabold text-[#0B1E36] uppercase tracking-wider block">
+                    Beneficios Clave:
+                  </span>
+                  <div className="space-y-1.5">
+                    {service.benefits.map((b, idx) => (
+                      <div key={idx} className="flex items-start gap-2 text-xs text-slate-700 font-medium">
+                        <CheckCircle2 className="w-4 h-4 text-[#C87A32] shrink-0 mt-0.5" />
+                        <span>{b}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
                 {/* Audiencia objetivo */}
                 <div className="pt-3 border-t border-slate-200 text-xs">
@@ -237,7 +276,7 @@ export const CorporateServices: React.FC = () => {
                   <label className="block text-slate-700 font-bold mb-1">Detalles del Requerimiento</label>
                   <textarea
                     rows={3}
-                    placeholder="Describa cantidad de trabajadores a alojar, superficie requerida para terrenos o equipamiento para cocinas..."
+                    placeholder="Describa cantidad de trabajadores a alojar, superficie requerida para terrenos o patios de maquinaria..."
                     value={formData.mensaje}
                     onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-800 rounded-lg p-2.5 focus:outline-none focus:border-[#C87A32]"
