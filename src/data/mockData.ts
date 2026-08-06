@@ -1,8 +1,10 @@
 import { Property, RegionInfo, CorporateService } from '../types';
 
-export const PHONE_WHATSAPP = '+56974747910';
-export const PHONE_DISPLAY = '+56 9 7474 7910';
+export const PHONE_WHATSAPP = '+56964471921';
+export const PHONE_DISPLAY = '+56 9 6447 1921';
 export const EMAIL_CONTACT = 'contacto@tamarpropiedades.cl';
+export const EMAIL_PAOLA = 'paola@tamarpropiedades.cl';
+export const EMAIL_SOFIA = 'sofia@tamarpropiedades.cl';
 
 export const MOCK_PROPERTIES: Property[] = [
   {
@@ -72,7 +74,7 @@ export const MOCK_PROPERTIES: Property[] = [
     image: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1200&q=80',
     featured: false,
     description: 'Infraestructura modular habilitada con capacidad para 60 trabajadores de faenas. Incluye salas de estar, comedores y cocina industrial.',
-    features: ['Capacidad 60+ Camas', 'Cocina & Comedor Industrial', 'Internet Satelital High-Speed', 'Servicio Catering Opcional']
+    features: ['Capacidad 60+ Camas', 'Cocina & Comedor Industrial', 'Internet Satelital High-Speed', 'Servicios Complementarios']
   },
   {
     id: 'prop-5',
@@ -112,7 +114,7 @@ export const REGIONAL_COVERAGE: RegionInfo[] = [
     name: 'Tarapacá (Iquique & Pozo Almonte)',
     country: 'Chile',
     hubs: ['Iquique', 'Pozo Almonte', 'Pica'],
-    serviceTypes: ['Terrenos Mineros', 'Hospedaje de Faena', 'Catering Industrial', 'Propiedades Residenciales'],
+    serviceTypes: ['Terrenos Mineros', 'Hospedaje de Faena', 'Inmuebles Catering', 'Propiedades Residenciales'],
     description: 'Base operadora clave para proyectos de litio, minería del cobre y corredores bi-oceánicos.',
     isMainBase: true
   },
@@ -120,7 +122,7 @@ export const REGIONAL_COVERAGE: RegionInfo[] = [
     name: 'Antofagasta & El Loa (Calama)',
     country: 'Chile',
     hubs: ['Calama', 'Antofagasta', 'Sierra Gorda'],
-    serviceTypes: ['Arriendo de Maquinaria', 'Campamentos Modulares', 'Logística Minera'],
+    serviceTypes: ['Patios Maquinaria', 'Campamentos Modulares', 'Logística Minera'],
     description: 'Atención directa al núcleo minero con respuesta inmediata en terreno.',
     isMainBase: true
   },
@@ -167,29 +169,20 @@ export const CORPORATE_SERVICES: CorporateService[] = [
   },
   {
     id: 'serv-2',
-    title: 'Catering Industrial & Alimentación',
+    title: 'Inmuebles para Catering & Comedores',
     iconName: 'Utensils',
-    shortDesc: 'Alimentación nutritiva y certificada para trabajadores en proyectos de campo.',
-    fullDesc: 'Provisión de servicios gastronómicos para faenas e instalaciones temporales. Cumplimos con elevados estándares de inocuidad y balance nutricional adaptado a exigencias de alta montaña y clima desértico.',
-    features: ['Desayunos, almuerzos y cenas nutritivas', 'Kits colación para terreno', 'Certificaciones de inocuidad al día', 'Logística térmica asegurada'],
-    idealFor: 'Empresas con personal en faenas mineras, fotovoltaicas o montajes.'
+    shortDesc: 'Propiedades corporativas con factibilidad para la operación de casinos industriales.',
+    fullDesc: 'Arriendo y habilitación de propiedades e instalaciones acondicionadas para la operación de cocinas industriales, comedores y servicios de alimentación en faena.',
+    features: ['Factibilidad sanitaria', 'Espacios adaptables', 'Certificaciones al día', 'Conectividad logística'],
+    idealFor: 'Empresas de alimentación, casinos e instalaciones temporales.'
   },
   {
     id: 'serv-3',
-    title: 'Arriendo de Maquinaria & Equipos',
-    iconName: 'Truck',
-    shortDesc: 'Flota operativa de maquinaria pesada, vehículos y equipos de soporte industrial.',
-    fullDesc: 'Proveemos maquinaria pesada, generadores, camiones tolva y equipos de movimiento de tierra con mantenimiento continuo y soporte técnico en sitio.',
-    features: ['Maquinaria pesada y movimiento de tierra', 'Generadores trifásicos de alta potencia', 'Operadores certificados opcionales', 'Respuesta técnica 24/7'],
-    idealFor: 'Proyectos de construcción, caminos, movimientos de tierra y montaje.'
-  },
-  {
-    id: 'serv-4',
-    title: 'Terrenos Mineros & Energéticos',
+    title: 'Terrenos Mineros, Energéticos & Patios',
     iconName: 'Compass',
-    shortDesc: 'Búsqueda, gestión y arriendo de paños territoriales para energía y minería.',
-    fullDesc: 'Especializados en la identificación, factibilidad legal y corretaje de terrenos de gran superficie en el norte de Chile para proyectos fotovoltaicos, eólicos e industriales.',
-    features: ['Estudio de factibilidad de suelo', 'Derechos de agua y factibilidad eléctrica', 'Soporte en servidumbres y concesiones', 'Confidencialidad institucional'],
-    idealFor: 'Desarrolladores de energía renovable, mineras e industrias químicas.'
+    shortDesc: 'Búsqueda, gestión y arriendo de paños territoriales y patios de acopio.',
+    fullDesc: 'Especializados en la identificación, factibilidad legal y corretaje de terrenos de gran superficie en el norte de Chile para proyectos fotovoltaicos, mineros y patios de maquinaria.',
+    features: ['Patios de acopio', 'Factibilidad eléctrica', 'Soporte en servidumbres y concesiones', 'Confidencialidad institucional'],
+    idealFor: 'Desarrolladores de energía renovable, logística y mineras.'
   }
 ];
