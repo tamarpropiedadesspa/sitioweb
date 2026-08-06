@@ -467,7 +467,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     <div className="absolute bottom-3 left-3 right-3 flex items-baseline justify-between">
                       <div>
                         <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
-                          {property.priceUF > 0 ? `${property.priceUF.toLocaleString('es-CL')} UF` : 'Consultar UF'}
+                          {property.priceUF > 0 ? `${property.priceUF.toLocaleString('es-CL')} UF` : 'Consultar Valor'}
                         </span>
                         {property.priceCLP > 0 && (
                           <span className="text-xs text-slate-200 block font-semibold drop-shadow-sm">
@@ -691,7 +691,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
               <div className="flex flex-wrap items-baseline gap-4 py-3 border-y border-slate-200">
                 <span className="text-3xl font-extrabold text-[#C87A32]">
-                  {activeProperty.priceUF > 0 ? `${activeProperty.priceUF.toLocaleString('es-CL')} UF` : 'Consultar UF'}
+                  {activeProperty.priceUF > 0 ? `${activeProperty.priceUF.toLocaleString('es-CL')} UF` : 'Consultar Valor'}
                 </span>
                 {activeProperty.priceCLP > 0 && (
                   <span className="text-sm text-slate-600 font-semibold">
