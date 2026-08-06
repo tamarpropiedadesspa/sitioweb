@@ -52,15 +52,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
     };
   }, []);
 
-  // Menú de navegación (Sin calculadora)
+  // Menú de navegación actualizado
   const navItems = [
     { id: 'inicio', label: 'Inicio' },
     { id: 'buscar', label: '¿Qué buscas?' },
     { id: 'propiedades', label: 'Propiedades' },
-    { id: 'servicios', label: 'Empresas' },
+    { id: 'servicios', label: 'Servicios Empresas' },
     { id: 'cobertura', label: 'Cobertura' },
     { id: 'clientes', label: 'Clientes' },
-    { id: 'contacto', label: 'Contacto' },
   ];
 
   const handleNavClick = (id: string) => {
@@ -110,11 +109,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
         </div>
       </div>
 
-      {/* Main Navbar con altura expandida h-24 */}
+      {/* Main Navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-24">
           
-          {/* Marca: Isotipo y Texto integrados y más grandes */}
+          {/* Marca / Logo */}
           <div 
             onClick={() => handleNavClick('inicio')}
             className="flex items-center gap-3.5 cursor-pointer group"
@@ -186,7 +185,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
               onClick={() => handleNavClick(item.id)}
               className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
                 activeSection === item.id
-                  ? 'bg-[#C87A32] text-white font-semibold'
+                  ? 'bg-[#C87A32] text-[#0B1E36] font-extrabold'
                   : 'text-slate-700 hover:bg-slate-100 hover:text-[#0B1E36]'
               }`}
             >
