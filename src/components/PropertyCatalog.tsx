@@ -16,6 +16,7 @@ import {
   ChevronLeft,
   ChevronRight,
   AlertCircle,
+  Loader2,
   Filter,
   Navigation,
 } from 'lucide-react';
@@ -31,7 +32,7 @@ const GOOGLE_SHEETS_API_URL =
 const DEFAULT_FALLBACK_IMG =
   'https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=1000&q=80';
 
-// Convierte enlaces compartidos de Google Drive a URLs de imagen directas
+// Convierte enlaces de Google Drive a URLs de servidor directo
 const formatImageUrl = (url?: string): string => {
   if (!url || typeof url !== 'string' || !url.trim()) return DEFAULT_FALLBACK_IMG;
   const cleanUrl = url.trim();
@@ -44,6 +45,14 @@ const formatImageUrl = (url?: string): string => {
   }
 
   return cleanUrl;
+};
+
+// Genera una versión liviana (~15 KB) para miniaturas si la imagen viene de Google Drive
+const getThumbnailUrl = (url: string): string => {
+  if (url.includes('lh3.googleusercontent.com/d/')) {
+    return `${url}=w200-h150-c`;
+  }
+  return url;
 };
 
 export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
@@ -198,12 +207,11 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     }
   };
 
-  // Carga inicial y auto-actualización SILENCIOSA cada 60 segundos
   useEffect(() => {
     fetchCatalogData(false, false);
 
     const intervalId = setInterval(() => {
-      fetchCatalogData(false, true); // es re-fetch silencioso en segundo plano
+      fetchCatalogData(false, true);
     }, 60000);
 
     return () => clearInterval(intervalId);
@@ -255,6 +263,14 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
   const openPropertyModal = (property: Property) => {
     setActiveProperty(property);
     setActivePhotoIndex(0);
+
+    // Precargar todas las imágenes de la galería en memoria para transición rápida
+    if (property.gallery) {
+      property.gallery.forEach((url) => {
+        const img = new Image();
+        img.src = url;
+      });
+    }
   };
 
   const getEmbedVideoUrl = (url?: string) => {
@@ -377,7 +393,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               />
             </div>
 
-            {/* Property Type Filter (CAMBIADO A "Casas") */}
+            {/* Property Type Filter */}
             <div>
               <select
                 value={selectedType}
@@ -551,7 +567,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     onClick={() => openPropertyModal(property)}
                   >
                     <img
-                      src={property.image}
+                      src={getThumbnailUrl(property.image)}
                       alt={property.title}
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = DEFAULT_FALLBACK_IMG;
@@ -728,21 +744,21 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 )}
               </div>
 
-              {/* Gallery Thumbnails */}
+              {/* Gallery Thumbnails (MINIARURAS ULTRA LIVIANAS ~15 KB CADA UNA) */}
               {activeProperty.gallery && activeProperty.gallery.length > 1 && (
                 <div className="flex items-center gap-2 overflow-x-auto pb-2">
                   {activeProperty.gallery.map((imgUrl, idx) => (
                     <button
                       key={idx}
                       onClick={() => setActivePhotoIndex(idx)}
-                      className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
+                      className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 bg-slate-200 transition-all cursor-pointer relative ${
                         activePhotoIndex === idx
                           ? 'border-[#C87A32] scale-105 shadow-md'
-                          : 'border-slate-200 opacity-60 hover:opacity-100'
+                          : 'border-slate-200 opacity-70 hover:opacity-100'
                       }`}
                     >
                       <img 
-                        src={imgUrl} 
+                        src={getThumbnailUrl(imgUrl)} 
                         alt={`Thumbnail ${idx}`} 
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = DEFAULT_FALLBACK_IMG;
