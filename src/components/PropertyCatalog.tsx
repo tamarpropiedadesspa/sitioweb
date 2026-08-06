@@ -264,7 +264,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     setActiveProperty(property);
     setActivePhotoIndex(0);
 
-    // Precargar todas las imágenes de la galería en memoria para transición rápida
+    // Precargar todas las imágenes de la galería en memoria
     if (property.gallery) {
       property.gallery.forEach((url) => {
         const img = new Image();
@@ -461,7 +461,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
           </div>
         </div>
 
-        {/* INITIAL LOADING STATE: TARJETAS ESQUELETO (SKELETON LOADER) */}
+        {/* INITIAL LOADING STATE: SKELETON LOADER */}
         {isLoading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((skeleton) => (
@@ -678,32 +678,45 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
       </div>
 
-      {/* TECHNICAL SHEET MODAL */}
+      {/* TECHNICAL SHEET MODAL (VISTA DE FOTO COMPLETA CON FONDO AMBIENTAL BLUR) */}
       {activeProperty && (
         <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-6 overflow-y-auto">
           <div className="bg-white border border-slate-200 rounded-2xl max-w-3xl w-full p-5 sm:p-6 space-y-6 relative shadow-2xl mt-4 sm:mt-10 mb-10 animate-in fade-in zoom-in-95 duration-200">
             
             <button
               onClick={() => setActiveProperty(null)}
-              className="absolute top-4 right-4 z-10 p-2 rounded-lg bg-white/90 hover:bg-slate-200 text-slate-700 hover:text-slate-900 transition-colors shadow cursor-pointer"
+              className="absolute top-4 right-4 z-20 p-2 rounded-lg bg-white/90 hover:bg-slate-200 text-slate-700 hover:text-slate-900 transition-colors shadow cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
 
             {/* Gallery Carousel */}
             <div className="space-y-3">
-              <div className="relative h-72 sm:h-96 rounded-xl overflow-hidden bg-slate-900">
+              {/* MARCO DE FOTO: Se usa object-contain y fondo ambient-blur para no recortar la foto jamás */}
+              <div className="relative h-72 sm:h-96 rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
+                
+                {/* 1. Fondo difuminado para rellenar bordes si la foto es vertical/cuadrada */}
+                <img
+                  src={activeProperty.gallery?.[activePhotoIndex] || activeProperty.image}
+                  alt=""
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = DEFAULT_FALLBACK_IMG;
+                  }}
+                  className="absolute inset-0 w-full h-full object-cover blur-xl opacity-40 scale-110 pointer-events-none"
+                />
+
+                {/* 2. Imagen Principal COMPLETA (0% recorte) */}
                 <img
                   src={activeProperty.gallery?.[activePhotoIndex] || activeProperty.image}
                   alt={activeProperty.title}
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = DEFAULT_FALLBACK_IMG;
                   }}
-                  className="w-full h-full object-cover"
+                  className="relative z-10 max-h-full max-w-full object-contain mx-auto shadow-2xl"
                 />
 
                 {/* Operation & Category Badges */}
-                <div className="absolute top-3 left-3 flex gap-2">
+                <div className="absolute top-3 left-3 z-20 flex gap-2">
                   <span className="px-3 py-1 rounded bg-[#C87A32] text-white text-xs font-extrabold uppercase shadow">
                     En {activeProperty.operation}
                   </span>
@@ -723,7 +736,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                           prev === 0 ? activeProperty.gallery!.length - 1 : prev - 1
                         )
                       }
-                      className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-sm transition-all cursor-pointer"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/60 hover:bg-black/90 text-white backdrop-blur-md transition-all cursor-pointer shadow-lg"
                     >
                       <ChevronLeft className="w-5 h-5" />
                     </button>
@@ -733,18 +746,18 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                           prev === activeProperty.gallery!.length - 1 ? 0 : prev + 1
                         )
                       }
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-sm transition-all cursor-pointer"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/60 hover:bg-black/90 text-white backdrop-blur-md transition-all cursor-pointer shadow-lg"
                     >
                       <ChevronRight className="w-5 h-5" />
                     </button>
-                    <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-md font-semibold">
+                    <div className="absolute bottom-3 right-3 z-20 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-md font-semibold">
                       Foto {activePhotoIndex + 1} de {activeProperty.gallery.length}
                     </div>
                   </>
                 )}
               </div>
 
-              {/* Gallery Thumbnails (MINIARURAS ULTRA LIVIANAS ~15 KB CADA UNA) */}
+              {/* Gallery Thumbnails (MINIATURAS ULTRA LIVIANAS) */}
               {activeProperty.gallery && activeProperty.gallery.length > 1 && (
                 <div className="flex items-center gap-2 overflow-x-auto pb-2">
                   {activeProperty.gallery.map((imgUrl, idx) => (
