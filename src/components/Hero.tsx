@@ -1,26 +1,17 @@
-import React, { useState } from 'react';
-import { Home, Building, ArrowRight, ShieldCheck, CheckCircle2, Compass } from 'lucide-react';
+import React from 'react';
+import { Home, Building, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { PHONE_WHATSAPP } from '../data/mockData';
 
 interface HeroProps {
   onExploreProperties: () => void;
   onExploreCorporate: () => void;
-  onQuickSearch: (type: string, location: string) => void;
+  onQuickSearch?: (type: string, location: string) => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({
   onExploreProperties,
   onExploreCorporate,
-  onQuickSearch,
 }) => {
-  const [selectedType, setSelectedType] = useState('todas');
-  const [selectedCity, setSelectedCity] = useState('todas');
-
-  const handleSearchClick = (e: React.FormEvent) => {
-    e.preventDefault();
-    onQuickSearch(selectedType, selectedCity);
-  };
-
   const whatsappDirect = `https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(
     'Hola Tamar Propiedades SpA, vi su sitio web y desearía realizar una consulta sobre sus propiedades y servicios.'
   )}`;
@@ -129,58 +120,6 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
           </div>
 
-        </div>
-
-        {/* Panel de Filtro Rápido */}
-        <div className="mt-12 bg-[#F8FAFC] p-4 sm:p-6 rounded-2xl border border-[#E2E8F0] shadow-xl max-w-5xl mx-auto">
-          <form onSubmit={handleSearchClick} className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-7 gap-3 items-end">
-            
-            <div className="lg:col-span-2 space-y-1">
-              <label className="text-xs font-bold text-[#0B1E36] uppercase tracking-wider block text-left">
-                Tipo de Propiedad / Servicio
-              </label>
-              <select
-                value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value)}
-                className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-[#0B1E36] font-semibold focus:outline-none focus:border-[#C87A32] focus:ring-1 focus:ring-[#C87A32] cursor-pointer"
-              >
-                <option value="todas">Todos los servicios</option>
-                <option value="residencial">Casas Residenciales</option>
-                <option value="departamento">Departamentos Ejecutivos</option>
-                <option value="terreno">Terrenos / Parcelas</option>
-                <option value="industrial">Infraestructura & Terrenos Mineros</option>
-              </select>
-            </div>
-
-            <div className="lg:col-span-2 space-y-1">
-              <label className="text-xs font-bold text-[#0B1E36] uppercase tracking-wider block text-left">
-                Ubicación / Ciudad
-              </label>
-              <select
-                value={selectedCity}
-                onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-[#0B1E36] font-semibold focus:outline-none focus:border-[#C87A32] focus:ring-1 focus:ring-[#C87A32] cursor-pointer"
-              >
-                <option value="todas">Todas las regiones</option>
-                <option value="Iquique">Iquique / Pozo Almonte</option>
-                <option value="Calama">Calama / Antofagasta</option>
-                <option value="La Serena">La Serena / Ovalle</option>
-                <option value="Viña del Mar">Viña del Mar</option>
-                <option value="Concepción">Concepción</option>
-              </select>
-            </div>
-
-            <div className="lg:col-span-3">
-              <button
-                type="submit"
-                className="w-full bg-[#C87A32] hover:bg-[#A85D23] text-white font-bold py-2.5 px-4 rounded-lg text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
-              >
-                <Compass className="w-4 h-4" />
-                <span>Buscar en Catálogo Dinámico</span>
-              </button>
-            </div>
-
-          </form>
         </div>
 
       </div>
