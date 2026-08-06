@@ -18,6 +18,7 @@ import {
   AlertCircle,
   Loader2,
   Filter,
+  Star,
 } from 'lucide-react';
 
 interface PropertyCatalogProps {
@@ -81,10 +82,10 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
         rawItems = result.items;
       }
 
-      // Filter only properties with state = 'Activo' (if estado column is present)
+      // Filter only properties with state = 'Activo'
       const activeItems = rawItems.filter((item) => {
         if (!item) return false;
-        if (!item.estado && !item.state && !item.status) return true; // If no status column, include
+        if (!item.estado && !item.state && !item.status) return true;
         const estadoStr = String(item.estado || item.state || item.status || '').trim().toLowerCase();
         return estadoStr === 'activo' || estadoStr === 'active' || estadoStr === 'publicado' || estadoStr === 'true';
       });
@@ -93,13 +94,11 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
       const mapped: Property[] = activeItems.map((item, index) => {
         const gallery: string[] = [];
 
-        // Check main photo
         const mainPhoto = item.foto_principal || item.foto1 || item.foto_1 || item.imagen || item.image;
         if (mainPhoto && typeof mainPhoto === 'string' && mainPhoto.trim()) {
           gallery.push(mainPhoto.trim());
         }
 
-        // Check foto_1 to foto_10
         for (let i = 1; i <= 10; i++) {
           const photoKey = item[`foto_${i}`] || item[`foto${i}`];
           if (photoKey && typeof photoKey === 'string' && photoKey.trim()) {
@@ -109,7 +108,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
           }
         }
 
-        // Check galeria_fotos field
         if (item.galeria_fotos) {
           if (Array.isArray(item.galeria_fotos)) {
             item.galeria_fotos.forEach((url: any) => {
@@ -130,7 +128,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
           'https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=1000&q=80';
         const image = gallery[0] || defaultImg;
 
-        // Parse features
         const features: string[] = [];
         if (Array.isArray(item.caracteristicas)) {
           item.caracteristicas.forEach((f: any) => typeof f === 'string' && features.push(f));
@@ -140,6 +137,10 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
         const priceUF = parseFloat(item.precio_uf || item.precioUF || item.priceUF || 0);
         const priceCLP = parseFloat(item.precio_clp || item.precioCLP || item.priceCLP || 0);
+
+        // 🌟 CORRECCIÓN 1: Leer Destacado explícitamente para evaluar 'SI'
+        const destStr = String(item.destacado || item.featured || '').trim().toLowerCase();
+        const isFeatured = ['si', 'sí', 'true', '1'].includes(destStr);
 
         return {
           id: String(item.id || item.ID || item.id_propiedad || index + 1),
@@ -157,8 +158,8 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
           image,
           gallery: gallery.length > 0 ? gallery : [image],
           videoUrl: item.video_url || item.video || undefined,
-          mapUrl: item.ubicacion_maps || item.mapa || item.coordenadas || undefined, // 👈 NUEVO: Lee la columna de Google Maps
-          featured: Boolean(item.destacado || item.featured),
+          mapUrl: item.ubicacion_maps || item.mapa || item.coordenadas || undefined,
+          featured: isFeatured, // 👈 Aplicado aquí
           description: item.descripcion || item.description || 'Sin descripción disponible.',
           features: features.length > 0 ? features : ['Inspección previa en terreno', 'Asesoría legal incluida'],
           status: item.estado || 'Activo',
@@ -180,20 +181,16 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
   }, []);
 
   const filteredProperties = useMemo(() => {
-    return properties.filter((prop) => {
-      // Type match
+    const list = properties.filter((prop) => {
       if (selectedType !== 'todas' && prop.type !== selectedType) {
         return false;
       }
-      // Operation match
       if (selectedOperation !== 'todas' && prop.operation !== selectedOperation) {
         return false;
       }
-      // City match
       if (selectedCity !== 'todas' && !prop.region.toLowerCase().includes(selectedCity.toLowerCase()) && !prop.location.toLowerCase().includes(selectedCity.toLowerCase())) {
         return false;
       }
-      // Search query
       if (searchQuery.trim() !== '') {
         const query = searchQuery.toLowerCase();
         const matchesTitle = prop.title.toLowerCase().includes(query);
@@ -203,6 +200,9 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
       }
       return true;
     });
+
+    // 🌟 CORRECCIÓN 2: Ordenar propiedades para que las destacadas salgan primero
+    return list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
   }, [properties, selectedType, selectedOperation, selectedCity, searchQuery]);
 
   const generateWhatsAppLink = (property: Property) => {
@@ -215,7 +215,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     setActivePhotoIndex(0);
   };
 
-  // Helper to format YouTube embed URLs
   const getEmbedVideoUrl = (url?: string) => {
     if (!url) return null;
     if (url.includes('youtube.com/watch') || url.includes('youtu.be/')) {
@@ -232,7 +231,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     return url;
   };
 
-  // 👈 NUEVO: Helper para formatear links de Google Maps o coordenadas a un link clickeable
   const getMapLink = (urlOrCoords?: string) => {
     if (!urlOrCoords) return null;
     const isLink = urlOrCoords.startsWith('http');
@@ -445,7 +443,9 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
             {filteredProperties.map((property) => (
               <div
                 key={property.id}
-                className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-[#C87A32]/60 transition-all duration-300 shadow-md hover:shadow-xl flex flex-col justify-between group"
+                className={`bg-white border rounded-2xl overflow-hidden hover:border-[#C87A32]/60 transition-all duration-300 shadow-md hover:shadow-xl flex flex-col justify-between group ${
+                  property.featured ? 'border-amber-400 ring-1 ring-amber-400/50' : 'border-slate-200'
+                }`}
               >
                 <div>
                   {/* Property Image & Badges */}
@@ -457,7 +457,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
 
-                    {/* Badges */}
+                    {/* Badges Principales */}
                     <div className="absolute top-3 left-3 flex flex-wrap gap-2">
                       <span className="px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider text-white shadow-md bg-[#C87A32]">
                         En {property.operation}
@@ -466,6 +466,14 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                         {property.category || property.type}
                       </span>
                     </div>
+
+                    {/* 🌟 Badge de Destacado ⭐ */}
+                    {property.featured && (
+                      <div className="absolute top-3 right-3 flex items-center gap-1 bg-amber-400 text-slate-900 font-extrabold text-[11px] px-2.5 py-1 rounded-md uppercase tracking-wider shadow-md border border-amber-300">
+                        <Star className="w-3.5 h-3.5 fill-slate-900 text-slate-900" />
+                        <span>Destacado</span>
+                      </div>
+                    )}
 
                     {/* Price Tag Overlay */}
                     <div className="absolute bottom-3 left-3 right-3 flex items-baseline justify-between">
@@ -588,6 +596,14 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                   </span>
                 </div>
 
+                {/* Badge de Destacado en Modal */}
+                {activeProperty.featured && (
+                  <div className="absolute top-3 right-12 flex items-center gap-1 bg-amber-400 text-slate-900 font-extrabold text-[11px] px-2.5 py-1 rounded uppercase tracking-wider shadow border border-amber-300">
+                    <Star className="w-3.5 h-3.5 fill-slate-900 text-slate-900" />
+                    <span>Destacado</span>
+                  </div>
+                )}
+
                 {/* Navigation Arrows */}
                 {activeProperty.gallery && activeProperty.gallery.length > 1 && (
                   <>
@@ -662,7 +678,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               </div>
             )}
 
-            {/* 👈 NUEVA SECCIÓN DE MAPA 👉 */}
+            {/* Ubicación Google Maps */}
             {activeProperty.mapUrl && (
               <div className="space-y-2 pt-2 border-t border-slate-200">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-[#0B1E36] flex items-center gap-1.5">
@@ -681,7 +697,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 </a>
               </div>
             )}
-            {/* 👈 FIN SECCIÓN DE MAPA 👉 */}
 
             {/* Content Specifications */}
             <div className="space-y-4">
@@ -728,7 +743,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 </div>
               </div>
 
-              {/* 👈 Action buttons ACTUALIZADOS (Botón limpio sin ID) 👉 */}
+              {/* Action buttons */}
               <div className="pt-4 flex flex-col sm:flex-row gap-3">
                 <a
                   href={generateWhatsAppLink(activeProperty)}
