@@ -678,7 +678,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
       </div>
 
-      {/* TECHNICAL SHEET MODAL (VISTA DE FOTO COMPLETA CON FONDO AMBIENTAL BLUR) */}
+      {/* TECHNICAL SHEET MODAL (VISTA DE FOTO COMPLETA CON FONDO AMBIENTAL BLUR AMBIENT) */}
       {activeProperty && (
         <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-6 overflow-y-auto">
           <div className="bg-white border border-slate-200 rounded-2xl max-w-3xl w-full p-5 sm:p-6 space-y-6 relative shadow-2xl mt-4 sm:mt-10 mb-10 animate-in fade-in zoom-in-95 duration-200">
@@ -692,27 +692,27 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
             {/* Gallery Carousel */}
             <div className="space-y-3">
-              {/* MARCO DE FOTO: Se usa object-contain y fondo ambient-blur para no recortar la foto jamás */}
+              {/* MARCO DE FOTO: Relleno ambiental de borde a borde */}
               <div className="relative h-72 sm:h-96 rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
                 
-                {/* 1. Fondo difuminado para rellenar bordes si la foto es vertical/cuadrada */}
+                {/* 1. Fondo difuminado rico para rellenar bordes si la foto es vertical/cuadrada */}
                 <img
                   src={activeProperty.gallery?.[activePhotoIndex] || activeProperty.image}
                   alt=""
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = DEFAULT_FALLBACK_IMG;
                   }}
-                  className="absolute inset-0 w-full h-full object-cover blur-xl opacity-40 scale-110 pointer-events-none"
+                  className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-80 scale-125 pointer-events-none"
                 />
 
-                {/* 2. Imagen Principal COMPLETA (0% recorte) */}
+                {/* 2. Imagen Principal COMPLETA (0% recorte con sombra de elevación) */}
                 <img
                   src={activeProperty.gallery?.[activePhotoIndex] || activeProperty.image}
                   alt={activeProperty.title}
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = DEFAULT_FALLBACK_IMG;
                   }}
-                  className="relative z-10 max-h-full max-w-full object-contain mx-auto shadow-2xl"
+                  className="relative z-10 max-h-full max-w-full object-contain mx-auto shadow-2xl rounded-sm"
                 />
 
                 {/* Operation & Category Badges */}
