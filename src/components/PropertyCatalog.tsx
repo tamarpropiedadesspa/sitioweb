@@ -18,6 +18,7 @@ import {
   AlertCircle,
   Loader2,
   Filter,
+  Navigation,
 } from 'lucide-react';
 
 interface PropertyCatalogProps {
@@ -46,6 +47,9 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
   // Modal / Lightbox State
   const [activeProperty, setActiveProperty] = useState<Property | null>(null);
   const [activePhotoIndex, setActivePhotoIndex] = useState<number>(0);
+
+  // Modal para Elegir App de Navegación ("Cómo llegar")
+  const [navigationModalProperty, setNavigationModalProperty] = useState<Property | null>(null);
 
   // Fetch real-time data from Google Sheets API
   const fetchCatalogData = async (isManualRefresh = false) => {
@@ -242,10 +246,39 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     return url;
   };
 
-  const getMapLink = (urlOrCoords?: string) => {
-    if (!urlOrCoords) return null;
-    const isLink = urlOrCoords.startsWith('http');
-    return isLink ? urlOrCoords : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(urlOrCoords)}`;
+  // Función inteligente para construir enlaces universales a Google Maps, Waze y Apple Maps
+  const getNavLinks = (locationOrCoords?: string) => {
+    if (!locationOrCoords) return null;
+    const trimmed = locationOrCoords.trim();
+
+    // Comprobar si son coordenadas lat,lng (ej: -30.5987, -71.2012)
+    const coordRegex = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/;
+    const isCoords = coordRegex.test(trimmed);
+
+    if (isCoords) {
+      const [lat, lng] = trimmed.split(',').map((s) => s.trim());
+      return {
+        google: `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,
+        waze: `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`,
+        apple: `https://maps.apple.com/?daddr=${lat},${lng}`,
+      };
+    }
+
+    if (trimmed.startsWith('http')) {
+      return {
+        google: trimmed,
+        waze: `https://waze.com/ul?q=${encodeURIComponent(trimmed)}&navigate=yes`,
+        apple: trimmed,
+      };
+    }
+
+    // Si es un texto con dirección o ciudad
+    const encoded = encodeURIComponent(trimmed);
+    return {
+      google: `https://www.google.com/maps/dir/?api=1&destination=${encoded}`,
+      waze: `https://waze.com/ul?q=${encoded}&navigate=yes`,
+      apple: `https://maps.apple.com/?daddr=${encoded}`,
+    };
   };
 
   return (
@@ -458,7 +491,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-[#C87A32]/60 transition-all duration-300 shadow-md hover:shadow-xl flex flex-col justify-between group"
               >
                 <div>
-                  {/* Property Image & Badges (AHORA CLIQUEABLE Y SIN EL OJITO FLOTANTE) */}
+                  {/* Property Image & Badges */}
                   <div 
                     className="relative h-56 overflow-hidden bg-slate-100 cursor-pointer"
                     onClick={() => openPropertyModal(property)}
@@ -480,7 +513,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                       </span>
                     </div>
 
-                    {/* Price Tag Overlay (sin el botón derecho del ojo) */}
+                    {/* Price Tag Overlay */}
                     <div className="absolute bottom-3 left-3 right-3 flex items-baseline justify-between">
                       <div>
                         <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
@@ -516,7 +549,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                       {property.description}
                     </p>
 
-                    {/* Key Specs (OCULTANDO N/A Y DEJANDO VACÍO EL ESPACIO) */}
+                    {/* Key Specs */}
                     <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-200 text-xs text-slate-700 font-semibold">
                       <div className="flex items-center gap-1">
                         {property.bedrooms && property.bedrooms > 0 ? (
@@ -675,7 +708,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               </div>
             )}
 
-            {/* Ubicación Google Maps */}
+            {/* Ubicación / Botón "Cómo Llegar" 📍 */}
             {activeProperty.mapUrl && (
               <div className="space-y-2 pt-2 border-t border-slate-200">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-[#0B1E36] flex items-center gap-1.5">
@@ -683,15 +716,13 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                   Ubicación Exacta:
                 </h4>
                 
-                <a
-                  href={getMapLink(activeProperty.mapUrl) || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => setNavigationModalProperty(activeProperty)}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-xs bg-amber-50 text-[#C87A32] border border-[#C87A32]/30 hover:bg-[#C87A32] hover:text-white shadow-sm transition-all cursor-pointer"
                 >
-                  <MapPin className="w-4 h-4" />
-                  <span>Ver ubicación en Google Maps 📍</span>
-                </a>
+                  <Navigation className="w-4 h-4" />
+                  <span>Cómo llegar 📍</span>
+                </button>
               </div>
             )}
 
@@ -760,6 +791,83 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
               </div>
 
             </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* MODAL ELEGIR APP NAVEGACIÓN ("CÓMO LLEGAR") */}
+      {navigationModalProperty && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-sm w-full p-6 space-y-5 relative shadow-2xl animate-in zoom-in-95 duration-150 text-center">
+            
+            <button
+              onClick={() => setNavigationModalProperty(null)}
+              className="absolute top-4 right-4 p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="w-12 h-12 bg-[#C87A32]/10 rounded-full flex items-center justify-center mx-auto text-[#C87A32]">
+              <Navigation className="w-6 h-6" />
+            </div>
+
+            <div>
+              <h3 className="text-lg font-extrabold text-[#0B1E36]">
+                ¿Con qué app deseas llegar?
+              </h3>
+              <p className="text-xs text-slate-500 mt-1">
+                Selecciona tu aplicación de mapas favorita para iniciar la ruta.
+              </p>
+            </div>
+
+            {(() => {
+              const navs = getNavLinks(navigationModalProperty.mapUrl);
+              if (!navs) return null;
+
+              return (
+                <div className="space-y-2.5 pt-2">
+                  <a
+                    href={navs.google}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setNavigationModalProperty(null)}
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 font-bold text-xs text-slate-800 transition-colors cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span>🗺️</span> Google Maps
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-normal">Recomendado</span>
+                  </a>
+
+                  <a
+                    href={navs.waze}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setNavigationModalProperty(null)}
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-sky-50 hover:bg-sky-100 border border-sky-200 font-bold text-xs text-sky-900 transition-colors cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span>🚗</span> Waze
+                    </span>
+                    <span className="text-[10px] text-sky-600 font-normal">Tráfico en vivo</span>
+                  </a>
+
+                  <a
+                    href={navs.apple}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setNavigationModalProperty(null)}
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span>🍎</span> Apple Maps
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-normal">iOS / Mac</span>
+                  </a>
+                </div>
+              );
+            })()}
 
           </div>
         </div>
