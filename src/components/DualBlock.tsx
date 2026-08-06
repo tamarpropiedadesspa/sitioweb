@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Building2, Utensils, Truck, Compass, CheckCircle, ArrowRight, ShieldCheck, BedDouble } from 'lucide-react';
+import { Home, Building2, Utensils, Truck, Compass, CheckCircle, ArrowRight, BedDouble } from 'lucide-react';
 import { PHONE_WHATSAPP } from '../data/mockData';
 
 interface DualBlockProps {
@@ -12,7 +12,7 @@ export const DualBlock: React.FC<DualBlockProps> = ({
   onSelectCorporativo,
 }) => {
   const whatsappResidencial = `https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent('Hola Tamar Propiedades SpA, busco asesoría para comprar/arrendar una propiedad residencial.')}`;
-  const whatsappCorporativo = `https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent('Hola Tamar Propiedades SpA, necesito cotizar servicios corporativos e industriales (hospedaje, catering, terrenos o maquinaria).')}`;
+  const whatsappCorporativo = `https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent('Hola Tamar Propiedades SpA, necesito cotizar infraestructura e inmuebles corporativos (hospedaje de faena, patios de acopio o terrenos industriales).')}`;
 
   return (
     <section id="buscar" className="py-16 sm:py-24 bg-white relative border-b border-slate-200">
@@ -78,7 +78,7 @@ export const DualBlock: React.FC<DualBlockProps> = ({
             <div className="pt-8 space-y-3">
               <button
                 onClick={onSelectResidencial}
-                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-bold text-sm bg-[#C87A32] hover:bg-[#A85D23] text-white shadow-md transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-bold text-sm bg-[#C87A32] hover:bg-[#A85D23] text-white shadow-md transition-all cursor-pointer"
               >
                 <span>Explorar Propiedades Residenciales</span>
                 <ArrowRight className="w-4 h-4" />
@@ -88,7 +88,7 @@ export const DualBlock: React.FC<DualBlockProps> = ({
                 href={whatsappResidencial}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-slate-700 hover:text-[#0B1E36] bg-slate-100 hover:bg-slate-200 border border-slate-300 transition-colors"
+                className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-slate-700 hover:text-[#0B1E36] bg-slate-100 hover:bg-slate-200 border border-slate-300 transition-colors cursor-pointer"
               >
                 <span>Cotizar Residencial por WhatsApp</span>
               </a>
@@ -114,27 +114,27 @@ export const DualBlock: React.FC<DualBlockProps> = ({
                   Soporte Técnico & Terrenos para Empresas
                 </h3>
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  Soporte logístico de alta exigencia para proyectos mineros, fotovoltaicos, viales y de montaje en todo Chile.
+                  Soporte logístico e inmobiliario de alta exigencia para proyectos mineros, fotovoltaicos, viales y de montaje en todo Chile.
                 </p>
               </div>
 
-              {/* Service Bullet Points */}
+              {/* Service Bullet Points (CORREGIDOS) */}
               <ul className="space-y-3 text-sm text-slate-700">
                 <li className="flex items-start gap-2.5">
                   <BedDouble className="w-5 h-5 text-[#C87A32] shrink-0 mt-0.5" />
-                  <span><strong>Hospedaje por Proyectos:</strong> Alojamiento modulado y casas de faena por turnos.</span>
+                  <span><strong>Hospedaje por Proyectos:</strong> Alojamiento modulado, casas y departamentos amoblados para turnos.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Utensils className="w-5 h-5 text-[#C87A32] shrink-0 mt-0.5" />
-                  <span><strong>Catering Industrial:</strong> Servicio de alimentación equilibrada para personal técnico.</span>
+                  <span><strong>Inmuebles para Catering:</strong> Propiedades e instalaciones acondicionadas para casinos y comedores.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Truck className="w-5 h-5 text-[#C87A32] shrink-0 mt-0.5" />
-                  <span><strong>Arriendo de Maquinaria:</strong> Flota y generadores con soporte en sitio 24/7.</span>
+                  <span><strong>Patios & Terrenos de Maquinaria:</strong> Terrenos para acopio de equipos, maquinaria y bases logísticas.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Compass className="w-5 h-5 text-[#C87A32] shrink-0 mt-0.5" />
-                  <span><strong>Terrenos Mineros/Energéticos:</strong> Paños industriales en Pozo Almonte y Calama.</span>
+                  <span><strong>Terrenos Mineros/Energéticos:</strong> Paños de gran superficie en Pozo Almonte, Calama y todo Chile.</span>
                 </li>
               </ul>
             </div>
@@ -143,7 +143,7 @@ export const DualBlock: React.FC<DualBlockProps> = ({
             <div className="pt-8 space-y-3">
               <button
                 onClick={onSelectCorporativo}
-                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-[#C87A32] to-[#A85D23] hover:from-[#A85D23] hover:to-[#8C4B19] text-white shadow-lg shadow-[#C87A32]/20 transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-[#C87A32] to-[#A85D23] hover:from-[#A85D23] hover:to-[#8C4B19] text-white shadow-lg shadow-[#C87A32]/20 transition-all cursor-pointer"
               >
                 <span>Ver Servicios para Empresas</span>
                 <ArrowRight className="w-4 h-4" />
@@ -153,7 +153,7 @@ export const DualBlock: React.FC<DualBlockProps> = ({
                 href={whatsappCorporativo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-[#0B1E36] hover:text-white bg-slate-100 hover:bg-[#C87A32] border border-slate-300 transition-colors"
+                className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-[#0B1E36] hover:text-white bg-slate-100 hover:bg-[#C87A32] border border-slate-300 transition-colors cursor-pointer"
               >
                 <span>Cotización Corporativa Directa WhatsApp</span>
               </a>
