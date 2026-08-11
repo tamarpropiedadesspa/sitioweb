@@ -63,7 +63,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [apiError, setApiError] = useState<string | null>(null);
-  const [ufRate, setUfRate] = useState<number>(38500); // Tasa UF por defecto
+  const [ufRate, setUfRate] = useState<number>(38500);
 
   // Filters
   const [selectedType, setSelectedType] = useState<string>(initialTypeFilter);
@@ -112,12 +112,9 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     let finalUF = priceUF;
     let finalCLP = priceCLP;
 
-    // Si ingresó UF pero no CLP -> Calcula CLP automáticamente
     if (priceUF > 0 && priceCLP === 0 && ufRate > 0) {
       finalCLP = Math.round(priceUF * ufRate);
-    }
-    // Si ingresó CLP pero no UF -> Calcula UF automáticamente
-    else if (priceCLP > 0 && priceUF === 0 && ufRate > 0) {
+    } else if (priceCLP > 0 && priceUF === 0 && ufRate > 0) {
       finalUF = parseFloat((priceCLP / ufRate).toFixed(1));
     }
 
@@ -158,12 +155,17 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
         rawItems = result.items;
       }
 
-      // Filter only properties with state = 'Activo'
+      // PERMISIVO: Muestra activos o si la casilla viene vacía
       const activeItems = rawItems.filter((item) => {
         if (!item) return false;
-        if (!item.estado && !item.state && !item.status) return true;
         const estadoStr = String(item.estado || item.state || item.status || '').trim().toLowerCase();
-        return estadoStr === 'activo' || estadoStr === 'active' || estadoStr === 'publicado' || estadoStr === 'true';
+        return (
+          estadoStr === '' ||
+          estadoStr === 'activo' ||
+          estadoStr === 'active' ||
+          estadoStr === 'publicado' ||
+          estadoStr === 'true'
+        );
       });
 
       // Map raw sheet items to normalized Property interface
@@ -220,10 +222,34 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
         const rawCategory = String(item.categoria || item.category || '').trim();
 
+        // EXTRACCIÓN ROBUSTA DEL TIPO DE INMUEBLE (Reconoce tipo, tipo_inmueble, etc.)
+        const rawType = String(
+          item.tipo ||
+          item.type ||
+          item.tipo_inmueble ||
+          item.tipo_de_inmueble ||
+          item['tipo de inmueble'] ||
+          item['Tipo de Inmueble'] ||
+          ''
+        ).toLowerCase().trim();
+
+        let normalizedType = 'residencial';
+        if (rawType.includes('depa') || rawType.includes('depto') || rawType.includes('departamento')) {
+          normalizedType = 'departamento';
+        } else if (rawType.includes('casa') || rawType.includes('residencial')) {
+          normalizedType = 'residencial';
+        } else if (rawType.includes('terreno') || rawType.includes('parcela')) {
+          normalizedType = 'terreno';
+        } else if (rawType.includes('industrial') || rawType.includes('faena') || rawType.includes('bodega')) {
+          normalizedType = 'industrial';
+        } else if (rawType) {
+          normalizedType = rawType;
+        }
+
         return {
           id: String(item.id || item.ID || item.id_propiedad || index + 1),
           title: item.titulo || item.title || 'Propiedad Tamar',
-          type: String(item.tipo || item.type || 'residencial').toLowerCase(),
+          type: normalizedType,
           category: rawCategory,
           operation: String(item.operacion || item.operation || 'venta').toLowerCase(),
           priceUF: isNaN(priceUF) ? 0 : priceUF,
@@ -244,7 +270,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
         };
       });
 
-      setProperties(mapped.slice(0, 15));
+      setProperties(mapped);
     } catch (err: any) {
       console.error('Error fetching Google Sheets API:', err);
       setApiError('No se pudo establecer conexión en vivo con la base de datos de propiedades.');
@@ -311,7 +337,6 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     setActiveProperty(property);
     setActivePhotoIndex(0);
 
-    // Precargar todas las imágenes de la galería en memoria
     if (property.gallery) {
       property.gallery.forEach((url) => {
         const img = new Image();
