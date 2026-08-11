@@ -14,9 +14,9 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onNavigate }) => {
   const navLinks = [
     { id: 'inicio', label: 'Inicio' },
     { id: 'buscar', label: '¿Qué buscas?' },
-    { id: 'propiedades', label: 'Propiedades & Terrenos' },
-    { id: 'servicios', label: 'Servicios para Empresas' },
-    { id: 'cobertura', label: 'Cobertura Regional' },
+    { id: 'propiedades', label: 'Propiedades' },
+    { id: 'servicios', label: 'Servicios Empresas' },
+    { id: 'cobertura', label: 'Cobertura' },
     { id: 'clientes', label: 'Nuestros Clientes' },
   ];
 
@@ -30,10 +30,9 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onNavigate }) => {
         {/* Layout Principal de 3 Columnas */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-slate-800">
           
-          {/* Columna 1: Branding e Identidad (5 Cols) */}
+          {/* Columna 1: Branding e Identidad */}
           <div className="lg:col-span-5 space-y-6">
             
-            {/* Logo compuesto elegante sin cuadro gigante */}
             <div className="flex items-center gap-3.5">
               <div className="h-14 w-14 rounded-2xl bg-white p-1.5 flex items-center justify-center shadow-lg shrink-0 border border-slate-200">
                 <img
@@ -53,17 +52,17 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onNavigate }) => {
             </div>
 
             <p className="text-slate-300 text-sm leading-relaxed max-w-md">
-              Especialistas en comercialización inmobiliaria residencial y soluciones de infraestructura, hospedaje de faena y gestión de terrenos estratégicos para empresas en todo Chile.
+              Especialistas en comercialización inmobiliaria residencial y soluciones de habitabilidad, hospedaje de personal, catering y gestión de terrenos estratégicos en Antofagasta y Ovalle.
             </p>
 
-            {/* Badge de confianza B2B */}
+            {/* Badge de confianza sin B2B */}
             <div className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-slate-800/80 border border-slate-700/80 text-xs font-semibold text-slate-300">
               <ShieldCheck className="w-4 h-4 text-[#C87A32] shrink-0" />
-              <span>Gestión Profesional & Atención Confidencial B2B</span>
+              <span>Gestión Profesional & Atención Confidencial para Empresas</span>
             </div>
           </div>
 
-          {/* Columna 2: Navegación Rápida (3 Cols) */}
+          {/* Columna 2: Navegación Rápida */}
           <div className="lg:col-span-3 space-y-4">
             <h4 className="text-xs font-bold text-[#C87A32] uppercase tracking-wider">
               Navegación
@@ -83,7 +82,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onNavigate }) => {
             </ul>
           </div>
 
-          {/* Columna 3: Canales de Contacto Directo (4 Cols) */}
+          {/* Columna 3: Canales de Contacto Directo */}
           <div className="lg:col-span-4 space-y-4">
             <h4 className="text-xs font-bold text-[#C87A32] uppercase tracking-wider">
               Contacto Directo
@@ -130,9 +129,9 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onNavigate }) => {
                   <MapPin className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Presencia Nacional</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Cobertura Directa</span>
                   <span className="text-xs font-semibold text-slate-200">
-                    Iquique a Concepción • Bolivia & Perú
+                    Región de Antofagasta & Región de Coquimbo
                   </span>
                 </div>
               </div>
