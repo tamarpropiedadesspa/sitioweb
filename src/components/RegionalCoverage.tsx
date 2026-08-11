@@ -1,6 +1,6 @@
 import React from 'react';
 import { REGIONAL_COVERAGE } from '../data/mockData';
-import { MapPin, Globe } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 
 export const RegionalCoverage: React.FC = () => {
   return (
@@ -10,32 +10,28 @@ export const RegionalCoverage: React.FC = () => {
         {/* Encabezado de la sección */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-12">
           <span className="px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-[#C87A32]/10 text-[#C87A32] border border-[#C87A32]/30">
-            Presencia Geográfica Extensa
+            PRESENCIA REGIONAL
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1E36] font-sans">
-            Cobertura Nacional e Internacional
+            Cobertura de Operaciones
           </h2>
           <p className="text-slate-600 text-base sm:text-lg">
-            Operamos con centros logísticos e inmobiliarios directos de Iquique a Concepción, ampliando nuestro alcance a Bolivia y Perú.
+            Operamos con servicios directos y gestión continua en la Región de Antofagasta y Región de Coquimbo.
           </p>
         </div>
 
         {/* Rejilla de Regiones */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {REGIONAL_COVERAGE.map((region) => (
             <div
               key={region.name}
-              className="bg-white border border-slate-200 rounded-2xl p-6 flex flex-col justify-between transition-all hover:border-[#C87A32]/70 shadow-md"
+              className="bg-white border border-slate-200 rounded-2xl p-8 flex flex-col justify-between transition-all hover:border-[#C87A32]/70 shadow-md"
             >
               <div className="space-y-4">
                 
                 {/* País e Ícono */}
                 <div className="flex items-center gap-2">
-                  {region.country === 'Chile' ? (
-                    <MapPin className="w-5 h-5 text-[#C87A32]" />
-                  ) : (
-                    <Globe className="w-5 h-5 text-amber-600" />
-                  )}
+                  <MapPin className="w-5 h-5 text-[#C87A32]" />
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
                     {region.country}
                   </span>
