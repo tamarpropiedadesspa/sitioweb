@@ -83,7 +83,7 @@ export const ClientShowcase: React.FC = () => {
           <div className="w-16 h-1 bg-[#0B1E36] mx-auto rounded-full mt-3"></div>
         </div>
 
-        {/* Carrusel - Contenedor ampliado a max-w-6xl */}
+        {/* Carrusel - Contenedor ampliado */}
         <div className="relative max-w-6xl mx-auto px-10 sm:px-14">
           
           {/* Flecha Izquierda */}
@@ -95,7 +95,7 @@ export const ClientShowcase: React.FC = () => {
             <ChevronLeft className="w-8 h-8" />
           </button>
 
-          {/* Rejilla de Logos */}
+          {/* Rejilla de Logos a TODO COLOR (Sin escala de grises) */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 items-center justify-items-center min-h-[160px]">
             {visibleLogos.map((client, idx) => (
               <a
@@ -109,7 +109,7 @@ export const ClientShowcase: React.FC = () => {
                 <img
                   src={client.logo}
                   alt={client.name}
-                  className="h-24 sm:h-28 lg:h-32 w-full max-w-[240px] object-contain filter grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 drop-shadow-sm"
+                  className="h-20 sm:h-24 lg:h-28 w-full max-w-[220px] object-contain transition-all duration-300 drop-shadow-sm"
                 />
               </a>
             ))}
