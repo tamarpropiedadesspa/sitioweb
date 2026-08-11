@@ -63,6 +63,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [ufRate, setUfRate] = useState<number>(38500); // Tasa UF por defecto
 
   // Filters
   const [selectedType, setSelectedType] = useState<string>(initialTypeFilter);
@@ -76,6 +77,52 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
   // Modal para Elegir App de Navegación ("Cómo llegar")
   const [navigationModalProperty, setNavigationModalProperty] = useState<Property | null>(null);
+
+  // Obtener valor UF en tiempo real para conversiones dinámicas
+  useEffect(() => {
+    const fetchUF = async () => {
+      try {
+        const res = await fetch('https://mindicador.cl/api/uf');
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.serie?.[0]?.valor) {
+            setUfRate(Math.round(data.serie[0].valor));
+            return;
+          }
+        }
+      } catch (e) {}
+
+      try {
+        const res2 = await fetch('https://cl.dolarapi.com/v1/uf');
+        if (res2.ok) {
+          const data2 = await res2.json();
+          if (data2?.valor) {
+            setUfRate(Math.round(data2.valor));
+            return;
+          }
+        }
+      } catch (e2) {}
+    };
+
+    fetchUF();
+  }, []);
+
+  // Función de cálculo inteligente de precios con auto-conversión en vivo
+  const getDisplayPrices = (priceUF: number, priceCLP: number) => {
+    let finalUF = priceUF;
+    let finalCLP = priceCLP;
+
+    // Si ingresó UF pero no CLP -> Calcula CLP automáticamente
+    if (priceUF > 0 && priceCLP === 0 && ufRate > 0) {
+      finalCLP = Math.round(priceUF * ufRate);
+    }
+    // Si ingresó CLP pero no UF -> Calcula UF automáticamente
+    else if (priceCLP > 0 && priceUF === 0 && ufRate > 0) {
+      finalUF = parseFloat((priceCLP / ufRate).toFixed(1));
+    }
+
+    return { finalUF, finalCLP };
+  };
 
   // Fetch real-time data from Google Sheets API
   const fetchCatalogData = async (isManualRefresh = false, isBackgroundRefetch = false) => {
@@ -555,138 +602,142 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
         {!isLoading && filteredProperties.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProperties.map((property) => (
-              <div
-                key={property.id}
-                className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-[#C87A32]/60 transition-all duration-300 shadow-md hover:shadow-xl flex flex-col justify-between group"
-              >
-                <div>
-                  {/* Property Image & Badges */}
-                  <div 
-                    className="relative h-56 overflow-hidden bg-slate-100 cursor-pointer"
-                    onClick={() => openPropertyModal(property)}
-                  >
-                    <img
-                      src={getThumbnailUrl(property.image)}
-                      alt={property.title}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = DEFAULT_FALLBACK_IMG;
-                      }}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+            {filteredProperties.map((property) => {
+              const { finalUF, finalCLP } = getDisplayPrices(property.priceUF, property.priceCLP);
 
-                    {/* Badges */}
-                    <div className="absolute top-3 left-3 flex flex-wrap gap-2">
-                      <span className="px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider text-white shadow-md bg-[#C87A32]">
-                        En {property.operation}
-                      </span>
-                      {property.category ? (
-                        <span className="px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider text-white shadow-md bg-[#0B1E36]">
-                          {property.category}
-                        </span>
-                      ) : null}
-                    </div>
-
-                    {/* Price Tag Overlay LÓGICA INTELIGENTE UF / CLP */}
-                    <div className="absolute bottom-3 left-3 right-3 flex items-baseline justify-between">
-                      <div>
-                        {property.priceUF > 0 && property.priceCLP > 0 ? (
-                          <>
-                            <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
-                              {property.priceUF.toLocaleString('es-CL')} UF
-                            </span>
-                            <span className="text-xs text-slate-200 block font-semibold drop-shadow-sm">
-                              ≈ ${property.priceCLP.toLocaleString('es-CL')} CLP
-                            </span>
-                          </>
-                        ) : property.priceUF > 0 ? (
-                          <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
-                            {property.priceUF.toLocaleString('es-CL')} UF
-                          </span>
-                        ) : property.priceCLP > 0 ? (
-                          <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
-                            ${property.priceCLP.toLocaleString('es-CL')} CLP
-                          </span>
-                        ) : (
-                          <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
-                            Consultar valor
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card Body */}
-                  <div className="p-5 space-y-4">
-                    
-                    {/* Location */}
-                    <div className="flex items-center gap-1.5 text-xs font-extrabold text-[#C87A32]">
-                      <MapPin className="w-3.5 h-3.5 shrink-0" />
-                      <span className="truncate">{property.location}</span>
-                    </div>
-
-                    {/* Title */}
-                    <h3 
+              return (
+                <div
+                  key={property.id}
+                  className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-[#C87A32]/60 transition-all duration-300 shadow-md hover:shadow-xl flex flex-col justify-between group"
+                >
+                  <div>
+                    {/* Property Image & Badges */}
+                    <div 
+                      className="relative h-56 overflow-hidden bg-slate-100 cursor-pointer"
                       onClick={() => openPropertyModal(property)}
-                      className="text-lg font-extrabold text-[#0B1E36] group-hover:text-[#C87A32] transition-colors cursor-pointer line-clamp-1"
                     >
-                      {property.title}
-                    </h3>
+                      <img
+                        src={getThumbnailUrl(property.image)}
+                        alt={property.title}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = DEFAULT_FALLBACK_IMG;
+                        }}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
 
-                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                      {property.description}
-                    </p>
-
-                    {/* Key Specs */}
-                    <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-200 text-xs text-slate-700 font-semibold">
-                      <div className="flex items-center gap-1">
-                        {property.bedrooms && property.bedrooms > 0 ? (
-                          <>
-                            <Bed className="w-3.5 h-3.5 text-[#C87A32]" />
-                            <span>{property.bedrooms} Dorms</span>
-                          </>
+                      {/* Badges */}
+                      <div className="absolute top-3 left-3 flex flex-wrap gap-2">
+                        <span className="px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider text-white shadow-md bg-[#C87A32]">
+                          En {property.operation}
+                        </span>
+                        {property.category ? (
+                          <span className="px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider text-white shadow-md bg-[#0B1E36]">
+                            {property.category}
+                          </span>
                         ) : null}
                       </div>
-                      <div className="flex items-center gap-1">
-                        {property.bathrooms && property.bathrooms > 0 ? (
-                          <>
-                            <Bath className="w-3.5 h-3.5 text-[#C87A32]" />
-                            <span>{property.bathrooms} Baños</span>
-                          </>
-                        ) : null}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Maximize className="w-3.5 h-3.5 text-[#C87A32]" />
-                        <span>{property.areaM2 > 0 ? `${property.areaM2} m²` : 'Consultar'}</span>
+
+                      {/* Price Tag Overlay CON AUTO-CONVERSIÓN DINÁMICA */}
+                      <div className="absolute bottom-3 left-3 right-3 flex items-baseline justify-between">
+                        <div>
+                          {finalUF > 0 && finalCLP > 0 ? (
+                            <>
+                              <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
+                                {finalUF.toLocaleString('es-CL')} UF
+                              </span>
+                              <span className="text-xs text-slate-200 block font-semibold drop-shadow-sm">
+                                ≈ ${finalCLP.toLocaleString('es-CL')} CLP
+                              </span>
+                            </>
+                          ) : finalUF > 0 ? (
+                            <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
+                              {finalUF.toLocaleString('es-CL')} UF
+                            </span>
+                          ) : finalCLP > 0 ? (
+                            <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
+                              ${finalCLP.toLocaleString('es-CL')} CLP
+                            </span>
+                          ) : (
+                            <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
+                              Consultar valor
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
 
+                    {/* Card Body */}
+                    <div className="p-5 space-y-4">
+                      
+                      {/* Location */}
+                      <div className="flex items-center gap-1.5 text-xs font-extrabold text-[#C87A32]">
+                        <MapPin className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">{property.location}</span>
+                      </div>
+
+                      {/* Title */}
+                      <h3 
+                        onClick={() => openPropertyModal(property)}
+                        className="text-lg font-extrabold text-[#0B1E36] group-hover:text-[#C87A32] transition-colors cursor-pointer line-clamp-1"
+                      >
+                        {property.title}
+                      </h3>
+
+                      <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                        {property.description}
+                      </p>
+
+                      {/* Key Specs */}
+                      <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-200 text-xs text-slate-700 font-semibold">
+                        <div className="flex items-center gap-1">
+                          {property.bedrooms && property.bedrooms > 0 ? (
+                            <>
+                              <Bed className="w-3.5 h-3.5 text-[#C87A32]" />
+                              <span>{property.bedrooms} Dorms</span>
+                            </>
+                          ) : null}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          {property.bathrooms && property.bathrooms > 0 ? (
+                            <>
+                              <Bath className="w-3.5 h-3.5 text-[#C87A32]" />
+                              <span>{property.bathrooms} Baños</span>
+                            </>
+                          ) : null}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Maximize className="w-3.5 h-3.5 text-[#C87A32]" />
+                          <span>{property.areaM2 > 0 ? `${property.areaM2} m²` : 'Consultar'}</span>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  {/* Card Action Footer */}
+                  <div className="p-5 pt-0 space-y-2">
+                    <button
+                      onClick={() => openPropertyModal(property)}
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider bg-[#0B1E36] hover:bg-slate-800 text-white shadow transition-all cursor-pointer"
+                    >
+                      <Eye className="w-4 h-4 text-[#C87A32]" />
+                      <span>Más información</span>
+                    </button>
+
+                    <a
+                      href={generateWhatsAppLink(property)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-[#C87A32] hover:bg-[#A85D23] text-white shadow transition-all cursor-pointer"
+                    >
+                      <Phone className="w-4 h-4" />
+                      <span>Cotizar por WhatsApp</span>
+                    </a>
                   </div>
                 </div>
-
-                {/* Card Action Footer */}
-                <div className="p-5 pt-0 space-y-2">
-                  <button
-                    onClick={() => openPropertyModal(property)}
-                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider bg-[#0B1E36] hover:bg-slate-800 text-white shadow transition-all cursor-pointer"
-                  >
-                    <Eye className="w-4 h-4 text-[#C87A32]" />
-                    <span>Más información</span>
-                  </button>
-
-                  <a
-                    href={generateWhatsAppLink(property)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-[#C87A32] hover:bg-[#A85D23] text-white shadow transition-all cursor-pointer"
-                  >
-                    <Phone className="w-4 h-4" />
-                    <span>Cotizar por WhatsApp</span>
-                  </a>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
@@ -718,7 +769,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                   className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-80 scale-125 pointer-events-none"
                 />
 
-                {/* Imagen Principal COMPLETA (0% recorte con sombra de elevación) */}
+                {/* Imagen Principal COMPLETA */}
                 <img
                   src={activeProperty.gallery?.[activePhotoIndex] || activeProperty.image}
                   alt={activeProperty.title}
@@ -770,7 +821,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 )}
               </div>
 
-              {/* Gallery Thumbnails (MINIATURAS ULTRA LIVIANAS) */}
+              {/* Gallery Thumbnails */}
               {activeProperty.gallery && activeProperty.gallery.length > 1 && (
                 <div className="flex items-center gap-2 overflow-x-auto pb-2">
                   {activeProperty.gallery.map((imgUrl, idx) => (
@@ -850,30 +901,41 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 {activeProperty.title}
               </h3>
 
-              {/* Lógica de Precios en Ficha Modal */}
+              {/* Lógica de Precios en Ficha Modal con Conversión Dinámica */}
               <div className="flex flex-wrap items-baseline gap-4 py-3 border-y border-slate-200">
-                {activeProperty.priceUF > 0 && activeProperty.priceCLP > 0 ? (
-                  <>
-                    <span className="text-3xl font-extrabold text-[#C87A32]">
-                      {activeProperty.priceUF.toLocaleString('es-CL')} UF
-                    </span>
-                    <span className="text-sm text-slate-600 font-semibold">
-                      Valor estimado: ${activeProperty.priceCLP.toLocaleString('es-CL')} CLP
-                    </span>
-                  </>
-                ) : activeProperty.priceUF > 0 ? (
-                  <span className="text-3xl font-extrabold text-[#C87A32]">
-                    {activeProperty.priceUF.toLocaleString('es-CL')} UF
-                  </span>
-                ) : activeProperty.priceCLP > 0 ? (
-                  <span className="text-3xl font-extrabold text-[#C87A32]">
-                    ${activeProperty.priceCLP.toLocaleString('es-CL')} CLP
-                  </span>
-                ) : (
-                  <span className="text-3xl font-extrabold text-[#C87A32]">
-                    Consultar valor
-                  </span>
-                )}
+                {(() => {
+                  const { finalUF, finalCLP } = getDisplayPrices(activeProperty.priceUF, activeProperty.priceCLP);
+                  if (finalUF > 0 && finalCLP > 0) {
+                    return (
+                      <>
+                        <span className="text-3xl font-extrabold text-[#C87A32]">
+                          {finalUF.toLocaleString('es-CL')} UF
+                        </span>
+                        <span className="text-sm text-slate-600 font-semibold">
+                          Valor estimado: ${finalCLP.toLocaleString('es-CL')} CLP
+                        </span>
+                      </>
+                    );
+                  } else if (finalUF > 0) {
+                    return (
+                      <span className="text-3xl font-extrabold text-[#C87A32]">
+                        {finalUF.toLocaleString('es-CL')} UF
+                      </span>
+                    );
+                  } else if (finalCLP > 0) {
+                    return (
+                      <span className="text-3xl font-extrabold text-[#C87A32]">
+                        ${finalCLP.toLocaleString('es-CL')} CLP
+                      </span>
+                    );
+                  } else {
+                    return (
+                      <span className="text-3xl font-extrabold text-[#C87A32]">
+                        Consultar valor
+                      </span>
+                    );
+                  }
+                })()}
               </div>
 
               <div>
