@@ -16,43 +16,43 @@ const corporateServicesList: CorporateItem[] = [
   {
     id: 'hospedaje',
     title: 'Hospedaje para Proyectos & Turnos',
-    shortDesc: 'Arriendo de casas, departamentos y complejos habitacionales amoblados y acondicionados para el alojamiento de dotaciones corporativas.',
-    fullDesc: 'Inmuebles residenciales estratégicamente ubicados con capacidad y equipamiento ideal para ingenieros, contratistas y personal de faena.',
+    shortDesc: 'Arriendo de casas y complejos habitacionales amoblados y acondicionados para el alojamiento de dotaciones corporativas.',
+    fullDesc: 'Inmuebles residenciales estratégicamente ubicados con capacidad y equipamiento ideal para ingenieros y personal de trabajo.',
     benefits: [
-      'Casas y departamentos 100% amoblados',
-      'Contratos corporativos flexibles por turnos',
-      'Servicio de aseo y mantención opcional',
-      'Ubicación cercana a rutas operativas'
+      'Casas amobladas y listas para usar',
+      'Contratos flexibles según duración de proyectos',
+      'Servicio de mantención opcional',
+      'Ubicación cercana a nodos operativos'
     ],
-    idealFor: 'Empresas contratistas, consultoras y equipos de ingeniería en minería/energía.',
+    idealFor: 'Empresas contratistas, consultoras y equipos de ingeniería.',
     icon: <Building2 className="w-7 h-7 text-white" />
   },
   {
-    id: 'catering-espacios',
-    title: 'Inmuebles para Catering & Comedores',
-    shortDesc: 'Arriendo y habilitación de propiedades e instalaciones acondicionadas para la operación de cocinas industriales, comedores y servicios de casino.',
-    fullDesc: 'Propiedades corporativas con la infraestructura espacial, sanitaria y eléctrica requerida por empresas de catering para atender personal en faena.',
+    id: 'catering-alimentacion',
+    title: 'Servicio de Catering & Alimentación',
+    shortDesc: 'Provisión integral de servicios de alimentación y catering certificado para personal de empresas en terreno.',
+    fullDesc: 'Servicios gastronómicos adaptados a turnos y exigencias operativas con estrictos estándares de inocuidad alimentaria.',
     benefits: [
-      'Factibilidad sanitaria y eléctrica industrial',
-      'Espacios amoldables para comedores y cocinas',
-      'Ubicación estratégica en nodos mineros',
-      'Contratos adaptados a la duración del proyecto'
+      'Menús balanceados y nutritivos para turnos',
+      'Colaciones y kits térmicos para terreno',
+      'Certificaciones sanitarias al día',
+      'Logística de entrega puntual en sitio'
     ],
-    idealFor: 'Empresas de alimentación, casinos e instalaciones temporales en terreno.',
+    idealFor: 'Empresas con personal en proyectos y turnos.',
     icon: <Utensils className="w-7 h-7 text-white" />
   },
   {
     id: 'terrenos-maquinaria',
-    title: 'Terrenos Mineros, Energéticos & Patios',
-    shortDesc: 'Búsqueda, corretaje y arriendo de grandes paños de tierra y patios de acopio para almacenamiento de maquinaria pesada, energía y minería.',
-    fullDesc: 'Terrenos con factibilidad legal y técnica en el norte de Chile para proyectos fotovoltaicos, eólicos, resguardo de flota pesada y bases logísticas.',
+    title: 'Terrenos & Patios de Acopio',
+    shortDesc: 'Búsqueda, corretaje y arriendo de paños de tierra y patios de acopio para almacenamiento de maquinaria pesada en Antofagasta y Ovalle.',
+    fullDesc: 'Terrenos con accesibilidad y cierre perimetral en Antofagasta y Ovalle para resguardo de flota pesada e instalaciones operativas.',
     benefits: [
       'Patios cerrados para acopio de maquinaria pesada',
-      'Paños de gran superficie en Pozo Almonte, Calama y más',
-      'Estudio de factibilidad de suelo y servidumbres',
-      'Gestión B2B confidencial e institucional'
+      'Paños de gran superficie en Antofagasta y Ovalle',
+      'Estudio de factibilidad de suelo y accesos',
+      'Gestión confidencial e institucional'
     ],
-    idealFor: 'Desarrolladores de energía renovable, mineras y logística pesada.',
+    idealFor: 'Empresas de montaje, transporte y proyectos industriales.',
     icon: <Compass className="w-7 h-7 text-white" />
   }
 ];
@@ -65,7 +65,7 @@ export const CorporateServices: React.FC = () => {
     contacto: '',
     telefono: '',
     servicio: 'Hospedaje para Proyectos & Turnos',
-    region: 'Tarapacá / Antofagasta',
+    region: 'Antofagasta / Coquimbo',
     mensaje: ''
   });
   const [submitted, setSubmitted] = useState(false);
@@ -80,7 +80,7 @@ export const CorporateServices: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    const text = `Cotización Inmobiliaria Corporativa Tamar Propiedades SpA:\n- Empresa: ${formData.empresa}\n- Contacto: ${formData.contacto}\n- Teléfono: ${formData.telefono}\n- Servicio/Inmueble: ${formData.servicio}\n- Zona: ${formData.region}\n- Mensaje: ${formData.mensaje}`;
+    const text = `Cotización Inmobiliaria Corporativa Tamar Propiedades SpA:\n- Empresa: ${formData.empresa}\n- Contacto: ${formData.contacto}\n- Teléfono: ${formData.telefono}\n- Servicio: ${formData.servicio}\n- Zona: ${formData.region}\n- Mensaje: ${formData.mensaje}`;
     const waUrl = `https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(text)}`;
     setTimeout(() => {
       window.open(waUrl, '_blank');
@@ -94,13 +94,13 @@ export const CorporateServices: React.FC = () => {
         {/* Encabezado de la sección */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <span className="px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-[#C87A32]/10 text-[#C87A32] border border-[#C87A32]/30">
-            INGENIERÍA & SOPORTE OPERATIVO
+            SOPORTE Y SERVICIOS DIRECTOS
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1E36] font-sans">
             Servicios Especializados para Empresas
           </h2>
           <p className="text-slate-600 text-base sm:text-lg">
-            Gestión y arriendo de propiedades, terrenos e instalaciones acondicionadas para cubrir los requerimientos habitacionales y logísticos de tu compañía en todo el territorio chileno.
+            Provisión de hospedaje de personal, servicios de alimentación catering y gestión de terrenos estratégicos en Antofagasta y Ovalle.
           </p>
         </div>
 
@@ -119,7 +119,7 @@ export const CorporateServices: React.FC = () => {
                     {service.icon}
                   </div>
                   <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#C87A32] bg-[#C87A32]/10 px-2.5 py-1 rounded-md border border-[#C87A32]/30">
-                    B2B & INDUSTRIAL
+                    SERVICIOS A EMPRESAS
                   </span>
                 </div>
 
@@ -189,8 +189,8 @@ export const CorporateServices: React.FC = () => {
 
             <div>
               <span className="text-xs font-bold text-[#C87A32] uppercase tracking-wider">Tamar Propiedades SpA</span>
-              <h3 className="text-2xl font-extrabold text-[#0B1E36]">Solicitud Inmobiliaria Corporativa</h3>
-              <p className="text-xs text-slate-500 mt-1">Completa los datos de tu empresa para gestionar el inmueble o terreno que necesitas.</p>
+              <h3 className="text-2xl font-extrabold text-[#0B1E36]">Solicitud de Servicios para Empresas</h3>
+              <p className="text-xs text-slate-500 mt-1">Completa los datos de tu empresa para gestionar la cotización requerida.</p>
             </div>
 
             {submitted ? (
@@ -249,23 +249,23 @@ export const CorporateServices: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Requerimiento Inmobiliario</label>
+                  <label className="block text-slate-700 font-bold mb-1">Servicio Requerido</label>
                   <select
                     value={formData.servicio}
                     onChange={(e) => setFormData({ ...formData, servicio: e.target.value })}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-800 rounded-lg p-2.5 focus:outline-none focus:border-[#C87A32]"
                   >
                     <option value="Hospedaje para Proyectos & Turnos">Hospedaje para Proyectos & Turnos</option>
-                    <option value="Inmuebles para Catering & Comedores">Inmuebles para Catering & Comedores</option>
-                    <option value="Terrenos Mineros, Energéticos & Patios">Terrenos Mineros, Energéticos & Patios</option>
+                    <option value="Servicio de Catering & Alimentación">Servicio de Catering & Alimentación</option>
+                    <option value="Terrenos & Patios de Acopio">Terrenos & Patios de Acopio</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Región / Ciudad de Interés</label>
+                  <label className="block text-slate-700 font-bold mb-1">Ciudad / Zona de Interés</label>
                   <input
                     type="text"
-                    placeholder="Ej. Pozo Almonte, Calama, Iquique..."
+                    placeholder="Ej. Antofagasta, Calama, Ovalle..."
                     value={formData.region}
                     onChange={(e) => setFormData({ ...formData, region: e.target.value })}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-800 rounded-lg p-2.5 focus:outline-none focus:border-[#C87A32]"
@@ -276,7 +276,7 @@ export const CorporateServices: React.FC = () => {
                   <label className="block text-slate-700 font-bold mb-1">Detalles del Requerimiento</label>
                   <textarea
                     rows={3}
-                    placeholder="Describa cantidad de trabajadores a alojar, superficie requerida para terrenos o patios de maquinaria..."
+                    placeholder="Describa la cantidad de personas a alojar, servicios de alimentación requeridos o superficie para terrenos..."
                     value={formData.mensaje}
                     onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-800 rounded-lg p-2.5 focus:outline-none focus:border-[#C87A32]"
