@@ -92,7 +92,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
 
           <div className="flex items-center gap-4 text-[11px]">
             <span className="hidden sm:inline text-slate-300 font-medium">
-              Cobertura: Iquique a Concepción & Latam
+              Cobertura: Región de Antofagasta & Coquimbo
             </span>
             <a
               href={whatsappUrl}
