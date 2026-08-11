@@ -7,151 +7,73 @@ export const EMAIL_CONTACT = 'contacto@tamarpropiedades.cl';
 export const MOCK_PROPERTIES: Property[] = [
   {
     id: 'prop-1',
-    title: 'Terreno Industrial Minero Strategico',
+    title: 'Terreno Industrial & Patio de Acopio',
     type: 'terreno',
     operation: 'arriendo',
     priceUF: 180,
     priceCLP: 6840000,
-    location: 'Pozo Almonte, Región de Tarapacá',
-    region: 'Iquique / Pozo Almonte',
+    location: 'Antofagasta, Región de Antofagasta',
+    region: 'Antofagasta',
     areaM2: 15000,
     landAreaM2: 15000,
     image: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80',
     featured: true,
-    description: 'Terreno de alto tonelaje apto para acopio de maquinaria, logística minera y proyectos fotovoltaicos. Conexión directa a Ruta 5 Norte.',
-    features: ['Acceso Camiones Alto Tonelaje', 'Cierre Perimetral Reforzado', 'Energía Trifásica', 'Factibilidad H2 Verde']
+    description: 'Terreno apto para acopio de maquinaria pesada, logística y proyectos industriales en Antofagasta.',
+    features: ['Acceso Camiones Alto Tonelaje', 'Cierre Perimetral Reforzado', 'Energía Trifásica']
   },
   {
     id: 'prop-2',
-    title: 'Casa Familiar Residencial Exclusiva',
+    title: 'Casa Amoblada para Empresa',
     type: 'residencial',
-    operation: 'venta',
-    priceUF: 8500,
-    priceCLP: 323000000,
-    location: 'La Serena, Región de Coquimbo',
-    region: 'La Serena / Ovalle',
+    operation: 'arriendo',
+    priceUF: 40,
+    priceCLP: 1633792,
+    location: 'Ovalle, Región de Coquimbo',
+    region: 'Ovalle',
     bedrooms: 4,
-    bathrooms: 3,
+    bathrooms: 2,
     areaM2: 220,
     landAreaM2: 450,
     image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
     featured: true,
-    description: 'Hermosa propiedad residencial con amplio jardín, quincho equipado, eficiencia energética integrada y terminaciones de alto estándar.',
-    features: ['4 Dormitorios Amplios', 'Piscina & Quincho', 'Sistema Solar Térmico', 'Estacionamiento 3 Vehículos']
+    description: 'Amplia casa amoblada para empresa. Camas single, living y comedor amplio, estacionamiento techado.',
+    features: ['4 Dormitorios Amplios', 'Full Amoblada', 'Estacionamiento Techado', 'Portón Eléctrico']
   },
   {
     id: 'prop-3',
-    title: 'Departamento Vista Mar Ejecutivo',
-    type: 'departamento',
+    title: 'Casa Corporativa para Personal',
+    type: 'residencial',
     operation: 'arriendo',
-    priceUF: 28,
-    priceCLP: 1064000,
-    location: 'Sector Cavancha, Iquique',
-    region: 'Iquique / Pozo Almonte',
-    bedrooms: 2,
-    bathrooms: 2,
-    areaM2: 85,
-    image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
-    featured: true,
-    description: 'Departamento amoblado full equipado para ejecutivos de empresas mineras y profesionales. Balcón terraza con vista panorámica al océano.',
-    features: ['Vista Panorámica al Mar', 'Estacionamiento Subterráneo', 'Bodega Privada', 'Seguridad 24/7']
-  },
-  {
-    id: 'prop-4',
-    title: 'Complejo de Hospedaje Modulado para Proyectos',
-    type: 'industrial',
-    operation: 'arriendo',
-    priceUF: 350,
-    priceCLP: 13300000,
+    priceUF: 50,
+    priceCLP: 2042240,
     location: 'Calama, Región de Antofagasta',
-    region: 'Calama / Antofagasta',
-    bedrooms: 24,
-    bathrooms: 12,
-    areaM2: 1200,
-    landAreaM2: 3000,
+    region: 'Calama',
+    bedrooms: 5,
+    bathrooms: 4,
+    areaM2: 250,
     image: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1200&q=80',
-    featured: false,
-    description: 'Infraestructura modular habilitada con capacidad para 60 trabajadores de faenas. Incluye salas de estar, comedores y cocina industrial.',
-    features: ['Capacidad 60+ Camas', 'Cocina & Comedor Industrial', 'Internet Satelital High-Speed', 'Servicio Catering Opcional']
-  },
-  {
-    id: 'prop-5',
-    title: 'Parcela Agrícola & Energía Solar',
-    type: 'terreno',
-    operation: 'venta',
-    priceUF: 3200,
-    priceCLP: 121600000,
-    location: 'Valle de Limarí, Ovalle',
-    region: 'La Serena / Ovalle',
-    areaM2: 10000,
-    landAreaM2: 10000,
-    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80',
-    featured: false,
-    description: 'Excelente terreno plano con acciones de agua inscritas, ideal para desarrollo agrícola sostenible o instalaciones fotovoltaicas.',
-    features: ['Derechos de Agua Inscritos', 'Suelo Plano Fertilidad Alta', 'Acceso Pavimentado', 'Factibilidad Solar Comprobada']
-  },
-  {
-    id: 'prop-6',
-    title: 'Bodega Logística & Oficinas Corporativas',
-    type: 'industrial',
-    operation: 'arriendo',
-    priceUF: 120,
-    priceCLP: 4560000,
-    location: 'Concepción, Región del Bío Bío',
-    region: 'Concepción',
-    areaM2: 650,
-    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
-    featured: false,
-    description: 'Centro logístico ubicado en parque industrial con excelentes accesos a puertos y rutas principales. Oficinas en segundo piso habilitadas.',
-    features: ['Altura Libre 8 Metros', 'Andén de Carga y Descarga', 'Oficinas Administrativas', 'Circuito Cerrado TV']
+    featured: true,
+    description: 'Casa amoblada en Calama para personal de empresa. Excelente ubicación y conectividad.',
+    features: ['5 Dormitorios', '4 Baños', 'Apta para Turnos', 'Seguridad']
   }
 ];
 
 export const REGIONAL_COVERAGE: RegionInfo[] = [
   {
-    name: 'Tarapacá (Iquique & Pozo Almonte)',
-    country: 'Chile',
-    hubs: ['Iquique', 'Pozo Almonte', 'Pica'],
-    serviceTypes: ['Terrenos Mineros', 'Hospedaje de Faena', 'Catering Industrial', 'Propiedades Residenciales'],
-    description: 'Base operadora clave para proyectos de litio, minería del cobre y corredores bi-oceánicos.',
-    isMainBase: true
-  },
-  {
-    name: 'Antofagasta & El Loa (Calama)',
+    name: 'Región de Antofagasta (Calama & Antofagasta)',
     country: 'Chile',
     hubs: ['Calama', 'Antofagasta', 'Sierra Gorda'],
-    serviceTypes: ['Terrenos Logísticos', 'Campamentos Modulares', 'Hospedaje de Faena'],
-    description: 'Atención directa al núcleo minero con respuesta inmediata en terreno.',
+    serviceTypes: ['Hospedaje para Empresas', 'Terrenos & Patios de Acopio', 'Servicio de Catering'],
+    description: 'Atención directa para empresas e infraestructura en el núcleo minero del norte.',
     isMainBase: true
   },
   {
-    name: 'Coquimbo (La Serena & Ovalle)',
+    name: 'Región de Coquimbo (La Serena & Ovalle)',
     country: 'Chile',
-    hubs: ['La Serena', 'Coquimbo', 'Ovalle'],
-    serviceTypes: ['Parcelas & Casas Residenciales', 'Terrenos Agro-Solares', 'Oficinas'],
-    description: 'Desarrollo de proyectos residenciales, agrícolas e hídricos sostenibles.',
+    hubs: ['Ovalle', 'La Serena', 'Coquimbo'],
+    serviceTypes: ['Casas Residenciales', 'Casas para Empresas', 'Terrenos'],
+    description: 'Soluciones de habitabilidad y corretaje de propiedades residenciales e industriales.',
     isMainBase: true
-  },
-  {
-    name: 'Valparaíso (Viña del Mar & Puerto)',
-    country: 'Chile',
-    hubs: ['Viña del Mar', 'Valparaíso', 'Concón'],
-    serviceTypes: ['Departamentos Ejecutivos', 'Gestión Inmobiliaria', 'Consultoría'],
-    description: 'Conexión puerto-ciudad con alta demanda en arrendamiento ejecutivo y primera vivienda.'
-  },
-  {
-    name: 'Bío Bío (Concepción & Alrededores)',
-    country: 'Chile',
-    hubs: ['Concepción', 'Talcahuano', 'Coronel'],
-    serviceTypes: ['Bodegas Logísticas', 'Soporte Industrial', 'Inversión Inmobiliaria'],
-    description: 'Eje industrial y de ingeniería en la zona centro-sur del país.'
-  },
-  {
-    name: 'Operaciones Internacionales (Bolivia & Perú)',
-    country: 'Bolivia',
-    hubs: ['La Paz / Santa Cruz (Bolivia)', 'Tacna / Lima (Perú)'],
-    serviceTypes: ['Servicios Transfronterizos', 'Logística Bi-oceánica', 'Asesoría Inmobiliaria'],
-    description: 'Alianzas estratégicas para empresas con proyectos de integración transfronteriza.'
   }
 ];
 
@@ -160,27 +82,27 @@ export const CORPORATE_SERVICES: CorporateService[] = [
     id: 'serv-1',
     title: 'Hospedaje para Proyectos & Turnos',
     iconName: 'Building2',
-    shortDesc: 'Arriendo de casas, departamentos y complejos habitacionales amoblados y acondicionados para el alojamiento de dotaciones corporativas.',
-    fullDesc: 'Inmuebles residenciales estratégicamente ubicados con capacidad y equipamiento ideal para ingenieros, contratistas y personal de faena.',
-    features: ['Casas y departamentos 100% amoblados', 'Contratos corporativos flexibles por turnos', 'Servicio de aseo y mantención opcional', 'Ubicación cercana a rutas operativas'],
-    idealFor: 'Empresas contratistas, consultoras y equipos de ingeniería en minería/energía.'
+    shortDesc: 'Arriendo de casas y complejos habitacionales amoblados y acondicionados para el alojamiento de personal de empresas.',
+    fullDesc: 'Inmuebles residenciales estratégicamente ubicados con capacidad e instalaciones listas para ingenieros y equipos de trabajo.',
+    features: ['Casas y departamentos 100% amoblados', 'Contratos corporativos flexibles', 'Ubicación cercana a rutas operativas'],
+    idealFor: 'Empresas contratistas, consultoras e ingenierías.'
   },
   {
     id: 'serv-2',
-    title: 'Inmuebles para Catering & Comedores',
+    title: 'Servicio de Catering & Alimentación',
     iconName: 'Utensils',
-    shortDesc: 'Arriendo y habilitación de propiedades e instalaciones acondicionadas para la operación de cocinas industriales y comedores.',
-    fullDesc: 'Propiedades corporativas con la infraestructura espacial, sanitaria y eléctrica requerida por empresas de catering para atender personal en faena.',
-    features: ['Factibilidad sanitaria y eléctrica industrial', 'Espacios amoldables para comedores y cocinas', 'Ubicación estratégica en nodos mineros', 'Contratos adaptados al proyecto'],
-    idealFor: 'Empresas de alimentación, casinos e instalaciones temporales en terreno.'
+    shortDesc: 'Provisión integral de servicios de alimentación y catering para personal de empresas en terreno.',
+    fullDesc: 'Servicios gastronómicos nutritivos y certificados adaptados a turnos y faenas operativas con altos estándares de calidad.',
+    features: ['Menús nutritivos y balanceados', 'Colaciones para terreno', 'Certificación sanitaria al día'],
+    idealFor: 'Empresas con personal en proyectos y turnos.'
   },
   {
     id: 'serv-3',
-    title: 'Terrenos Mineros, Energéticos & Patios',
+    title: 'Terrenos & Patios de Acopio',
     iconName: 'Compass',
-    shortDesc: 'Búsqueda, corretaje y arriendo de grandes paños de tierra y patios de acopio para almacenamiento de maquinaria pesada.',
-    fullDesc: 'Terrenos con factibilidad legal y técnica en el norte de Chile para proyectos fotovoltaicos, eólicos, resguardo de flota pesada y bases logísticas.',
-    features: ['Patios cerrados para acopio de maquinaria', 'Estudio de factibilidad de suelo', 'Derechos de agua y factibilidad eléctrica', 'Confidencialidad institucional'],
-    idealFor: 'Desarrolladores de energía renovable, mineras y logística pesada.'
+    shortDesc: 'Búsqueda, corretaje y arriendo de paños de tierra y patios de acopio para maquinaria en Antofagasta y Ovalle.',
+    fullDesc: 'Terrenos con accesibilidad y cierre perimetral para almacenamiento de flota pesada, acopio e instalaciones operativas.',
+    features: ['Patios cerrados para maquinaria pesada', 'Ubicaciones estratégicas en Antofagasta y Ovalle', 'Gestión confidencial e institucional'],
+    idealFor: 'Empresas de montaje, transporte y proyectos industriales.'
   }
 ];
