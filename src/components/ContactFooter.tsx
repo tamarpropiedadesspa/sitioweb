@@ -16,7 +16,6 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onNavigate }) => {
     { id: 'buscar', label: '¿Qué buscas?' },
     { id: 'propiedades', label: 'Propiedades' },
     { id: 'servicios', label: 'Servicios Empresas' },
-    { id: 'cobertura', label: 'Cobertura' },
     { id: 'clientes', label: 'Nuestros Clientes' },
   ];
 
@@ -42,7 +41,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onNavigate }) => {
                 />
               </div>
               <div>
-                <h3 className="text-xl font-extrabold text-white tracking-wide font-sans">
+                <h3 className="text-xl font-extrabold text-[#0B1E36] text-white tracking-wide font-sans">
                   TAMAR PROPIEDADES <span className="text-[#C87A32]">SpA</span>
                 </h3>
                 <p className="text-[11px] text-slate-400 uppercase tracking-widest font-semibold">
@@ -55,7 +54,6 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onNavigate }) => {
               Especialistas en comercialización inmobiliaria residencial y soluciones de habitabilidad, hospedaje de personal, catering y gestión de terrenos estratégicos en Antofagasta y Ovalle.
             </p>
 
-            {/* Badge de confianza sin B2B */}
             <div className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-slate-800/80 border border-slate-700/80 text-xs font-semibold text-slate-300">
               <ShieldCheck className="w-4 h-4 text-[#C87A32] shrink-0" />
               <span>Gestión Profesional & Atención Confidencial para Empresas</span>
