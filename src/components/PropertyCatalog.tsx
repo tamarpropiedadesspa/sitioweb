@@ -121,6 +121,47 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
     return { finalUF, finalCLP };
   };
 
+  // Mapeo directo y preciso desde la columna 'tipo_inmueble' de Sheets
+  const getPropertyType = (item: any): string => {
+    const rawType = String(
+      item.tipo_inmueble ||
+      item['tipo_inmueble'] ||
+      item['Tipo de Inmueble'] ||
+      item.tipoInmueble ||
+      item.tipo ||
+      item.type ||
+      ''
+    ).toLowerCase().trim();
+
+    // 1. Mapeo por valor exacto de la columna tipo_inmueble
+    if (rawType.includes('departamento') || rawType.includes('depto') || rawType.includes('depa')) {
+      return 'departamento';
+    }
+    if (rawType.includes('terreno') || rawType.includes('parcela')) {
+      return 'terreno';
+    }
+    if (rawType.includes('industrial') || rawType.includes('faena') || rawType.includes('bodega')) {
+      return 'industrial';
+    }
+    if (rawType.includes('casa') || rawType.includes('residencial')) {
+      return 'residencial';
+    }
+
+    // 2. Respaldo por lectura de título por si viniera vacío
+    const titleStr = String(item.titulo || item.title || '').toLowerCase();
+    if (titleStr.includes('departamento') || titleStr.includes('depto')) {
+      return 'departamento';
+    }
+    if (titleStr.includes('terreno') || titleStr.includes('parcela')) {
+      return 'terreno';
+    }
+    if (titleStr.includes('industrial') || titleStr.includes('galpón') || titleStr.includes('galpon')) {
+      return 'industrial';
+    }
+
+    return 'residencial';
+  };
+
   // Fetch real-time data from Google Sheets API
   const fetchCatalogData = async (isManualRefresh = false, isBackgroundRefetch = false) => {
     if (isManualRefresh) {
@@ -221,35 +262,12 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
         const isFeatured = ['si', 'sí', 'true', '1'].includes(destStr);
 
         const rawCategory = String(item.categoria || item.category || '').trim();
-
-        // EXTRACCIÓN ROBUSTA DEL TIPO DE INMUEBLE (Reconoce tipo, tipo_inmueble, etc.)
-        const rawType = String(
-          item.tipo ||
-          item.type ||
-          item.tipo_inmueble ||
-          item.tipo_de_inmueble ||
-          item['tipo de inmueble'] ||
-          item['Tipo de Inmueble'] ||
-          ''
-        ).toLowerCase().trim();
-
-        let normalizedType = 'residencial';
-        if (rawType.includes('depa') || rawType.includes('depto') || rawType.includes('departamento')) {
-          normalizedType = 'departamento';
-        } else if (rawType.includes('casa') || rawType.includes('residencial')) {
-          normalizedType = 'residencial';
-        } else if (rawType.includes('terreno') || rawType.includes('parcela')) {
-          normalizedType = 'terreno';
-        } else if (rawType.includes('industrial') || rawType.includes('faena') || rawType.includes('bodega')) {
-          normalizedType = 'industrial';
-        } else if (rawType) {
-          normalizedType = rawType;
-        }
+        const propertyType = getPropertyType(item);
 
         return {
           id: String(item.id || item.ID || item.id_propiedad || index + 1),
           title: item.titulo || item.title || 'Propiedad Tamar',
-          type: normalizedType,
+          type: propertyType,
           category: rawCategory,
           operation: String(item.operacion || item.operation || 'venta').toLowerCase(),
           priceUF: isNaN(priceUF) ? 0 : priceUF,
@@ -784,7 +802,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
             <div className="space-y-3">
               <div className="relative h-72 sm:h-96 rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
                 
-                {/* Fondo difuminado rico para rellenar bordes si la foto es vertical/cuadrada */}
+                {/* Fondo difuminado rico */}
                 <img
                   src={activeProperty.gallery?.[activePhotoIndex] || activeProperty.image}
                   alt=""
