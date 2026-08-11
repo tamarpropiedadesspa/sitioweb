@@ -7,7 +7,6 @@ interface CorporateItem {
   title: string;
   shortDesc: string;
   fullDesc: string;
-  benefits: string[];
   idealFor: string;
   icon: React.ReactNode;
 }
@@ -18,12 +17,6 @@ const corporateServicesList: CorporateItem[] = [
     title: 'Hospedaje para Proyectos & Turnos',
     shortDesc: 'Arriendo de casas y complejos habitacionales amoblados y acondicionados para el alojamiento de dotaciones corporativas.',
     fullDesc: 'Inmuebles residenciales estratégicamente ubicados con capacidad y equipamiento ideal para ingenieros y personal de trabajo.',
-    benefits: [
-      'Casas amobladas y listas para usar',
-      'Contratos flexibles según duración de proyectos',
-      'Servicio de mantención opcional',
-      'Ubicación cercana a nodos operativos'
-    ],
     idealFor: 'Empresas contratistas, consultoras y equipos de ingeniería.',
     icon: <Building2 className="w-7 h-7 text-white" />
   },
@@ -32,12 +25,6 @@ const corporateServicesList: CorporateItem[] = [
     title: 'Servicio de Catering & Alimentación',
     shortDesc: 'Provisión integral de servicios de alimentación y catering certificado para personal de empresas en terreno.',
     fullDesc: 'Servicios gastronómicos adaptados a turnos y exigencias operativas con estrictos estándares de inocuidad alimentaria.',
-    benefits: [
-      'Menús balanceados y nutritivos para turnos',
-      'Colaciones y kits térmicos para terreno',
-      'Certificaciones sanitarias al día',
-      'Logística de entrega puntual en sitio'
-    ],
     idealFor: 'Empresas con personal en proyectos y turnos.',
     icon: <Utensils className="w-7 h-7 text-white" />
   },
@@ -46,12 +33,6 @@ const corporateServicesList: CorporateItem[] = [
     title: 'Terrenos & Patios de Acopio',
     shortDesc: 'Búsqueda, corretaje y arriendo de paños de tierra y patios de acopio para almacenamiento de maquinaria pesada en Antofagasta y Ovalle.',
     fullDesc: 'Terrenos con accesibilidad y cierre perimetral en Antofagasta y Ovalle para resguardo de flota pesada e instalaciones operativas.',
-    benefits: [
-      'Patios cerrados para acopio de maquinaria pesada',
-      'Paños de gran superficie en Antofagasta y Ovalle',
-      'Estudio de factibilidad de suelo y accesos',
-      'Gestión confidencial e institucional'
-    ],
     idealFor: 'Empresas de montaje, transporte y proyectos industriales.',
     icon: <Compass className="w-7 h-7 text-white" />
   }
@@ -135,21 +116,6 @@ export const CorporateServices: React.FC = () => {
                 <p className="text-xs text-slate-500 border-l-2 border-[#C87A32] pl-3 py-1 font-medium italic">
                   {service.fullDesc}
                 </p>
-
-                {/* Beneficios clave en lista de puntos */}
-                <div className="space-y-2 pt-2 border-t border-slate-100">
-                  <span className="text-[11px] font-extrabold text-[#0B1E36] uppercase tracking-wider block">
-                    Beneficios Clave:
-                  </span>
-                  <div className="space-y-1.5">
-                    {service.benefits.map((b, idx) => (
-                      <div key={idx} className="flex items-start gap-2 text-xs text-slate-700 font-medium">
-                        <CheckCircle2 className="w-4 h-4 text-[#C87A32] shrink-0 mt-0.5" />
-                        <span>{b}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
 
                 {/* Audiencia objetivo */}
                 <div className="pt-3 border-t border-slate-200 text-xs">
