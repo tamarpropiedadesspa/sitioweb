@@ -588,15 +588,29 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                       ) : null}
                     </div>
 
-                    {/* Price Tag Overlay */}
+                    {/* Price Tag Overlay LÓGICA INTELIGENTE UF / CLP */}
                     <div className="absolute bottom-3 left-3 right-3 flex items-baseline justify-between">
                       <div>
-                        <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
-                          {property.priceUF > 0 ? `${property.priceUF.toLocaleString('es-CL')} UF` : 'Consultar valor'}
-                        </span>
-                        {property.priceCLP > 0 && (
-                          <span className="text-xs text-slate-200 block font-semibold drop-shadow-sm">
-                            ≈ ${property.priceCLP.toLocaleString('es-CL')} CLP
+                        {property.priceUF > 0 && property.priceCLP > 0 ? (
+                          <>
+                            <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
+                              {property.priceUF.toLocaleString('es-CL')} UF
+                            </span>
+                            <span className="text-xs text-slate-200 block font-semibold drop-shadow-sm">
+                              ≈ ${property.priceCLP.toLocaleString('es-CL')} CLP
+                            </span>
+                          </>
+                        ) : property.priceUF > 0 ? (
+                          <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
+                            {property.priceUF.toLocaleString('es-CL')} UF
+                          </span>
+                        ) : property.priceCLP > 0 ? (
+                          <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
+                            ${property.priceCLP.toLocaleString('es-CL')} CLP
+                          </span>
+                        ) : (
+                          <span className="text-2xl font-black text-white tracking-tight drop-shadow-md">
+                            Consultar valor
                           </span>
                         )}
                       </div>
@@ -678,7 +692,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
       </div>
 
-      {/* TECHNICAL SHEET MODAL (VISTA DE FOTO COMPLETA CON FONDO AMBIENTAL BLUR AMBIENT) */}
+      {/* TECHNICAL SHEET MODAL */}
       {activeProperty && (
         <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-6 overflow-y-auto">
           <div className="bg-white border border-slate-200 rounded-2xl max-w-3xl w-full p-5 sm:p-6 space-y-6 relative shadow-2xl mt-4 sm:mt-10 mb-10 animate-in fade-in zoom-in-95 duration-200">
@@ -692,10 +706,9 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
 
             {/* Gallery Carousel */}
             <div className="space-y-3">
-              {/* MARCO DE FOTO: Relleno ambiental de borde a borde */}
               <div className="relative h-72 sm:h-96 rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center">
                 
-                {/* 1. Fondo difuminado rico para rellenar bordes si la foto es vertical/cuadrada */}
+                {/* Fondo difuminado rico para rellenar bordes si la foto es vertical/cuadrada */}
                 <img
                   src={activeProperty.gallery?.[activePhotoIndex] || activeProperty.image}
                   alt=""
@@ -705,7 +718,7 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                   className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-80 scale-125 pointer-events-none"
                 />
 
-                {/* 2. Imagen Principal COMPLETA (0% recorte con sombra de elevación) */}
+                {/* Imagen Principal COMPLETA (0% recorte con sombra de elevación) */}
                 <img
                   src={activeProperty.gallery?.[activePhotoIndex] || activeProperty.image}
                   alt={activeProperty.title}
@@ -837,13 +850,28 @@ export const PropertyCatalog: React.FC<PropertyCatalogProps> = ({
                 {activeProperty.title}
               </h3>
 
+              {/* Lógica de Precios en Ficha Modal */}
               <div className="flex flex-wrap items-baseline gap-4 py-3 border-y border-slate-200">
-                <span className="text-3xl font-extrabold text-[#C87A32]">
-                  {activeProperty.priceUF > 0 ? `${activeProperty.priceUF.toLocaleString('es-CL')} UF` : 'Consultar valor'}
-                </span>
-                {activeProperty.priceCLP > 0 && (
-                  <span className="text-sm text-slate-600 font-semibold">
-                    Valor estimado: ${activeProperty.priceCLP.toLocaleString('es-CL')} CLP
+                {activeProperty.priceUF > 0 && activeProperty.priceCLP > 0 ? (
+                  <>
+                    <span className="text-3xl font-extrabold text-[#C87A32]">
+                      {activeProperty.priceUF.toLocaleString('es-CL')} UF
+                    </span>
+                    <span className="text-sm text-slate-600 font-semibold">
+                      Valor estimado: ${activeProperty.priceCLP.toLocaleString('es-CL')} CLP
+                    </span>
+                  </>
+                ) : activeProperty.priceUF > 0 ? (
+                  <span className="text-3xl font-extrabold text-[#C87A32]">
+                    {activeProperty.priceUF.toLocaleString('es-CL')} UF
+                  </span>
+                ) : activeProperty.priceCLP > 0 ? (
+                  <span className="text-3xl font-extrabold text-[#C87A32]">
+                    ${activeProperty.priceCLP.toLocaleString('es-CL')} CLP
+                  </span>
+                ) : (
+                  <span className="text-3xl font-extrabold text-[#C87A32]">
+                    Consultar valor
                   </span>
                 )}
               </div>
