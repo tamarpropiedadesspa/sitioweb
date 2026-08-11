@@ -12,7 +12,7 @@ export const DualBlock: React.FC<DualBlockProps> = ({
   onSelectCorporativo,
 }) => {
   const whatsappResidencial = `https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent('Hola Tamar Propiedades SpA, busco asesoría para comprar/arrendar una propiedad residencial.')}`;
-  const whatsappCorporativo = `https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent('Hola Tamar Propiedades SpA, necesito cotizar infraestructura e inmuebles corporativos (hospedaje de faena, patios de acopio o terrenos industriales).')}`;
+  const whatsappCorporativo = `https://wa.me/${PHONE_WHATSAPP.replace('+', '')}?text=${encodeURIComponent('Hola Tamar Propiedades SpA, necesito cotizar servicios para empresas (hospedaje de personal, catering o terrenos en Antofagasta/Ovalle).')}`;
 
   return (
     <section id="buscar" className="py-16 sm:py-24 bg-white relative border-b border-slate-200">
@@ -27,7 +27,7 @@ export const DualBlock: React.FC<DualBlockProps> = ({
             ¿Qué estás buscando hoy?
           </h2>
           <p className="text-slate-600 text-base sm:text-lg">
-            Acompañamos a familias e inversionistas con gestión inmobiliaria cercana y a grandes empresas con logística técnica de alto nivel.
+            Acompañamos a familias e inversionistas con gestión inmobiliaria cercana y a empresas con soluciones de habitabilidad, catering y terrenos.
           </p>
         </div>
 
@@ -61,15 +61,15 @@ export const DualBlock: React.FC<DualBlockProps> = ({
               <ul className="space-y-3 text-sm text-slate-700">
                 <li className="flex items-start gap-2.5">
                   <CheckCircle className="w-5 h-5 text-[#C87A32] shrink-0 mt-0.5" />
-                  <span><strong>Compra y Venta:</strong> Casas en La Serena, Concepción, Ovalle e Iquique.</span>
+                  <span><strong>Compra y Venta:</strong> Casas en La Serena, Ovalle y Calama.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <CheckCircle className="w-5 h-5 text-[#C87A32] shrink-0 mt-0.5" />
-                  <span><strong>Arriendos de Larga Duración:</strong> Departamentos amoblados y no amoblados.</span>
+                  <span><strong>Arriendos de Larga Duración:</strong> Departamentos y casas amobladas.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <CheckCircle className="w-5 h-5 text-[#C87A32] shrink-0 mt-0.5" />
-                  <span><strong>Parcelas de Agrado:</strong> Paños planos con derechos de agua y factibilidad solar.</span>
+                  <span><strong>Parcelas de Agrado:</strong> Paños planos en la Región de Coquimbo.</span>
                 </li>
               </ul>
             </div>
@@ -80,7 +80,7 @@ export const DualBlock: React.FC<DualBlockProps> = ({
                 onClick={onSelectResidencial}
                 className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-bold text-sm bg-[#C87A32] hover:bg-[#A85D23] text-white shadow-md transition-all cursor-pointer"
               >
-                <span>Explorar Propiedades Residenciales</span>
+                <span>Explorar Propiedades</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
               
@@ -105,7 +105,7 @@ export const DualBlock: React.FC<DualBlockProps> = ({
                   <Building2 className="w-7 h-7" />
                 </div>
                 <span className="text-xs font-bold uppercase tracking-wider text-[#C87A32] bg-[#C87A32]/10 px-3 py-1 rounded-full border border-[#C87A32]/30">
-                  Corporativo & Industrial
+                  Servicios Corporativos
                 </span>
               </div>
 
@@ -114,23 +114,23 @@ export const DualBlock: React.FC<DualBlockProps> = ({
                   Soporte Técnico & Terrenos para Empresas
                 </h3>
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  Soporte logístico e inmobiliario de alta exigencia para proyectos mineros, fotovoltaicos, viales y de montaje en todo Chile.
+                  Soporte logístico, habitabilidad, catering y terrenos para proyectos en Antofagasta y Coquimbo.
                 </p>
               </div>
 
-              {/* Service Bullet Points (CORREGIDOS A 3 PUNTOS CLAVE) */}
+              {/* Service Bullet Points */}
               <ul className="space-y-3 text-sm text-slate-700">
                 <li className="flex items-start gap-2.5">
                   <BedDouble className="w-5 h-5 text-[#C87A32] shrink-0 mt-0.5" />
-                  <span><strong>Hospedaje por Proyectos:</strong> Alojamiento modulado, casas y departamentos amoblados para turnos.</span>
+                  <span><strong>Hospedaje por Proyectos:</strong> Arriendo de casas y complejos habitacionales amoblados para turnos.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Utensils className="w-5 h-5 text-[#C87A32] shrink-0 mt-0.5" />
-                  <span><strong>Inmuebles para Catering:</strong> Propiedades e instalaciones acondicionadas para casinos y comedores.</span>
+                  <span><strong>Servicio de Catering:</strong> Provisión de alimentación nutritiva y certificada para empresas y personal en terreno.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Compass className="w-5 h-5 text-[#C87A32] shrink-0 mt-0.5" />
-                  <span><strong>Terrenos Mineros, Energéticos & Patios:</strong> Paños de gran superficie y patios de acopio para maquinaria en Pozo Almonte, Calama y todo Chile.</span>
+                  <span><strong>Terrenos & Patios de Acopio:</strong> Paños de gran superficie y patios de acopio para maquinaria en Antofagasta y Ovalle.</span>
                 </li>
               </ul>
             </div>
