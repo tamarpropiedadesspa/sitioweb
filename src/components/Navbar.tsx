@@ -57,7 +57,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
     { id: 'buscar', label: '¿Qué buscas?' },
     { id: 'propiedades', label: 'Propiedades' },
     { id: 'servicios', label: 'Servicios Empresas' },
-    { id: 'cobertura', label: 'Cobertura' },
     { id: 'clientes', label: 'Clientes' },
   ];
 
