@@ -4,7 +4,7 @@ import { Hero } from './components/Hero';
 import { DualBlock } from './components/DualBlock';
 import { PropertyCatalog } from './components/PropertyCatalog';
 import { CorporateServices } from './components/CorporateServices';
-import { RegionalCoverage } from './components/RegionalCoverage';
+// import { RegionalCoverage } from './components/RegionalCoverage';
 import { ClientShowcase } from './components/ClientShowcase';
 import { ContactFooter } from './components/ContactFooter';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
@@ -44,8 +44,6 @@ export default function App() {
         );
       case 'servicios':
         return <CorporateServices />;
-      case 'cobertura':
-        return <RegionalCoverage />;
       case 'clientes':
         return <ClientShowcase />;
       case 'contacto':
@@ -68,7 +66,7 @@ export default function App() {
               initialCityFilter={propertyFilterCity}
             />
             <CorporateServices />
-            <RegionalCoverage />
+            {/* <RegionalCoverage /> */}
             <ClientShowcase />
           </>
         );
@@ -99,7 +97,7 @@ export default function App() {
         {renderActiveView()}
 
         {/* Footer de contacto incluido en todas las vistas */}
-        <ContactFooter />
+        <ContactFooter onNavigate={handleNavigate} />
       </main>
 
       {/* Botón flotante de WhatsApp */}
