@@ -12,7 +12,7 @@ const CLIENT_LOGOS: ClientLogo[] = [
   { id: '1', name: 'Elecnor Chile', logo: '/logos/elecnor.png', url: 'https://www.elecnor.cl/' },
   { id: '2', name: 'Grupo TELCOH', logo: '/logos/telcoh.png', url: 'https://grupotelcoh.cl/' },
   { id: '3', name: 'Aramark', logo: '/logos/aramark.png', url: 'https://www.aramark.cl/home' },
-  { id: '4', name: 'Piloansa', logo: '/logos/piloansa.png', url: 'https://piloansa.com/' },
+  { id: '4', name: 'Piloansa', logo: '/logos/piloansa.com/' },
   { id: '5', name: 'DataLux', logo: '/logos/datalux.png', url: 'https://datalux.cl/' },
   { id: '6', name: 'Cainsa SyM', logo: '/logos/cainsa.png', url: 'https://www.cainsasym.cl/' },
   { id: '7', name: 'Grupo GESCO', logo: '/logos/gesco.png', url: 'https://grupogesco.cl/' },
@@ -83,7 +83,7 @@ export const ClientShowcase: React.FC = () => {
           <div className="w-16 h-1 bg-[#0B1E36] mx-auto rounded-full mt-3"></div>
         </div>
 
-        {/* Carrusel - Contenedor ampliado */}
+        {/* Carrusel - Contenedor */}
         <div className="relative max-w-6xl mx-auto px-10 sm:px-14">
           
           {/* Flecha Izquierda */}
@@ -95,22 +95,30 @@ export const ClientShowcase: React.FC = () => {
             <ChevronLeft className="w-8 h-8" />
           </button>
 
-          {/* Rejilla de Logos a TODO COLOR (Sin escala de grises) */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 items-center justify-items-center min-h-[160px]">
+          {/* Rejilla de Logos + Nombres de Empresa */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 items-center justify-items-center min-h-[180px]">
             {visibleLogos.map((client, idx) => (
               <a
                 key={`${client.id}-${idx}`}
                 href={client.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full flex items-center justify-center p-2 transition-all duration-300 transform hover:scale-110 group cursor-pointer"
+                className="w-full flex flex-col items-center justify-center p-2 transition-all duration-300 transform hover:scale-105 group cursor-pointer text-center"
                 title={client.name}
               >
-                <img
-                  src={client.logo}
-                  alt={client.name}
-                  className="h-20 sm:h-24 lg:h-28 w-full max-w-[220px] object-contain transition-all duration-300 drop-shadow-sm"
-                />
+                {/* Contenedor del Logo */}
+                <div className="h-16 sm:h-20 lg:h-24 w-full flex items-center justify-center mb-2">
+                  <img
+                    src={client.logo}
+                    alt={client.name}
+                    className="max-h-full w-full max-w-[180px] object-contain transition-all duration-300 drop-shadow-sm"
+                  />
+                </div>
+
+                {/* Nombre de la Empresa debajo */}
+                <span className="text-xs font-bold text-slate-700 group-hover:text-[#C87A32] transition-colors truncate max-w-full px-1">
+                  {client.name}
+                </span>
               </a>
             ))}
           </div>
