@@ -12,7 +12,7 @@ const CLIENT_LOGOS: ClientLogo[] = [
   { id: '1', name: 'Elecnor Chile', logo: '/logos/elecnor.png', url: 'https://www.elecnor.cl/' },
   { id: '2', name: 'Grupo TELCOH', logo: '/logos/telcoh.png', url: 'https://grupotelcoh.cl/' },
   { id: '3', name: 'Aramark', logo: '/logos/aramark.png', url: 'https://www.aramark.cl/home' },
-  { id: '4', name: 'Piloansa', logo: '/logos/piloansa.com/' },
+  { id: '4', name: 'Piloansa', logo: '/logos/piloansa.png', url: '/logos/piloansa.com/' },
   { id: '5', name: 'DataLux', logo: '/logos/datalux.png', url: 'https://datalux.cl/' },
   { id: '6', name: 'Cainsa SyM', logo: '/logos/cainsa.png', url: 'https://www.cainsasym.cl/' },
   { id: '7', name: 'Grupo GESCO', logo: '/logos/gesco.png', url: 'https://grupogesco.cl/' },
